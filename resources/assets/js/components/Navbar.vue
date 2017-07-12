@@ -24,7 +24,6 @@
                     <div class="arrow down"></div>
                 </a>
                 <div class="action_bar-content">
-                    TEST
                 </div>
             </div>
         </div>
