@@ -1,0 +1,106 @@
+@import "app";
+
+a{ color: #fff; }
+
+header{
+
+  background-image: linear-gradient(-180deg, #FFFFFF 0%, #EEEEEE 100%);
+
+  > .row{
+    height: 105px;
+  }
+
+  .brand-logo{
+    @include flex-item-width(25%);
+
+    @include breakpoint($adaptiveMenuBreakpoint){
+      @include flex-item-width(220px);
+    }
+  }
+
+  nav{
+    a{
+      display: inline-block;
+      text-decoration: none;
+      color: #000;
+      padding: 10px 11px;
+      border-radius: 8px;
+
+      font-size: 0.8rem;
+
+      i{
+        display:block;
+        @include icon(30px);
+        margin: auto;
+      }
+
+      @include breakpoint($adaptiveMenuBreakpoint){
+        font-size: 1rem;
+        padding: 12px 14px;
+
+        i{
+          display:inline-block;
+          @include icon(24px, right);
+        }
+      }
+
+
+    }
+
+    a:hover{
+      color: #fff;
+      background-color: $primary_color;
+    }
+  }
+
+}
+
+#action_bar{
+
+  height: 69px;
+  background-color: $primary_color;
+  color: white;
+
+  @include breakpoint(sm){
+    height: 65px;
+    border-bottom: 4px solid $primary_lighter;
+  }
+
+  .menu-toggle{
+    display: inline-block;
+    width: 65px;
+    height: 65px;
+    background-color: $primary_lighter;
+    position: relative;
+
+    i{
+      position: absolute;
+      width: 40px;
+      height: 40px;
+
+      left: calc(50% - 20px);
+      top: 4px;
+
+      &.activities{
+        background-image: url($icons_path + 'activities-blank-filled.png');
+      }
+    }
+
+    .arrow{
+      position: absolute;
+      width: 20px;
+      height: 9px;
+      background-size: 100%;
+      left: calc(50% - 10px);
+      bottom: 5px;
+
+      &.down{
+        background-image: url($icons_path + 'arrow-down.svg');
+      }
+
+      /*&.up{
+        background-image: url($icons_path + 'arrow-up.svg');
+      }*/
+    }
+  }
+}
