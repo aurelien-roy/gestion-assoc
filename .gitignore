@@ -4,6 +4,12 @@
 /storage/*.key
 /vendor
 /.idea
+/public/css
+/public/js
+/public/images
+/public/fonts
+/resources/assets/sass/vendor
 Homestead.json
 Homestead.yaml
 .env
+.DS_Store
