@@ -41,6 +41,14 @@ body{
     display: inline-block !important;
 }
 
+.flex-dir-row{
+    flex-direction: row !important;
+}
+
+a{
+    text-decoration: none;
+    color: #000;
+}
 
 
 i{
@@ -85,4 +93,8 @@ i{
     {
         margin-right: $size/2;
     }
+}
+
+h1{
+
 }

@@ -12,8 +12,11 @@
     "laravel-mix": "^1.2.0"
   },
   "dependencies": {
+    "Faker": "^0.7.2",
     "axios": "^0.15.3",
+    "faker": "^4.1.0",
     "imperavi-kube": "^6.5.2",
+    "sticky-position": "^1.0.1",
     "vue": "^2.2.2",
     "vue-router": "^2.3.0",
     "vuex": "^2.3.1"
