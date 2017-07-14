@@ -1,6 +1,5 @@
 @import "app";
 
-a{ color: #fff; }
 
 header{
 
@@ -60,18 +59,24 @@ header{
   height: 69px;
   background-color: $primary_color;
   color: white;
+  position: -webkit-sticky;
+  position: sticky;
+  top: -1px;
 
   @include breakpoint(sm){
     height: 65px;
     border-bottom: 4px solid $primary_lighter;
   }
 
+  .action_bar-visible{
+    display: flex;
+  }
+
   .menu-toggle{
-    display: inline-block;
-    width: 65px;
-    height: 65px;
     background-color: $primary_lighter;
     position: relative;
+
+    flex-basis: 65px;
 
     i{
       position: absolute;
@@ -97,10 +102,36 @@ header{
       &.down{
         background-image: url($icons_path + 'arrow-down.svg');
       }
-
-      /*&.up{
-        background-image: url($icons_path + 'arrow-up.svg');
-      }*/
     }
+  }
+
+  .action_bar-content{
+
+    display: flex;
+    flex: auto;
+
+    @include breakpoint($adaptiveMenuBreakpoint) {
+      width: 98%;
+      max-width: 940px;
+      margin: auto;
+    }
+
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    color: white;
+
+    a{
+      color: white;
+
+      &:hover{
+        opacity: 0.8;
+      }
+    }
+
+    .element{
+      padding: 0 1rem;
+    }
+
+
   }
 }
