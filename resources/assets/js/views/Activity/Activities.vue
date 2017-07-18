@@ -1,10 +1,33 @@
 <template>
     <div>
     <h1>Activités</h1>
+
+        <input type="text" placeholder="Rechercher un prof, une activité ou encore un jour" v-model="search">
+
         <table>
-            <tr><th>Nom</th><th>Jour</th></tr>
-            <tr v-for="a in activities"><td>{{ a.name }}</td><td>{{ a.day }}</td></tr>
+            <tr>
+                <th>Nom</th>
+                <th>Jour</th>
+                <th>Begin</th>
+                <th>End</th>
+                <th>Prof</th>
+                <th>Effectif actu</th>
+                <th>Eff max</th>
+            </tr>
+
+            <tr v-for="a in activities">
+                <td>{{ a.name }}</td>
+                <td>{{ a.day }}</td>
+                <td>{{ a.time_begin }}</td>
+                <td>{{ a.time_end }}</td>
+                <td>{{ a.teacher }}</td>
+                <td>{{ a.effectif_current }}</td>
+                <td>{{ a.effectif_max }}</td>
+                <td><button v-on:click="del(a)">Sup</button></td>
+            </tr>
         </table>
+
+
     </div>
 </template>
 <style>
@@ -21,25 +44,35 @@
         data(){
             return {
                 actionbar,
-                activities_store
+                activities_store,
+                search: ''
             }
         },
         components: {},
         
-        methods: {},
+        methods: {
+            del: function(a){
+                activities_store.delActivity(a.id);
+            }
+        },
         
         computed: {
             activities(){
-                return activities_store.state.activities;
+                if(this.search === '')
+                    return activities_store.state.activities;
+                else
+                    return activities_store.state.activities.filter(a => {
+                        let s = this.search.toLocaleLowerCase();
+                       return (a.name.toLocaleLowerCase().includes(s)
+                                || a.teacher.toLocaleLowerCase().includes(s))
+                    });
             }
         },
         
         watch: {},
         
         mounted(){
-            for(let i = 0; i < 3; i++){
-                this.activities_store.generateActivity();
-            }
+            this.activities_store.generateActivity();
 
 
             this.actionbar.push({name: "Créer"});
