@@ -6,7 +6,7 @@
 
         <table>
             <tr>
-                <th>Nom</th>
+                <th>Activité</th>
                 <th>Jour</th>
                 <th>Begin</th>
                 <th>End</th>
@@ -15,18 +15,25 @@
                 <th>Eff max</th>
             </tr>
 
-            <tr v-for="a in activities">
-                <td>{{ a.name }}</td>
+            <tr v-for="a in activities" @click="">
+                <td>{{ a.name + ' (' + a.age + ' / ' + a.level + ')' }}</td>
                 <td>{{ a.day }}</td>
                 <td>{{ a.time_begin }}</td>
                 <td>{{ a.time_end }}</td>
                 <td>{{ a.teacher }}</td>
                 <td>{{ a.effectif_current }}</td>
                 <td>{{ a.effectif_max }}</td>
-                <td><button v-on:click="del(a)">Sup</button></td>
+                <td>
+                    <button @click.prevent="">Mod</button>
+                </td>
+                <td>
+                    <button @click.prevent="del(a.id)">Sup</button>
+                </td>
             </tr>
         </table>
 
+        <router-link to="ouvrir_activite"><i class="activities w24"></i>Ouvrir activité</router-link>
+        <router-link to="nouvelle_activite"><i class="activities w24"></i>Nouvelle activité</router-link>
 
     </div>
 </template>
@@ -51,8 +58,8 @@
         components: {},
         
         methods: {
-            del: function(a){
-                activities_store.delActivity(a.id);
+            del(id){
+                activities_store.delActivity(id);
             }
         },
         
