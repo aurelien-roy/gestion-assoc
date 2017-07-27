@@ -1,6 +1,6 @@
 <template>
-    <div>
-    <h1>Activités</h1>
+    <div class="row wrapped push-center">
+        <h1>Activités</h1>
 
         <input type="text" placeholder="Rechercher un prof, une activité ou encore un jour" v-model="search">
 
@@ -60,6 +60,7 @@
         methods: {
             del(id){
                 activities_store.delActivity(id);
+
             }
         },
         
