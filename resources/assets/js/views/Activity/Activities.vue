@@ -1,6 +1,6 @@
 <template>
-    <div>
-    <h1>Activités</h1>
+    <div class="row wrapped push-center">
+     <h1>Activités</h1>
 
         <input type="text" placeholder="Rechercher un prof, une activité ou encore un jour" v-model="search">
 
@@ -27,7 +27,6 @@
             </tr>
         </table>
 
-
     </div>
 </template>
 <style>
@@ -51,7 +50,7 @@
         components: {},
         
         methods: {
-            del: function(a){
+            del(a){
                 activities_store.delActivity(a.id);
             }
         },

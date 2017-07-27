@@ -17,4 +17,4 @@ mix
 .js('resources/assets/js/app.js', 'public/js');
 
 
-if(mix.config.inProduction) mix.version(); // Production uniquement car hash non supporté en mode HOT.
+//if(mix.config.inProduction) mix.version(); // Production uniquement car hash non supporté en mode HOT.
