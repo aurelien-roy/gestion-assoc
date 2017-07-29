@@ -2,9 +2,9 @@
     <div class="row wrapped push-center">
         <h1>Activités</h1>
 
-        <input type="text" placeholder="Rechercher un prof, une activité ou encore un jour" v-model="search">
+        <input placeholder="Rechercher un prof, une activité ou encore un jour" v-model="search">
 
-        <table>
+        <table v-if="loaded">
             <tr>
                 <th>Activité</th>
                 <th>Jour</th>
@@ -32,8 +32,9 @@
             </tr>
         </table>
 
+        <p v-else>CHARGEMENT...</p>
+
         <router-link to="ouvrir_activite"><i class="activities w24"></i>Ouvrir activité</router-link>
-        <router-link to="nouvelle_activite"><i class="activities w24"></i>Nouvelle activité</router-link>
 
     </div>
 </template>
@@ -44,6 +45,7 @@
 
     import activities_store from '../../store/activities'
     import actionbar from '../../store/actionbar'
+    import time from '../../store/time'
     
     export default{
         name: 'Activities',
@@ -52,6 +54,7 @@
             return {
                 actionbar,
                 activities_store,
+                time,
                 search: ''
             }
         },
@@ -74,16 +77,26 @@
                        return (a.name.toLocaleLowerCase().includes(s)
                                 || a.teacher.toLocaleLowerCase().includes(s))
                     });
+            },
+
+            loaded(){
+                return activities_store.state.async.loaded;
             }
         },
         
-        watch: {},
+        watch: {
+            loaded(loaded){
+                if(!loaded){
+                    activities_store.fetch(time.state.selectedPeriod);
+                }
+            }
+        },
         
         mounted(){
-            this.activities_store.generateActivity();
+            activities_store.fetch(time.state.selectedPeriod);
 
 
-            this.actionbar.push({name: "Créer"});
+            this.actionbar.push({name: "Créer", routeTo: 'nouvelle_activite'});
             this.actionbar.push({name: "Modifier"});
             this.actionbar.push({name: "Supprimer"});
         }
