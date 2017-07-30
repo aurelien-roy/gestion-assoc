@@ -7,7 +7,7 @@
             </a>
             <div class="action_bar-content align-middle row">
                 <div class="auto row flex-dir-row">
-                    <div class="element" v-for="a in actionbar">
+                    <div class="element" v-for="a in actionbar.actions">
                         <a href="#" @click="clickBtn(a)">{{ a.name }}</a>
                     </div>
                 </div>
@@ -19,9 +19,6 @@
 
 
         </div>
-
-
-
     </div>
 </template>
 <script>
@@ -45,7 +42,7 @@
                 }
 
                 if(action.routeTo){
-                    this.$router.push(action.routeTo);
+                    this.$router.push({ name: action.routeTo });
                 }
             }
         },

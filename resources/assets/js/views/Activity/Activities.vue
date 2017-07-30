@@ -1,4 +1,5 @@
 <template>
+
     <div class="row wrapped push-center">
         <h1>Activités</h1>
 
@@ -8,26 +9,18 @@
             <tr>
                 <th>Activité</th>
                 <th>Jour</th>
-                <th>Begin</th>
-                <th>End</th>
-                <th>Prof</th>
-                <th>Effectif actu</th>
-                <th>Eff max</th>
+                <th>Encadrant</th>
+                <th>Effectif</th>
+                <th></th>
             </tr>
 
-            <tr v-for="a in activities" @click="">
+            <tr v-for="a in activities" @click="openActivity(a)">
                 <td>{{ a.name + ' (' + a.age + ' / ' + a.level + ')' }}</td>
-                <td>{{ a.day }}</td>
-                <td>{{ a.time_begin }}</td>
-                <td>{{ a.time_end }}</td>
+                <td>{{ a.day }} de {{ a.time_begin }}h à {{ a.time_end }}h</td>
                 <td>{{ a.teacher }}</td>
-                <td>{{ a.effectif_current }}</td>
-                <td>{{ a.effectif_max }}</td>
+                <td>{{ a.effectif_current }}/{{ a.effectif_max }}</td>
                 <td>
-                    <button @click.prevent="">Mod</button>
-                </td>
-                <td>
-                    <button @click.prevent="del(a.id)">Sup</button>
+                    <a @click.prevent="del(a.id)">Sup</a>
                 </td>
             </tr>
         </table>
@@ -64,6 +57,12 @@
             del(id){
                 activities_store.delActivity(id);
 
+            },
+
+            openActivity(activity){
+                console.log('open');
+                console.log(activity);
+                this.$router.push({name: 'activity', params: {id: activity.id}});
             }
         },
         
@@ -96,9 +95,9 @@
             activities_store.fetch(time.state.selectedPeriod);
 
 
-            this.actionbar.push({name: "Créer", routeTo: 'nouvelle_activite'});
-            this.actionbar.push({name: "Modifier"});
-            this.actionbar.push({name: "Supprimer"});
+            this.actionbar.setActions([
+              {name: "Créer", routeTo: 'new_activity'}
+            ]);
         }
     }
 
