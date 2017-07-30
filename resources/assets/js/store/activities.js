@@ -29,22 +29,13 @@ export default {
                 effectif_current: 10
             });
     },
+    
+    get(id){
+        return this.state.activities.find(a => a.id === id);
+    },
 
-    newActivity (name, level, age, day, time_begin, time_end, teacher, effectif_max){
-        this.state.activities.push
-        ({
-            id: this.state.activities.length,
-            members: [],
-            name,
-            level,
-            age,
-            day,
-            time_begin,
-            time_end,
-            teacher,
-            effectif_max,
-            effectif_current: 0
-        });
+    saveNewActivity (activity){
+        this.state.activities.push(activity);
     },
 
     modActivity (id, level, age, name, day, time_begin, time_end, teacher, effectif_max, effectif_current){
