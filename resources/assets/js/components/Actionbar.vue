@@ -12,7 +12,7 @@
                     </div>
                 </div>
 
-                <select class="selector" v-model="selectedPeriod">
+                <select class="selector" v-model="selectedPeriod" v-if="actionbar.periodDropdown">
                     <option v-for="n in (currentPeriod - startPeriod + 1)" :value="time.indexToPeriod(n-1)">{{ time.periodName(time.indexToPeriod(n-1)) }}</option>
                 </select>
             </div>

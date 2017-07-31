@@ -103,3 +103,16 @@ tr:hover {
   background-color: #eeeeee;
   cursor: pointer;
 }
+
+.loading{
+
+    background-image: url($icons_path + 'loading.svg');
+    background-size: 100%;
+
+    &.big{
+        width: 70px;
+        height: 70px;
+        margin: 30px auto 30px auto;
+        background-size: 70px 70px;
+    }
+}
