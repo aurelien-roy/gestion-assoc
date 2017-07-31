@@ -5,22 +5,35 @@ import Login from '../views/Auth/Login.vue'
 import Register from '../views/Auth/Register.vue'
 import NotFound from '../views/NotFound.vue'
 import Home from '../views/Home.vue'
+import actionbar from '../store/actionbar'
+
 import Activities from '../views/Activity/Activities.vue'
 import Activity from '../views/Activity/Activity.vue'
-import actionbar from '../store/actionbar'
+
+import Members from '../views/Member/Members.vue'
+import MemberViewer from '../views/Member/MemberViewer.vue'
 
 Vue.use(VueRouter)
 
 const router = new VueRouter({
 	mode: 'history',
 	routes: [
-		{ name: 'root', path: '/', component: Home },
+        {name: 'root', path: '/', component: Home},
         { name: 'activities', path: '/activites', component: Activities},
+        {name: 'login', path: '/login', component: Login},
+        {name: 'not_found', path: '*', component: NotFound},
+        //Activities
         { name: 'new_activity', path: '/activites/new', component: Activity},
         { name: 'activity', path: '/activites/:id(\\d+)', component: Activity, props: true},
-		{ name: 'register', path: '/register', component: Register },
-		{ name: 'login', path: '/login', component: Login },
-		{ name: 'not_found', path: '*', component: NotFound },
+        {name: 'register', path: '/register', component: Register},
+        //Members
+        {
+            name: 'members', path: '/membres', component: Members,
+            children: [
+                {name: 'new_member', path: 'member_viewer/new', component: MemberViewer},
+                {name: 'open_member', path: 'member_viewer/:id(\\d+)', component: MemberViewer, props: true}
+            ]
+        }
 	]
 })
 

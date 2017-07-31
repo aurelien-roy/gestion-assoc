@@ -2,35 +2,80 @@ export default {
 
     state: {
         members: [],
+        loading: false
     },
 
-    newMember (name, surname, sex, picture, birthday, adress_post, adress_mail, telephone, medical_certif, notes){
-        this.state.members.push
-        ({
-            id: this.state.members.length,
-            name: name,
-            surname: surname,
-            sex: sex,
-            picture: picture,
-            birthday: birthday,
-            adress_post: adress_post,
-            adress_mail: adress_mail,
-            telephone: telephone,
-            medical_certif: medical_certif,
-            notes: notes
-        });
+    genMember(){
+        return {
+            id: undefined,
+            firstname: '',
+            lastname: '',
+            birthdate: {day: null, month: null, year: null},
+            sex: '',
+            picture: null, //Not use
+            address1: '',
+            address2: '',
+            postcode: '',
+            city: '',
+            email: '',
+            phone: '',
+            mobile: '',
+            medical_certif: '', //Not use
+            notes: ''
+        }
+    },
 
-        window.activities = this.state.activities;
+    saveNewMember (member){
+
+        this.state.loading = true;
+        // Requete AJAX
+
+        setTimeout(() => {
+            // Envoi du membre au serveur
+            // Le serveur retourne l'id affecté dans la variable id
+            let id = this.state.members.length;
+            member.id = id;
+
+            this.state.members.push(member);
+            this.state.loading = false;
+        }, 2000);
+    },
+
+    modifyMember (member){
+
+        this.state.loading = true;
+        // Requete AJAX
+
+        setTimeout(() => {
+            let id = member.id;
+            this.state.members = this.state.members.filter(m => {
+                return id !== m.id;
+            });
+
+            this.state.members.push(member);
+            this.state.loading = false;
+        }, 2000);
     },
 
     delMember(id){
+        this.state.loading = true;
+
+        setTimeout(() => {
+            // Supression du membre : ajax
+            // if false on reactualise les membres
+
+            this.state.loading = false;
+        }, 2000);
+
         this.state.members = this.state.members.filter(m => {
-            return id != m.id;
+            return id !== m.id;
         });
     },
 
     getMember(id){
-        return this.state.members
+        return this.state.members.find(m => {
+            return id == m.id;
+        })
     }
 
 }

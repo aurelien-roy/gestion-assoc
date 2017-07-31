@@ -10,7 +10,7 @@
                         <div class="col col-12 row align-middle around">
                             <a href="#"><i class="dashboard w24"></i>Dashboard</a>
                             <router-link to="/activites"><i class="activities w24"></i>Activités</router-link>
-                            <a href="#"><i class="members w24"></i>Membres</a>
+                            <router-link to="/membres"><i class="members w24"></i>Membres</router-link>
                             <a href="#"><i class="payments w24"></i>Comptabilité</a>
                             <a href="#"><i class="settings w24 m0"></i></a>
                         </div>
