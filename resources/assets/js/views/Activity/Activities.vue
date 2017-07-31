@@ -1,6 +1,6 @@
 <template>
 
-    <div class="row wrapped push-center">
+    <div class="wrapped push-center">
         <h1>Activités</h1>
 
         <input placeholder="Rechercher un prof, une activité ou encore un jour" v-model="search">
@@ -25,7 +25,7 @@
             </tr>
         </table>
 
-        <p v-else>CHARGEMENT...</p>
+        <div class="loading big" v-else></div>
 
         <router-link to="ouvrir_activite"><i class="activities w24"></i>Ouvrir activité</router-link>
 
@@ -95,9 +95,11 @@
             activities_store.fetch(time.state.selectedPeriod);
 
 
-            this.actionbar.setActions([
+            actionbar.setActions([
               {name: "Créer", routeTo: 'new_activity'}
             ]);
+
+            actionbar.showPeriodDropdown(true);
         }
     }
 
