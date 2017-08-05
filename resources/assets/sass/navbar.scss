@@ -56,11 +56,11 @@ header{
 
 #action_bar{
 
-  height: 69px;
+  height: 50px;
   background-color: $primary_color;
   color: white;
-  position: -webkit-sticky;
-  position: sticky;
+  /*position: -webkit-sticky;
+  position: sticky;*/
   top: -1px;
 
   @include breakpoint(sm){
@@ -122,6 +122,9 @@ header{
 
     a{
       color: white;
+      font-family: 'Lato', sans-serif;
+      font-weight: 700;
+      font-size: 0.8rem;
 
       &:hover{
         opacity: 0.8;
@@ -130,6 +133,10 @@ header{
 
     .element{
       padding: 0 1rem;
+    }
+
+    .element:first-child{
+      padding-left: 0;
     }
 
 
