@@ -1,3 +1,5 @@
+import { rand } from '../helpers/math'
+
 export default {
     
     state: {
@@ -12,22 +14,30 @@ export default {
     },
     
     generateActivity(){
-        let act = ['Classique', 'Jazz', 'Street'];
+        let act = ['Classique', 'Jazz', 'Street', 'Ragga', 'Eveil'];
+        let nvx = ['', 'Adultes', '10-12 ans', '5-6 ans'];
+        let clr = ['red', 'blue', 'yellow', 'green', 'aqua', 'purple', 'orange'];
 
-        for(let i = 0; i < 3; i ++)
+        for(let i = 0; i < 10; i ++) {
+    
+            let begin = rand(9, 16);
+            let end = begin + rand(1, 3);
+    
             this.state.activities.push({
                 id: this.state.activities.length,
                 members: [],
-                name: act[i],
-                level: 'Compétition',
-                age: 'Adulte',
-                day: 'Lundi',
-                time_begin: 18,
-                time_end: 20,
+                name: act[rand(0, 4)],
+                level: nvx[rand(0, 3)],
+                age: nvx[rand(0, 3)],
+                day: rand(0, 6),
+                time_begin: begin,
+                time_end: end,
                 teacher: 'Jackie',
                 effectif_max: 30,
-                effectif_current: 10
+                effectif_current: 10,
+                color: clr[rand(0, 6)]
             });
+        }
     },
     
     get(id){

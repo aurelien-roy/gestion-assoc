@@ -39,6 +39,7 @@ const router = new VueRouter({
 
 router.afterEach((to, from) => {
     actionbar.actions = [];
+    actionbar.showPeriodDropdown(false);
 })
 
 export default router
