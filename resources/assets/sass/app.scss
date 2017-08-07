@@ -11,8 +11,12 @@ $primary_lighter: #60D196;
 
 $adaptiveMenuBreakpoint: 948px;
 
+html{
+    height: 100%;
+}
 
 body{
+    min-height: 100%;
     font-family: 'Lato', sans-serif;
 }
 
