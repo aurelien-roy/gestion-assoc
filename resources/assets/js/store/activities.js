@@ -1,18 +1,40 @@
 import { rand } from '../helpers/math'
+import time from 'time'
+
+const State = {NotSynchro: 'NOT SYNCHRO', Synchro: 'SYNCHRO', Fetching: 'FETCHING', Emiting: 'EMITING'};
+
 
 export default {
-    
+
     state: {
         activities: [],
         
         async: {
-            fetching: false,
-            loaded: false,
+            state_actual: State.NotSynchro,
             task: 0
         }
         
     },
-    
+
+    //Génère une nouvelle activitée
+    genActivity(){
+        return {
+            id: undefined,
+            members: [],
+            name: '',
+            level: '',
+            age: '',
+            day: undefined,
+            time_begin: undefined,
+            time_end: undefined,
+            teacher: '',
+            effectif_max: undefined,
+            effectif_current: undefined,
+            color: ''
+        }
+    },
+
+    //Génère des activités de test
     generateActivity(){
         let act = ['Classique', 'Jazz', 'Street', 'Ragga', 'Eveil'];
         let nvx = ['', 'Adultes', '10-12 ans', '5-6 ans'];
@@ -39,61 +61,76 @@ export default {
             });
         }
     },
-    
+
+    //Obtient une activité grâce à l'identifiant
     get(id){
         return this.state.activities.find(a => a.id === id);
     },
 
+    //Sauvegarde une nouvelle activité
     saveNewActivity (activity){
-        this.state.activities.push(activity);
+        if (this.state.async.state_actual === State.Synchro) {
+            this.state.async.state_actual = State.Emiting;
+
+            setTimeout(() => {
+                let id = this.state.activities.length;
+                activity.id = id;
+
+                this.state.activities.push(activity);
+                this.state.async.state_actual = State.Synchro;
+            }, 2000);
+        }
     },
 
-    modActivity (id, level, age, name, day, time_begin, time_end, teacher, effectif_max, effectif_current){
-        this.delActivity(id);
-        this.state.activities.push
-        ({
-            id: id,
-            name: name,
-            level: level,
-            age: age,
-            day: day,
-            time_begin: time_begin,
-            time_end: time_end,
-            teacher: teacher,
-            effectif_max: effectif_max,
-            effectif_current: effectif_current
-        });
+    //Modifie une activité existante
+    modActivity (activity){
+        if (this.state.async.state_actual === State.Synchro) {
+            this.state.async.state_actual = State.Emiting;
+
+            setTimeout(() => {
+                this.delActivity(activity.id); //Faire attention au passage en ajax
+                this.state.activities.push(activity);
+                this.state.async.state_actual = State.Synchro;
+            }, 2000);
+        }
     },
 
+    //Suprime une activité
     delActivity(id){
-        this.state.activities = this.state.activities.filter(a => {
-            return id !== a.id;
-        });
+        if (this.state.async.state_actual === State.Synchro) {
+            this.state.async.state_actual = State.Emiting;
+
+            setTimeout(() => {
+                this.state.activities = this.state.activities.filter(a => {
+                    return id !== a.id;
+                });
+            }, 2000);
+        }
     },
-    
-    fetch(period){
-        if(!this.state.async.fetching) {
-            this.state.async.loaded = false;
-            this.state.async.fetching = true;
-            this.state.activities.length = 0;
+
+    //Télécharge les membres
+    fetch(){
+        if (this.state.async.state_actual === State.NotSynchro) {
+            this.state.async.state_actual = State.Fetching;
     
             this.state.async.task = setTimeout(() => {
                 this.generateActivity();
-        
-                this.state.async.loaded = true;
-                this.state.async.fetching = false;
+
+                this.state.async.state_actual = State.Synchro;
             }, 1500);
         }
     },
-    
-    cancelFetch(){
+
+    //Détruit les opérations courantes
+    cancelThreads(){
         clearTimeout(this.state.async.task);
-        this.state.async.fetching = false;
-        this.state.async.loaded = false;
+        this.state.async.state_actual = State.NotSynchro;
     },
-    
-    onPeriodChange(){
-        this.cancelFetch();
+
+    //Changement de période
+    onPeriodChange(newPeriod){
+        this.cancelThreads();
         this.state.activities = [];
+        //this.state.async.state_actual = State.NotSynchro;
     }
 };
