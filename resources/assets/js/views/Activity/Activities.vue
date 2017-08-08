@@ -6,7 +6,7 @@
                 <div class="row gutters col col-12">
                     <div class="col col-4 h100 scrollable left-pane no-selectable">
 
-                        <ListHeadChoice title="Trier par" :choices="['Nom', 'Date']" v-model="sortBy" class="sticky"></ListHeadChoice>
+                        <ListHeadChoice :choices="['Nom', 'Date']" v-model="sortBy" class="sticky"></ListHeadChoice>
 
                         <transition-group tag="ul" name="flip-list" class="list">
                             <li v-for="a in activities" @click="selectActivity(a, $event)" :class="[{dark: isSelected(a)}, a.color + '-sheet']" :key="a.id">
@@ -57,6 +57,7 @@
         methods: {
             del(id){
                 activities_store.delActivity(id);
+
             },
 
             openActivity(activity){
@@ -142,9 +143,7 @@
         mounted(){
             activities_store.fetch();
 
-            actionbar.setActions([
-                {name: "Créer", routeTo: 'new_activity'}
-            ]);
+            actionbar.setActions([]);
             actionbar.showPeriodDropdown(true);
         }
     }

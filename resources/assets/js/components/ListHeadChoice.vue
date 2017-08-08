@@ -1,48 +1,20 @@
 <template>
-    <div class="row sort-by list-header">
-        <p class="title">{{ title }} :</p>
-        <p class="types auto">
-            <a v-for="c in choices" href="#" @click.prevent="choose(c)" :class="{selected: value === c}">{{ c }}</a>
-        </p>
+    <div class="row list-header">
+
+        <div class="primary btn" href="#" @click.prevent="action('create')"><i class="icon create"></i>Créer</div>
+        <div class="btn" @click.prevent="action('duplicate')" title="Dupliquer"><i class="icon duplicate"></i></div>
+        <div class="btn" @click.prevent="action('delete')" title="Supprimer"><i class="icon delete"></i></div>
+
+        <div class="auto separator row">
+
+            <div class="list-header-label"><i class="icon sort-by"></i><p>Tri</p></div>
+            <p class="types auto">
+                <a v-for="c in choices" href="#" @click.prevent="choose(c)" :class="{selected: value === c}" :title="'Trier par ' + c">{{ c }}</a>
+            </p>
+        </div>
     </div>
 </template>
-<style lang="scss">
 
-    .sort-by{
-        height: 36px;
-        padding: 0px 16px;
-        font-size: 0.875rem;
-        line-height: 36px;
-        display: flex;
-
-        background: rgba(234, 234, 234, 0.95);
-
-        p{
-            display: inline-block;
-
-            &.title{
-                 padding-right: 16px;
-            }
-
-            &.types{
-                 text-align: right;
-                 font-family: 'Lato', sans-serif;
-                 font-weight: 300;
-                 font-size: 1rem;
-
-                a{
-                    margin-left: 25px;
-
-                    &.selected{
-                         font-weight: 700;
-                    }
-                }
-            }
-        }
-    }
-
-
-</style>
 <script>
     
     export default {
@@ -55,6 +27,10 @@
         methods: {
             choose(c){
                 this.$emit('input', c);
+            },
+
+            action(actionName){
+                this.$emit(actionName);
             }
         },
         
@@ -65,10 +41,6 @@
         mounted() {},
 
         props: {
-            title: {
-                type: String
-            },
-
             choices: {
                 type: Array
             },

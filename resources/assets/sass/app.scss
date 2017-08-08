@@ -123,12 +123,32 @@ i{
         background-image: url($icons_path + 'settings.png');
     }
 
+    &.create{
+        background-image: url($icons_path + 'create.png');
+    }
+
+    &.duplicate{
+        background-image: url($icons_path + 'duplicate.png');
+    }
+
+    &.delete{
+        background-image: url($icons_path + 'delete.png');
+    }
+
+    &.sort-by{
+        background-image: url($icons_path + 'sort_by.png');
+    }
+
 }
 
 @mixin icon($size: 24px, $margin: ''){
     width: $size;
     height: $size;
     vertical-align: -($size/4);
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: 50%;
 
     @if $margin == left
     {
@@ -138,6 +158,11 @@ i{
     {
         margin-right: $size/2;
     }
+}
+
+@mixin icon-verical-offset($offset: 0){
+    position: relative;
+    top: -$offset;
 }
 
 
