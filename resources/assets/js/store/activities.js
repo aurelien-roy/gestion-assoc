@@ -1,5 +1,4 @@
 import { rand } from '../helpers/math'
-import time from 'time'
 
 const State = {NotSynchro: 'NOT SYNCHRO', Synchro: 'SYNCHRO', Fetching: 'FETCHING', Emiting: 'EMITING'};
 
