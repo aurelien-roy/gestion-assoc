@@ -57,7 +57,6 @@
         methods: {
             del(id){
                 activities_store.delActivity(id);
-
             },
 
             openActivity(activity){
@@ -141,13 +140,11 @@
         },
         
         mounted(){
-            activities_store.fetch(time.state.selectedPeriod);
-
+            activities_store.fetch();
 
             actionbar.setActions([
                 {name: "Créer", routeTo: 'new_activity'}
             ]);
-
             actionbar.showPeriodDropdown(true);
         }
     }
