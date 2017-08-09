@@ -1,13 +1,12 @@
 import { rand } from '../helpers/math'
+import ajaxStore from '../helpers/ajax-store'
 
 const State = {NotSynchro: 'NOT SYNCHRO', Synchro: 'SYNCHRO', Fetching: 'FETCHING', Emiting: 'EMITING'};
 
-
-export default {
-
+let store = {
+    
     state: {
         activities: [],
-        
         async: {
             state_actual: State.NotSynchro,
             task: 0
@@ -94,32 +93,6 @@ export default {
         }
     },
 
-    //Suprime une activité
-    delActivity(id){
-        if (this.state.async.state_actual === State.Synchro) {
-            this.state.async.state_actual = State.Emiting;
-
-            setTimeout(() => {
-                this.state.activities = this.state.activities.filter(a => {
-                    return id !== a.id;
-                });
-            }, 2000);
-        }
-    },
-
-    //Télécharge les membres
-    fetch(){
-        if (this.state.async.state_actual === State.NotSynchro) {
-            this.state.async.state_actual = State.Fetching;
-    
-            this.state.async.task = setTimeout(() => {
-                this.generateActivity();
-
-                this.state.async.state_actual = State.Synchro;
-            }, 1500);
-        }
-    },
-
     //Détruit les opérations courantes
     cancelThreads(){
         clearTimeout(this.state.async.task);
@@ -131,5 +104,56 @@ export default {
         this.cancelThreads();
         this.state.activities = [];
         //this.state.async.state_actual = State.NotSynchro;
+    },
+    
+    actions:{
+    
+        DELETE_ACTIVITIES: {
+            
+            applyLocally(params, store){
+                store.state.activities = store.state.activities.filter(a => {
+                    return params.indexOf(a) === -1;
+                });
+            },
+            
+            makeRequest(request, context, result){
+                request().success(() => {
+                    result.isSuccess();
+                });
+                
+            }
+            
+        },
+        
+    },
+    
+    fetchers:{
+        ACTIVITIES_BY_PERIOD: {
+            
+            loadedPeriods: [],
+            
+            makeRequest(request, context, result){
+                
+                let self = this;
+                
+                request().success(function() {
+                    context.store.generateActivity();
+                    result.isSuccess();
+                    self.loadedPeriods.push(context.params);
+                    
+                });
+            },
+            
+            isLoaded(params){
+                return this.loadedPeriods.indexOf(params) !== -1;
+            }
+        }
     }
+    
 };
+
+
+Object.assign(store, ajaxStore);
+console.log(store);
+
+export default store;
