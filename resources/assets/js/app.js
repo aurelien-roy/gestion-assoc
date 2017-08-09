@@ -11,3 +11,10 @@ const app = new Vue({
 	components: { App },
 	router
 })
+
+
+// Import des composants pour les listes
+
+import ActivityItem from './components/list/items/ActivityItem.vue'
+
+Vue.component('ActivityItem', ActivityItem);

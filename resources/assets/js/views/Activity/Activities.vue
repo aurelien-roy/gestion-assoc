@@ -6,14 +6,14 @@
                 <div class="row gutters col col-12">
                     <div class="col col-4 h100 scrollable left-pane no-selectable">
 
-                        <ListHeadChoice :choices="['Nom', 'Date']" v-model="sortBy" class="sticky" @delete="deleteSelection"></ListHeadChoice>
+                        <SideList
+                                :items="activities"
+                                v-model="selection"
 
-                        <transition-group tag="ul" name="flip-list" class="list">
-                            <li v-for="a in activities" @click="selectActivity(a, $event)" :class="[{dark: isSelected(a)}, a.color + '-sheet']" :key="a.id">
-                                <p><span class="title">{{ a.name }}</span><span class="second">{{ a.level }}</span></p>
-                                <p class="details">{{ days[a.day] }} {{ a.time_begin }}h - {{ a.time_end }}h ◦ {{ a.teacher }}</p>
-                            </li>
-                        </transition-group>
+                                component="ActivityItem"
+                                :sorting="sorting"
+                                @delete="deleteSelection"
+                        ></SideList>
 
                     </div>
 
@@ -32,10 +32,9 @@
     import activities_store from '../../store/activities'
     import actionbar from '../../store/actionbar'
     import time from '../../store/time'
-    import enums from '../../helpers/enum'
 
-    import ListHeadChoice from '../../components/ListHeadChoice'
     import Activity from '../../components/Activity'
+    import SideList from '../../components/list/SideList'
     
     export default{
         name: 'Activities',
@@ -45,14 +44,25 @@
                 actionbar,
                 activities_store,
                 time,
-                days: enums.days,
                 search: '',
                 sortBy: 'Nom',
                 selection: [],
-                edit: false
+                edit: false,
+
+                sorting: {
+                    'Nom': (a, b) => a.name.localeCompare(b.name),
+
+                    'Date': (a, b) => {
+                        if(a.day !== b.day){
+                            return a.day - b.day;
+                        }else{
+                            return a.time_begin - b.time_begin;
+                        }
+                    }
+                }
             }
         },
-        components: { Activity, ListHeadChoice },
+        components: { Activity, /*ListHeadChoice,*/ SideList },
         
         methods: {
             deleteSelection(){
@@ -64,60 +74,16 @@
             },
 
             openActivity(activity){
-                console.log('open');
-                console.log(activity);
+
                 this.$router.push({name: 'activity', params: {id: activity.id}});
             },
 
-            selectActivity(activity, e){
-                if(!e.metaKey) {
-                    this.selection.length = 0;
-                    this.selection.push(activity);
-                }else{
-                    if(this.isSelected(activity)){
-                        this.selection = this.selection.filter(s => s !== activity);
-                    }else{
-                        this.selection.push(activity);
-                    }
-                }
 
-            },
-
-            isSelected(activity){
-                return this.selection.indexOf(activity) !== -1;
-            },
-
-            test(e){
-                console.log(e.target.innerHTML);
-            }
         },
         
         computed: {
             activities(){
-
-                let activities = activities_store.state.activities;
-
-                if(this.search !== ''){
-                    let s = this.search.toLocaleLowerCase();
-                    activities = activities.filter(a =>
-                      a.name.toLocaleLowerCase().includes(s) || a.teacher.toLocaleLowerCase().includes(s)
-                    );
-                }
-
-                if(this.sortBy === 'Nom') {
-                    activities.sort((a, b) => a.name.localeCompare(b.name))
-                }else if(this.sortBy === 'Date'){
-                    activities.sort((a, b) => {
-                        if(a.day !== b.day){
-                            return a.day - b.day;
-                        }else{
-                            return a.time_begin - b.time_begin;
-                        }
-                    })
-                }
-
-                return activities;
-
+                return activities_store.state.activities;
             },
 
             loaded(){
