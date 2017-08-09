@@ -33,12 +33,12 @@
 
     import EditableText from './EditableText'
     import ColorPicker from './ColorPicker'
-    import enums from '../helpers/enum'
+    import { days } from '../helpers/enum'
     
     export default {
         data() {
             return {
-                days: enums.days
+                days
             }
         },
         components: { EditableText, ColorPicker },
