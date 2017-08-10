@@ -90,7 +90,6 @@
         computed: {
             orderedItems(){
                 let items = this.items;
-
                 /*if(this.search !== ''){
                     let s = this.search.toLocaleLowerCase();
                     items = items.filter(a =>

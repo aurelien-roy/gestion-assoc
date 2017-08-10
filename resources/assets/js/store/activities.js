@@ -28,7 +28,23 @@ let store = {
             teacher: '',
             effectif_max: undefined,
             effectif_current: undefined,
-            color: ''
+            color: '',
+            makeCopy(){
+                return {
+                    id: this.id,
+                    members: this.members,
+                    name: this.name,
+                    level: this.level,
+                    age: this.age,
+                    day: this.day,
+                    time_begin: this.time_begin,
+                    time_end: this.time_end,
+                    teacher: this.teacher,
+                    effectif_max: this.effectif_max,
+                    effectif_current: this.effectif_current,
+                    color: this.color
+                }
+            }
         }
     },
 
@@ -42,21 +58,18 @@ let store = {
     
             let begin = rand(9, 16);
             let end = begin + rand(1, 3);
+            
+            let a = this.genActivity();
+            a.id = this.state.activities.length;
+            a.name = act[rand(0, 4)];
+            a.age = nvx[rand(0, 3)];
+            a.day = rand(0, 6);
+            a.time_begin = begin;
+            a.time_end = end;
+            a.teacher = 'Jackie';
+            a.color = clr[rand(0, 6)];
     
-            this.state.activities.push({
-                id: this.state.activities.length,
-                members: [],
-                name: act[rand(0, 4)],
-                level: nvx[rand(0, 3)],
-                age: nvx[rand(0, 3)],
-                day: rand(0, 6),
-                time_begin: begin,
-                time_end: end,
-                teacher: 'Jackie',
-                effectif_max: 30,
-                effectif_current: 10,
-                color: clr[rand(0, 6)]
-            });
+            this.state.activities.push(a);
         }
     },
 
@@ -107,6 +120,19 @@ let store = {
     },
     
     actions:{
+        
+        EDIT_ACTIVITY: {
+            
+            applyLocally(params, store){
+                Object.assign(params.activity, params.changes);
+            },
+            
+            makeRequest(request, context, result){
+                request().success(() => {
+                    result.isSuccess();
+                });
+            }
+        },
     
         DELETE_ACTIVITIES: {
             
@@ -154,6 +180,5 @@ let store = {
 
 
 Object.assign(store, ajaxStore);
-console.log(store);
 
 export default store;

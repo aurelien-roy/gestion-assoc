@@ -17,7 +17,7 @@
                     </div>
 
                     <div class="col col-8 scrollable" v-if="selected">
-                        <Activity v-model="selected"></Activity>
+                        <Activity :data="selected" @update="updateActivity"></Activity>
                     </div>
                 </div>
             </div>
@@ -61,7 +61,7 @@
                 }
             }
         },
-        components: { Activity, /*ListHeadChoice,*/ SideList },
+        components: { Activity, SideList },
         
         methods: {
             deleteSelection(){
@@ -77,6 +77,10 @@
                 this.$router.push({name: 'activity', params: {id: activity.id}});
             },
 
+            updateActivity(changes){
+                activities_store.execute('EDIT_ACTIVITY', {activity: this.selected, changes});
+            }
+
 
         },
         
@@ -85,14 +89,8 @@
                 return activities_store.state.activities;
             },
 
-            loaded(){
-                return activities_store.state.async.loaded;
-            },
-
             selected(){
-
                 if(this.selection.length === 1){
-                    console.log(this.selection[0]);
                     return this.selection[0];
                 }else{
                     return null;

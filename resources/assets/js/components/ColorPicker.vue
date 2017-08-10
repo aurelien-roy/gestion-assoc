@@ -1,6 +1,6 @@
 <template>
     <div class="relative">
-        <div class="disc colorful" @click="togglePanel" :class="[currentColor + '-sheet']"></div>
+        <div class="disc colorful" @click="togglePanel" :class="[value + '-sheet']"></div>
         <transition name="slide-fade">
             <div ref="panel" class="panel" v-show="panel_opened" @focusout="closePanel">
                 <div class="disc colorful" v-for="c in colors" :class="[c + '-sheet']" @click="setColor(c)"></div>
@@ -62,7 +62,6 @@
         data() {
             return {
                 panel_opened: false,
-                currentColor: 'red',
                 colors: ['red', 'orange', 'yellow', 'green', 'aqua', 'blue', 'purple']
             }
         },
@@ -81,18 +80,17 @@
             },
 
             setColor(color){
-                this.currentColor = color;
+                this.$emit('input', color);
                 this.closePanel();
+
             }
         },
+
+        props: ['value'],
         
         computed: {},
         
         watch: {},
-        
-        mounted() {
-            
-        }
     }
 
 </script>

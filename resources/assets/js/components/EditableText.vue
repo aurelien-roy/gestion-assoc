@@ -44,7 +44,10 @@
             },
 
             doneEdit(){
-                this.$emit('input', this.typedValue);
+                if(this.typedValue !== this.value) {
+                    this.$emit('input', this.typedValue);
+                }
+                this.$refs.field.blur();
                 this.edit_mode = false;
             },
 
@@ -57,7 +60,6 @@
 
             acceptSuggestion(text){
                 this.typedValue = text;
-                this.$refs.field.blur();
                 this.doneEdit();
             },
 
@@ -65,7 +67,7 @@
                 this.$nextTick(() => {
                    this.doneEdit();
                 });
-            }
+            },
         },
         
         computed: {
@@ -118,7 +120,11 @@
             }
         },
         
-        watch: {},
+        watch: {
+            value(v){
+                this.typedValue = v;
+            }
+        },
         
         mounted() {
             if(this.value) {

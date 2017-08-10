@@ -1,9 +1,9 @@
 <template>
     <div>
         <div class="headset relative">
-            <div><EditableText v-model="value.name" :title="true" placeholder="Cliquer pour nommer l'activité" class="like-h1"></EditableText></div>
-            <div><EditableText v-model="value.level" class="subtitle" placeholder="Ajouter le niveau"></EditableText></div>
-            <ColorPicker class="right"></ColorPicker>
+            <div><EditableText :value="activity.name" :title="true" placeholder="Cliquer pour nommer l'activité" class="like-h1" @input="notifyUpdate('name', $event)"></EditableText></div>
+            <div><EditableText :value="activity.level" class="subtitle" placeholder="Ajouter le niveau" @input="notifyUpdate('level', $event)"></EditableText></div>
+            <ColorPicker class="right" :value="activity.color" @input="notifyUpdate('color', $event)"></ColorPicker>
         </div>
 
         <div class="pl10 gray-text">
@@ -31,6 +31,7 @@
 </style>
 <script>
 
+    import activities_store from '../store/activities'
     import EditableText from './EditableText'
     import ColorPicker from './ColorPicker'
     import { days } from '../helpers/enum'
@@ -42,20 +43,23 @@
             }
         },
         components: { EditableText, ColorPicker },
-        
+
         methods: {
-            notifyUpdate(){
-                this.$emit('input');
+            notifyUpdate(field, value){
+                let changes = {};
+                changes[field] = value;
+
+                this.$emit('update', changes);
             }
         },
         
-        computed: {},
-        
-        mounted() {
-            
+        computed: {
+            activity(){
+                return this.data.makeCopy();
+            }
         },
 
-        props: ['value']
+        props: ['data'],
     }
 
 </script>
