@@ -1,9 +1,8 @@
 <template>
-
     <div class="flex flexible h100 relative">
         <div class="absolute w100 h100">
             <div class="row wrapped push-center h100">
-                <div class="row gutters col col-12">
+                <div class="row gutters col col-12 h100">
                     <div class="col col-4 h100 scrollable left-pane no-selectable">
 
                         <SideList
