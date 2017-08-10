@@ -1,16 +1,10 @@
 import { rand } from '../helpers/math'
 import ajaxStore from '../helpers/ajax-store'
 
-const State = {NotSynchro: 'NOT SYNCHRO', Synchro: 'SYNCHRO', Fetching: 'FETCHING', Emiting: 'EMITING'};
-
 let store = {
     
     state: {
-        activities: [],
-        async: {
-            state_actual: State.NotSynchro,
-            task: 0
-        }
+        activities: []
         
     },
 
@@ -30,20 +24,9 @@ let store = {
             effectif_current: undefined,
             color: '',
             makeCopy(){
-                return {
-                    id: this.id,
-                    members: this.members,
-                    name: this.name,
-                    level: this.level,
-                    age: this.age,
-                    day: this.day,
-                    time_begin: this.time_begin,
-                    time_end: this.time_end,
-                    teacher: this.teacher,
-                    effectif_max: this.effectif_max,
-                    effectif_current: this.effectif_current,
-                    color: this.color
-                }
+                let copy = {};
+                Object.assign(copy, this);
+                return copy;
             }
         }
     },
@@ -76,47 +59,6 @@ let store = {
     //Obtient une activité grâce à l'identifiant
     get(id){
         return this.state.activities.find(a => a.id === id);
-    },
-
-    //Sauvegarde une nouvelle activité
-    saveNewActivity (activity){
-        if (this.state.async.state_actual === State.Synchro) {
-            this.state.async.state_actual = State.Emiting;
-
-            setTimeout(() => {
-                let id = this.state.activities.length;
-                activity.id = id;
-
-                this.state.activities.push(activity);
-                this.state.async.state_actual = State.Synchro;
-            }, 2000);
-        }
-    },
-
-    //Modifie une activité existante
-    modActivity (activity){
-        if (this.state.async.state_actual === State.Synchro) {
-            this.state.async.state_actual = State.Emiting;
-
-            setTimeout(() => {
-                this.delActivity(activity.id); //Faire attention au passage en ajax
-                this.state.activities.push(activity);
-                this.state.async.state_actual = State.Synchro;
-            }, 2000);
-        }
-    },
-
-    //Détruit les opérations courantes
-    cancelThreads(){
-        clearTimeout(this.state.async.task);
-        this.state.async.state_actual = State.NotSynchro;
-    },
-
-    //Changement de période
-    onPeriodChange(newPeriod){
-        this.cancelThreads();
-        this.state.activities = [];
-        //this.state.async.state_actual = State.NotSynchro;
     },
     
     actions:{
