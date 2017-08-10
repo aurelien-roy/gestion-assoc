@@ -8,7 +8,6 @@ import Home from '../views/Home.vue'
 import actionbar from '../store/actionbar'
 
 import Activities from '../views/Activity/Activities.vue'
-import Activity from '../views/Activity/Activity.vue'
 
 import Members from '../views/Member/Members.vue'
 import MemberViewer from '../views/Member/MemberViewer.vue'
@@ -22,9 +21,6 @@ const router = new VueRouter({
         { name: 'activities', path: '/activites', component: Activities},
         {name: 'login', path: '/login', component: Login},
         {name: 'not_found', path: '*', component: NotFound},
-        //Activities
-        { name: 'new_activity', path: '/activites/new', component: Activity},
-        { name: 'activity', path: '/activites/:id(\\d+)', component: Activity, props: true},
         {name: 'register', path: '/register', component: Register},
         //Members
         {
