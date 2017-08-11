@@ -8,11 +8,11 @@
 
         <div class="pl10 gray-text">
             <div class="dashed-line"></div>
-            <p class="m0">tous les <EditableText placeholder="jour" :suggestions="days"></EditableText> de <EditableText placeholder="hh:mm"></EditableText> à <EditableText placeholder="hh:mm"></EditableText></p>
+            <p class="m0">tous les <EditableText :value="dayName" placeholder="jour" :suggestions="days" @input="notifyUpdate('dayName', $event)"></EditableText> de <EditableText placeholder="hh:mm" type="time"></EditableText> à <EditableText placeholder="hh:mm" type="time"></EditableText></p>
             <div class="dashed-line"></div>
-            <p class="m0">à <EditableText placeholder="lieu"></EditableText></p>
+            <p class="m0">à <EditableText :value="activity.place" placeholder="lieu" @input="notifyUpdate('place', $event)"></EditableText></p>
             <div class="dashed-line"></div>
-            <p class="m0">animé par <EditableText placeholder="encadrant"></EditableText></p>
+            <p class="m0">animé par <EditableText :value="activity.teacher" placeholder="encadrant" @input="notifyUpdate('teacher', $event)"></EditableText></p>
             <div class="dashed-line"></div>
         </div>
 
@@ -46,6 +46,16 @@
 
         methods: {
             notifyUpdate(field, value){
+
+                if(field === 'dayName'){
+                    field = 'day';
+                    value = days.indexOf(value);
+
+                    if(value === -1){
+                        value = undefined;
+                    }
+                }
+
                 let changes = {};
                 changes[field] = value;
 
@@ -56,6 +66,10 @@
         computed: {
             activity(){
                 return this.data.makeCopy();
+            },
+
+            dayName(){
+                return this.activity.day !== undefined ? days[this.activity.day] : '';
             }
         },
 
