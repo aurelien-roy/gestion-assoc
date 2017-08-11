@@ -19,6 +19,7 @@ let store = {
             day: undefined,
             time_begin: undefined,
             time_end: undefined,
+            place: '',
             teacher: '',
             effectif_max: undefined,
             effectif_current: undefined,
