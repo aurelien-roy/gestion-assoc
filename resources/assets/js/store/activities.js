@@ -1,4 +1,4 @@
-import { rand } from '../helpers/math'
+import { rand, Time } from '../helpers/math'
 import ajaxStore from '../helpers/ajax-store'
 
 let store = {
@@ -40,16 +40,13 @@ let store = {
 
         for(let i = 0; i < 10; i ++) {
     
-            let begin = rand(9, 16);
-            let end = begin + rand(1, 3);
-            
             let a = this.genActivity();
             a.id = this.state.activities.length;
             a.name = act[rand(0, 4)];
             a.age = nvx[rand(0, 3)];
             a.day = rand(0, 6);
-            a.time_begin = begin;
-            a.time_end = end;
+            a.time_begin = new Time(rand(9, 16), 0);
+            a.time_end = a.time_begin.clone().addHours(rand(1, 2));
             a.teacher = 'Jackie';
             a.color = clr[rand(0, 6)];
     

@@ -1,7 +1,7 @@
 <template>
     <li :class="[item.color + '-sheet']" :key="item.id" >
         <p><span class="title">{{ item.name }}</span><span class="second">{{ item.level }}</span></p>
-        <p class="details">{{ days[item.day] }} {{ item.time_begin }}h - {{ item.time_end }}h ◦ {{ item.teacher }}</p>
+        <p class="details">{{ days[item.day] }}{{ time }} ◦ {{ item.teacher }}</p>
     </li>
 </template>
 <style>
@@ -17,16 +17,20 @@
                 days: days
             }
         },
-        components: {},
-        
-        methods: {},
-        
-        computed: {},
-        
-        watch: {},
-        
-        mounted() {
-            
+
+        computed: {
+            time(){
+                let s = '';
+                if(this.item.time_begin){
+                    s += ' ' + this.item.time_begin.toString();
+
+                    if(this.item.time_end){
+                        s += ' - ' + this.item.time_end.toString();
+                    }
+                }
+
+                return s;
+            }
         },
 
         props: ['item']
