@@ -1,8 +1,8 @@
 <template>
-    <div class="relative">
-        <div class="disc colorful" @click="togglePanel" :class="[value + '-sheet']"></div>
+    <div class="relative" tabindex="0" @focusin.prevent="openPanel" @focusout="closePanel">
+        <div class="disc colorful" @mousedown="togglePanel" :class="[value + '-sheet']"></div>
         <transition name="slide-fade">
-            <div ref="panel" class="panel" v-show="panel_opened" @focusout="closePanel">
+            <div class="panel" v-show="panel_opened">
                 <div class="disc colorful" v-for="c in colors" :class="[c + '-sheet']" @click="setColor(c)"></div>
             </div>
         </transition>
@@ -61,18 +61,20 @@
     export default {
         data() {
             return {
+                event: null,
                 panel_opened: false,
                 colors: ['red', 'orange', 'yellow', 'green', 'aqua', 'blue', 'purple']
             }
         },
-        components: {},
         
         methods: {
             togglePanel(){
-                this.panel_opened = !this.panel_opened;
-                if(this.panel_opened){
+                    this.panel_opened = !this.panel_opened;
                     this.$refs.panel.focus();
-                }
+            },
+
+            openPanel(){
+                this.panel_opened = true;
             },
 
             closePanel(){
@@ -87,10 +89,6 @@
         },
 
         props: ['value'],
-        
-        computed: {},
-        
-        watch: {},
     }
 
 </script>
