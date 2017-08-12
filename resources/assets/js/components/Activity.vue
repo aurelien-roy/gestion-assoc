@@ -8,7 +8,7 @@
 
         <div class="pl10 gray-text">
             <div class="dashed-line"></div>
-            <p class="m0 contains-input">tous les <EditableText :value="dayName" placeholder="jour" :suggestions="days" @input="notifyUpdate('dayName', $event)"></EditableText> de <EditableText placeholder="hh:mm" type="time"></EditableText> à <EditableText placeholder="hh:mm" type="time"></EditableText></p>
+            <p class="m0 contains-input">tous les <EditableText type="day" :value="activity.day" placeholder="jour" @input="notifyUpdate('day', $event)"></EditableText> de <EditableText placeholder="hh:mm" type="time" :value="activity.time_begin"  @input="notifyUpdate('time_begin', $event)"></EditableText> à <EditableText placeholder="hh:mm" type="time" :value="activity.time_end"  @input="notifyUpdate('time_end', $event)"></EditableText></p>
             <div class="dashed-line"></div>
             <p class="m0 contains-input">à <EditableText :value="activity.place" placeholder="lieu" @input="notifyUpdate('place', $event)"></EditableText></p>
             <div class="dashed-line"></div>
@@ -34,27 +34,16 @@
     import activities_store from '../store/activities'
     import EditableText from './EditableText'
     import ColorPicker from './ColorPicker'
-    import { days } from '../helpers/enum'
     
     export default {
         data() {
             return {
-                days
             }
         },
         components: { EditableText, ColorPicker },
 
         methods: {
             notifyUpdate(field, value){
-
-                if(field === 'dayName'){
-                    field = 'day';
-                    value = days.indexOf(value);
-
-                    if(value === -1){
-                        value = undefined;
-                    }
-                }
 
                 let changes = {};
                 changes[field] = value;
@@ -66,10 +55,6 @@
         computed: {
             activity(){
                 return this.data.makeCopy();
-            },
-
-            dayName(){
-                return this.activity.day !== undefined ? days[this.activity.day] : '';
             }
         },
 
