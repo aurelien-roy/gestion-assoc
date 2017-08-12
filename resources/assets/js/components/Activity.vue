@@ -8,11 +8,11 @@
 
         <div class="pl10 gray-text">
             <div class="dashed-line"></div>
-            <p class="m0">tous les <EditableText :value="dayName" placeholder="jour" :suggestions="days" @input="notifyUpdate('dayName', $event)"></EditableText> de <EditableText placeholder="hh:mm" type="time"></EditableText> à <EditableText placeholder="hh:mm" type="time"></EditableText></p>
+            <p class="m0 contains-input">tous les <EditableText :value="dayName" placeholder="jour" :suggestions="days" @input="notifyUpdate('dayName', $event)"></EditableText> de <EditableText placeholder="hh:mm" type="time"></EditableText> à <EditableText placeholder="hh:mm" type="time"></EditableText></p>
             <div class="dashed-line"></div>
-            <p class="m0">à <EditableText :value="activity.place" placeholder="lieu" @input="notifyUpdate('place', $event)"></EditableText></p>
+            <p class="m0 contains-input">à <EditableText :value="activity.place" placeholder="lieu" @input="notifyUpdate('place', $event)"></EditableText></p>
             <div class="dashed-line"></div>
-            <p class="m0">animé par <EditableText :value="activity.teacher" placeholder="encadrant" @input="notifyUpdate('teacher', $event)"></EditableText></p>
+            <p class="m0 contains-input">animé par <EditableText :value="activity.teacher" placeholder="encadrant" @input="notifyUpdate('teacher', $event)"></EditableText></p>
             <div class="dashed-line"></div>
         </div>
 

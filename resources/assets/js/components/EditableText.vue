@@ -122,21 +122,34 @@
                 this.typedValue = text;
                 this.doneEdit();
 
+                let found = false;
+                let parentExplored = false;
                 let next = this.$refs.wrapper;
 
-                while (next = next.nextElementSibling) {
-                    if (next === null)
-                        break;
+                while (!found && next !== null) {
 
-                    if(next.classList.contains('editable')){
-                        next = next.firstChild;
+                    if (next.nextElementSibling === null) {
+                        if(!parentExplored){
+                            next = next.parentElement;
+                            parentExplored = true;
+                            if(next === null) break;
+
+                        }else break;
                     }
 
-                    if (next.tagName.toLowerCase() === 'input') {
-                        console.log('found');
-                        console.log(next);
-                        next.select();
-                        break;
+                    next = next.nextElementSibling;
+
+                    if(next !== null) {
+
+                        while (next.classList.contains('editable') || next.classList.contains('contains-input')) {
+                            next = next.firstElementChild;
+                        }
+
+                        if (next.tagName.toLowerCase() === 'input') {
+                            found = true;
+                            next.select();
+                            break;
+                        }
                     }
                 }
             },
@@ -184,7 +197,6 @@
                 if(!this.suggests) return [];
 
                 let s = this.suggests;
-
 
                 s = s.filter((s) => {
                     return this.types[this.type].isValidSuggestion(s, this.typedValue)
