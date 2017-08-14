@@ -90,6 +90,10 @@
         computed: {
             orderedItems(){
                 let items = this.items;
+
+                if(items === null || items === undefined){
+                    items = [];
+                }
                 /*if(this.search !== ''){
                     let s = this.search.toLocaleLowerCase();
                     items = items.filter(a =>
@@ -117,8 +121,6 @@
 
         props: {
             items: {
-                type: Array,
-                default: []
             },
 
             value: {

@@ -67,9 +67,8 @@
             deleteSelection(){
 
                 if(this.selection.length) {
-                    activities_store.execute('DELETE_ACTIVITIES', this.selection);
+                    activities_store.execute('DELETE_ACTIVITIES', {period: time.state.selectedPeriod, activities: this.selection});
                 }
-
             },
 
             openActivity(activity){
@@ -81,12 +80,11 @@
                 activities_store.execute('EDIT_ACTIVITY', {activity: this.selected, changes});
             }
 
-
         },
         
         computed: {
             activities(){
-                return activities_store.state.activities;
+                return activities_store.getters.activitiesByPeriod(time.state.selectedPeriod);
             },
 
             selected(){
@@ -95,6 +93,12 @@
                 }else{
                     return null;
                 }
+            }
+        },
+
+        watch:{
+            'time.state.selectedPeriod'(p){
+                activities_store.fetch('ACTIVITIES_BY_PERIOD', p);
             }
         },
         

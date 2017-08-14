@@ -39,5 +39,3 @@ let time_store = {
 }
 
 export default time_store;
-
-time_store.addPeriodChangeCallback(activities);
