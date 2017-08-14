@@ -8,6 +8,7 @@ import Home from '../views/Home.vue'
 import actionbar from '../store/actionbar'
 
 import Activities from '../views/Activity/Activities.vue'
+import Activity from '../views/Activity/Activity.vue'
 
 import Members from '../views/Member/Members.vue'
 import MemberViewer from '../views/Member/MemberViewer.vue'
@@ -15,10 +16,12 @@ import MemberViewer from '../views/Member/MemberViewer.vue'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
-	mode: 'history',
-	routes: [
+    mode: 'history',
+    routes: [
         {name: 'root', path: '/', component: Home},
-        { name: 'activities', path: '/activites', component: Activities},
+        {name: 'activities', path: '/activites', component: Activities, children: [
+            {name: 'activity', path: ':id(\\d+)', component: Activity, props: true}
+        ]},
         {name: 'login', path: '/login', component: Login},
         {name: 'not_found', path: '*', component: NotFound},
         {name: 'register', path: '/register', component: Register},
@@ -30,7 +33,7 @@ const router = new VueRouter({
                 {name: 'open_member', path: 'member_viewer/:id(\\d+)', component: MemberViewer, props: true}
             ]
         }
-	]
+    ]
 })
 
 router.afterEach((to, from) => {

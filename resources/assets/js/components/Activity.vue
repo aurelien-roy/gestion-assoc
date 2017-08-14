@@ -31,7 +31,6 @@
 </style>
 <script>
 
-    import activities_store from '../store/activities'
     import EditableText from './EditableText'
     import ColorPicker from './ColorPicker'
     
