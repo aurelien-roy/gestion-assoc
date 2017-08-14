@@ -11,6 +11,7 @@ export default new Store({
     getters: {
         //Obtient une activité grâce à l'identifiant
         get: (store, period, id) => {
+            if(!store.state.activities[period]) return null;
             return store.state.activities[period].find(a => a.id === id);
         },
     

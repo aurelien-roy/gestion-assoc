@@ -16,8 +16,8 @@
 
                     </div>
 
-                    <div class="col col-8 scrollable" v-if="selected">
-                        <Activity :data="selected" @update="updateActivity"></Activity>
+                    <div class="col col-8 scrollable">
+                        <router-view></router-view>
                     </div>
                 </div>
             </div>
@@ -32,7 +32,6 @@
     import actionbar from '../../store/actionbar'
     import time from '../../store/time'
 
-    import Activity from '../../components/Activity'
     import SideList from '../../components/list/SideList'
     
     export default{
@@ -61,44 +60,36 @@
                 }
             }
         },
-        components: { Activity, SideList },
+        components: { SideList },
         
         methods: {
             deleteSelection(){
-
                 if(this.selection.length) {
                     activities_store.execute('DELETE_ACTIVITIES', {period: time.state.selectedPeriod, activities: this.selection});
                 }
             },
 
             openActivity(activity){
-
                 this.$router.push({name: 'activity', params: {id: activity.id}});
             },
-
-            updateActivity(changes){
-                activities_store.execute('EDIT_ACTIVITY', {activity: this.selected, changes});
-            }
 
         },
         
         computed: {
             activities(){
                 return activities_store.getters.activitiesByPeriod(time.state.selectedPeriod);
-            },
-
-            selected(){
-                if(this.selection.length === 1){
-                    return this.selection[0];
-                }else{
-                    return null;
-                }
             }
         },
 
         watch:{
             'time.state.selectedPeriod'(p){
                 activities_store.fetch('ACTIVITIES_BY_PERIOD', p);
+            },
+
+            selection(s){
+                if(s.length === 1) {
+                    this.openActivity(s[0]);
+                }
             }
         },
         
