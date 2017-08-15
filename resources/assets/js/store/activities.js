@@ -6,6 +6,7 @@ export default new Store({
     
     state: {
         activities: {},
+        virtualId: 0
     },
     
     getters: {
@@ -39,7 +40,7 @@ export default new Store({
                 teacher: '',
                 effectif_max: undefined,
                 effectif_current: undefined,
-                color: '',
+                color: 'red',
                 makeCopy() {
                     let copy = {};
                     Object.assign(copy, this);
@@ -57,6 +58,7 @@ export default new Store({
             for (let i = 0; i < 10; i++) {
             
                 let a = this.genActivity();
+                a.virtualId = this.state.virtualId++;
                 a.id = this.state.activities[period].length;
                 a.name = act[rand(0, 4)];
                 a.age = nvx[rand(0, 3)];
@@ -73,6 +75,20 @@ export default new Store({
     },
     
     actions:{
+    
+        CREATE_ACTIVITY: {
+            applyLocally(params, store){
+                params.activity.virtualId = store.state.virtualId++;
+                store.state.activities[params.period].push(params.activity);
+            },
+    
+            makeRequest(request, context, result){
+                request().success(() => {
+                    context.params.activity.id = context.store.state.activities[context.params.period].length;
+                    result.isSuccess();
+                });
+            }
+        },
         
         EDIT_ACTIVITY: {
             

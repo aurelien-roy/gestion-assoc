@@ -13,26 +13,25 @@ export default {
     },
     
     execute(){
-        console.log('executing')
-        
-      let item = this.queue[0];
-      let self = this;
-      
-      item.makeRequest(this.request, item.context, {
-          isSuccess(){
-              console.log('success')
-              self.queue.shift()
-          },
-          isFailure(){
-              alert('FAIL!')
-          }
-      });
+        if(this.queue.length) {
+    
+            let item = this.queue[0];
+            let self = this;
+    
+            item.makeRequest(this.request, item.context, {
+                isSuccess() {
+                    self.queue.shift()
+                    self.execute();
+                },
+                isFailure() {
+                    alert('FAIL!')
+                }
+            });
+        }
       
     },
     
     request(method, url, data, success, fail){
-        
-        console.log('request started')
     
         let request = {
         
