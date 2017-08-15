@@ -20,7 +20,8 @@ const router = new VueRouter({
     routes: [
         {name: 'root', path: '/', component: Home},
         {name: 'activities', path: '/activites', component: Activities, children: [
-            {name: 'activity', path: ':id(\\d+)', component: Activity, props: true}
+            {name: 'activity', path: ':id(\\d+)', component: Activity, props: true},
+            {name: 'new_activity', path: 'creer', component: Activity }
         ]},
         {name: 'login', path: '/login', component: Login},
         {name: 'not_found', path: '*', component: NotFound},

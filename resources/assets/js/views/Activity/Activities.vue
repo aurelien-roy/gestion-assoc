@@ -11,6 +11,7 @@
 
                                 component="ActivityItem"
                                 :sorting="sorting"
+                                @create="createActivity"
                                 @delete="deleteSelection"
                         ></SideList>
 
@@ -63,6 +64,10 @@
         components: { SideList },
         
         methods: {
+            createActivity(){
+                this.$router.push({name: 'new_activity'});
+            },
+
             deleteSelection(){
                 if(this.selection.length) {
                     activities_store.execute('DELETE_ACTIVITIES', {period: time.state.selectedPeriod, activities: this.selection});

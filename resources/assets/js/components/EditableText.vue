@@ -86,7 +86,7 @@
                         },
 
                         toInputString(o){
-                          return o === null ? '' : o.toInputString();
+                          return o === null || o === undefined ? '' : o.toInputString();
                         },
 
                         suggestions: times_5mn_interval
@@ -100,7 +100,7 @@
                         },
 
                         toInputString(o){
-                            return o === null ? '' : days[o];
+                            return o === null || o === undefined ? '' : days[o];
                         }
                     }
                 }

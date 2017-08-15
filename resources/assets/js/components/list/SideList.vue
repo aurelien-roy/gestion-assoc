@@ -1,9 +1,9 @@
 <template>
     <div @keyup.down="selectNext($event)" @keyup.up="selectPrev($event)" tabindex="0">
-        <ListHeadChoice :choices="sorts" v-model="sortBy" class="sticky" @delete="replayEvent('delete', $event)"></ListHeadChoice>
+        <ListHeadChoice :choices="sorts" v-model="sortBy" class="sticky" @create="replayEvent('create', $event)" @delete="replayEvent('delete', $event)"></ListHeadChoice>
 
         <transition-group tag="ul" name="flip-list" class="list">
-            <component :is="component" v-for="i in orderedItems" :item="i" @click.native="selectItem(i, $event)" :class="[{dark: isSelected(i)}]" :key="i.id"></component>
+            <component :is="component" v-for="i in orderedItems" :item="i" @click.native="selectItem(i, $event)" :class="[{dark: isSelected(i)}]" :key="i.virtualId"></component>
         </transition-group>
 
     </div>
@@ -82,6 +82,10 @@
             },
 
             replayEvent(eventName, event){
+                if(eventName === 'create'){
+                    this.selection = []
+                }
+
                 this.$emit(eventName, event);
             }
 
