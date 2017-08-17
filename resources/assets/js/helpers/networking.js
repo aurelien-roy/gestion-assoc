@@ -20,10 +20,16 @@ export default {
     
             item.makeRequest(this.request, item.context, {
                 isSuccess() {
+                    if(item.callback !== undefined){
+                        item.callback(true);
+                    }
                     self.queue.shift()
                     self.execute();
                 },
                 isFailure() {
+                    if(item.callback !== undefined){
+                        item.callback(false);
+                    }
                     alert('FAIL!')
                 }
             });

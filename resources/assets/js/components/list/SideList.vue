@@ -123,6 +123,12 @@
 
         },
 
+        watch: {
+          value(v){
+              this.selection = v;
+          }
+        },
+
         props: {
             items: {
             },

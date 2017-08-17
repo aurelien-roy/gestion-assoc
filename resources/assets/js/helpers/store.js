@@ -43,7 +43,7 @@ export default class Store{
         
     }
     
-    execute(actionName, params){
+    execute(actionName, params, callback){
         
         // 1) On recherche l'action à éxécuter
         let action = this._actions[actionName];
@@ -54,7 +54,7 @@ export default class Store{
         
         // 3) On crée un objet et on le passe à la queue
         
-        networking.addToQueue({makeRequest: (...a) => { action.makeRequest(...a) }, context: {params, store: this}});
+        networking.addToQueue({makeRequest: (...a) => { action.makeRequest(...a) }, context: {params, store: this}, callback});
     }
     
     fetch(fetcherName, params, callback){
@@ -69,7 +69,7 @@ export default class Store{
             if(callback !== undefined)
                 callback();
         }else{
-            networking.addToQueue({makeRequest: (...a) => { fetcher.makeRequest(...a) }, context: {params, store: this}});
+            networking.addToQueue({makeRequest: (...a) => { fetcher.makeRequest(...a) }, context: {params, store: this}, callback});
         }
         
     }

@@ -20,6 +20,7 @@ let time_store = {
     
     selectPeriod(newPeriod){
         let oldPeriod = this.state.selectedPeriod;
+        newPeriod = parseInt(newPeriod);
         
         if(newPeriod !== oldPeriod) {
             this.state.selectedPeriod = newPeriod;
