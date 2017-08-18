@@ -6,22 +6,27 @@ $colors: (
   aqua: #2bbdb1,
   blue: #2B50B6,
   purple: #4e2bb5,
+  gray: #939393,
+  white: #fff
 
 );
 
 @each $key, $value in $colors{
   .#{$key}-sheet{
     color: $value;
-    border-color: $value !important;
-    background-color: lighten(saturate($value, 100%), 52%);
+    background-color: lighten(saturate($value, 100%), 52%) !important;
+
+    &.bordered{
+      border-color: $value !important;
+    }
 
     &.colorful{
-      background-color: lighten(saturate($value, 20%), 10%);
+      background-color: lighten(saturate($value, 20%), 10%) !important;
     }
 
     &.dark{
       color: white;
-      background-color: $value;
+      background-color: $value !important;
     }
   }
 

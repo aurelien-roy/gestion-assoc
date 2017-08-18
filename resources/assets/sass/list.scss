@@ -7,12 +7,12 @@ ul.list{
 
   li{
     display: block;
+    background-color: #ebebeb;
 
     height: 50px;
     margin-bottom: 8px;
     box-sizing: border-box;
 
-    border-left: 6px solid rgba(0, 0, 0, 0.5);
     padding: 3px 10px;
 
     p{
@@ -37,6 +37,15 @@ ul.list{
       line-height: 0.9rem;
     }
 
+    &.dark{
+      background-color: #7A7A7A;
+      color: white;
+    }
+
+    &.bordered{
+      border-left: 6px solid rgba(0, 0, 0, 0.5);
+    }
+
 
   }
 
@@ -46,6 +55,7 @@ ul.list{
   height: 36px;
   padding: 0px 10px;
   line-height: 36px;
+  z-index: 10;
 
   display: flex;
 
@@ -154,6 +164,16 @@ ul.list{
     }
   }
 
+}
+
+.list-thumbnail{
+  float:left;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  vertical-align: middle;
+  position: relative;
+  top: calc(50% - 15px);
 }
 
 .flip-list-move {

@@ -8,6 +8,7 @@ import Home from '../views/Home.vue'
 import actionbar from '../store/actionbar'
 
 import Activities from '../views/Activity/Activities.vue'
+import PricingPolicies from '../views/PricingPolicies.vue'
 
 import Members from '../views/Member/Members.vue'
 import MemberViewer from '../views/Member/MemberViewer.vue'
@@ -18,12 +19,16 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {name: 'root', path: '/', component: Home},
+      
+        // Activities
         {name: 'activities', path: '/activites', component: Activities },
         {name: 'activity', path: '/activites/:period(\\d{4})/:id(\\d+)', component: Activities, props: true },
         {name: 'new_activity', path: '/activites/creer', component: Activities },
-        {name: 'login', path: '/login', component: Login},
-        {name: 'not_found', path: '*', component: NotFound},
-        {name: 'register', path: '/register', component: Register},
+      
+        // Princing policies
+        {name: 'pricings', path:'/politiques-tarifaires', component: PricingPolicies},
+      
+        
         //Members
         {
             name: 'members', path: '/membres', component: Members,
@@ -31,7 +36,13 @@ const router = new VueRouter({
                 {name: 'new_member', path: 'member_viewer/new', component: MemberViewer},
                 {name: 'open_member', path: 'member_viewer/:id(\\d+)', component: MemberViewer, props: true}
             ]
-        }
+        },
+    
+    
+        // Auth
+        {name: 'login', path: '/login', component: Login},
+        {name: 'not_found', path: '*', component: NotFound},
+        {name: 'register', path: '/register', component: Register},
     ]
 })
 

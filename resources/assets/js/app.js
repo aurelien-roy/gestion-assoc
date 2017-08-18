@@ -16,5 +16,7 @@ const app = new Vue({
 // Import des composants pour les listes
 
 import ActivityItem from './components/list/items/ActivityItem.vue'
+import PricingPolicyItem from './components/list/items/PricingPolicyItem.vue'
 
 Vue.component('ActivityItem', ActivityItem);
+Vue.component('PricingPolicyItem', PricingPolicyItem);
