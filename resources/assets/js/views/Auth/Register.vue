@@ -2,9 +2,14 @@
     <form class="form" @submit.prevent="register">
         <h1 class="form__title">Create an Account</h1>
         <div class="form__group">
-            <label>Name</label>
-            <input type="text" class="form__control" v-model="form.name">
-            <small class="error__control" v-if="error.name">{{error.name[0]}}</small>
+            <label>First name</label>
+            <input type="text" class="form__control" v-model="form.first_name">
+            <small class="error__control" v-if="error.first_name">{{error.name[0]}}</small>
+        </div>
+        <div class="form__group">
+            <label>Last name</label>
+            <input type="text" class="form__control" v-model="form.last_name">
+            <small class="error__control" v-if="error.last_name">{{error.name[0]}}</small>
         </div>
         <div class="form__group">
             <label>Email</label>
@@ -15,10 +20,6 @@
             <label>Password</label>
             <input type="password" class="form__control" v-model="form.password">
             <small class="error__control" v-if="error.password">{{error.password[0]}}</small>
-        </div>
-        <div class="form__group">
-            <label>Confirm Password</label>
-            <input type="password" class="form__control" v-model="form.password_confirmation">
         </div>
         <div class="form__group">
             <button :disabled="isProcessing" class="btn btn__primary">Register</button>
@@ -32,10 +33,10 @@
         data() {
             return {
                 form: {
-                    name: '',
+                    first_name: '',
+                    last_name: '',
                     email: '',
                     password: '',
-                    password_confirmation: ''
                 },
                 error: {},
                 isProcessing: false
