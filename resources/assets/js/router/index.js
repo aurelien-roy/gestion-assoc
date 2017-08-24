@@ -6,6 +6,7 @@ import Register from '../views/Auth/Register.vue'
 import NotFound from '../views/NotFound.vue'
 import Home from '../views/Home.vue'
 import actionbar from '../store/actionbar'
+import auth from '../store/auth'
 
 import Activities from '../views/Activity/Activities.vue'
 import PricingPolicies from '../views/PricingPolicies.vue'
@@ -14,6 +15,8 @@ import Members from '../views/Member/Members.vue'
 import MemberViewer from '../views/Member/MemberViewer.vue'
 
 Vue.use(VueRouter)
+
+auth.initialize();
 
 const router = new VueRouter({
     mode: 'history',
@@ -40,15 +43,17 @@ const router = new VueRouter({
     
     
         // Auth
-        {name: 'login', path: '/login', component: Login},
+        {name: 'login', path: '/login', component: Login, meta: {layout: false}},
         {name: 'not_found', path: '*', component: NotFound},
         {name: 'register', path: '/register', component: Register},
     ]
-})
+});
 
 router.afterEach((to, from) => {
     actionbar.actions = [];
     actionbar.showPeriodDropdown(false);
-})
+});
+
+router.beforeEach((to, from, next) => { auth.checkRouteAuthorization(to, from, next) });
 
 export default router

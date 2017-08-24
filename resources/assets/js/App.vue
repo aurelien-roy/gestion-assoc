@@ -1,7 +1,7 @@
 <template>
     <div class="full-height-container">
-        <Navbar></Navbar>
-        <Actionbar></Actionbar>
+        <Navbar v-show="showLayout"></Navbar>
+        <Actionbar v-show="showLayout"></Actionbar>
         <router-view></router-view>
     </div>
 </template>
@@ -17,7 +17,9 @@ export default {
       return {}
   },
   computed: {
-
+      showLayout(){
+          return this.$route.meta.layout !== false;
+      }
   },
     components: {Navbar, Actionbar}
 }
