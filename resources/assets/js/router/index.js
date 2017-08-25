@@ -45,7 +45,7 @@ const router = new VueRouter({
         // Auth
         {name: 'login', path: '/login', component: Login, meta: {layout: false}},
         {name: 'not_found', path: '*', component: NotFound},
-        {name: 'register', path: '/register', component: Register},
+        {name: 'register', path: '/register', component: Register, meta: {layout: false}},
     ]
 });
 
