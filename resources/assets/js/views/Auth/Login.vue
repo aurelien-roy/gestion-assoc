@@ -17,6 +17,7 @@
                 </div>
                 <div class="form-item">
                     <button :disabled="isProcessing" class="btn btn__primary">Se connecter</button>
+                    <p><a href="/register">Inscrire mon organisation</a></p>
                 </div>
             </form>
 
@@ -56,7 +57,6 @@
                     })
                     .catch((err) => {
                         if(err.response.status === 400 || err.response.status === 401) {
-                            console.log(err.response);
                             this.error = err.response.data.message
                         }
                         this.isProcessing = false
