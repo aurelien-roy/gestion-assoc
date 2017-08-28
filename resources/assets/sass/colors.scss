@@ -1,3 +1,8 @@
+$text-color: #242424;
+$primary_color: #4FBD84;
+$primary_lighter: #60D196;
+
+
 $colors: (
   red: #BF2D2B,
   orange: #B36F2B,
@@ -35,3 +40,12 @@ $colors: (
   }
 
 }
+
+$dialog-background: #F4F4F4;
+$dialog-header-1: $primary_color;
+$dialog-header-2: $primary_lighter;
+$dialog-footer: #E3E3E3;
+
+$btn-neutral: #848484;
+$btn-agree: $primary_color;
+$btn-critical: #D65757;

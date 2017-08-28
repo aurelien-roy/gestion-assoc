@@ -1,15 +1,30 @@
 $sm: 636px;
 
 
-@import "../../../node_modules/imperavi-kube/src/kube";
+@import "~imperavi-kube/src/_scss/variables";
+@import "~imperavi-kube/src/_scss/mixins";
+@import "~imperavi-kube/src/_scss/components/reset";
+@import "~imperavi-kube/src/_scss/components/colors";
+@import "~imperavi-kube/src/_scss/components/typography";
+@import "~imperavi-kube/src/_scss/components/grid";
+@import "~imperavi-kube/src/_scss/components/tables";
+@import "~imperavi-kube/src/_scss/components/forms";
+@import "~imperavi-kube/src/_scss/components/buttons";
+@import "~imperavi-kube/src/_scss/components/labels";
+@import "~imperavi-kube/src/_scss/components/icons";
+@import "~imperavi-kube/src/_scss/components/positioning";
+@import "~imperavi-kube/src/_scss/components/sizing";
+@import "~imperavi-kube/src/_scss/components/utils";
+@import "~imperavi-kube/src/_scss/components/print";
+
+
 @import "colors.scss";
+
+@import "dialog.scss";
 
 /* ICONS */
 
 $icons_path: '../icons/';
-$primary_color: #4FBD84;
-$primary_lighter: #60D196;
-
 $adaptiveMenuBreakpoint: 948px;
 
 html{
@@ -21,11 +36,13 @@ body{
     font-family: 'Open Sans', Arial, sans-serif;
     min-height: 100%;
     font-size: 100%;
+    color: $text-color;
 }
 
 input{
     font-size: 1rem;
 }
+
 
 h1, h2, h3, h4, h5, h6, .like-h1, .like-h2, .subtitle{
     font-family: 'Lato', Arial, sans-serif;
@@ -132,7 +149,7 @@ i{
     }
 
     &.delete{
-        background-image: url($icons_path + 'delete.png');
+        background-image: url($icons_path + 'delete.svg');
     }
 
     &.sort-by{
@@ -406,4 +423,46 @@ tr:hover {
     background-color: white !important;
     color: black !important;
     border-color: white !important;
+}
+
+.overlay{
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+button{
+    font-family: 'Lato', sans-serif;
+    font-weight: 900;
+    background-color: $btn-neutral;
+    border-radius: 5px;
+
+    min-width: 7.8rem;
+    height: 2.25rem;
+    box-sizing: border-box;
+    display: inline-block;
+
+    &:hover{
+        background-color: lighten($btn-neutral, 3%);
+    }
+
+    &.critical{
+        background-color: $btn-critical;
+
+        &:hover{
+            background-color: lighten($btn-critical, 3%);
+        }
+    }
+
+    &.primary{
+        background-color: $btn-agree;
+
+        &:hover{
+            background-color: lighten($btn-agree, 3%);
+        }
+    }
+
+    &:focus{
+        border: 2px dotted rgba(0,0,0, 0.3);
+    }
+
+
 }
