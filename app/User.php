@@ -32,4 +32,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Organization::class);
     }
+
+    public function organizationOwnsActivity(Activity $activity) : bool
+    {
+        return $this->organization->id === $activity->organization->id;
+    }
 }
