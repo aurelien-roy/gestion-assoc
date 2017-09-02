@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\ActivitySchedule;
+use App\Policies\ActivitySchedulePolicy;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Passport\Passport;
@@ -15,7 +17,8 @@ class AuthServiceProvider extends ServiceProvider
      * @var array
      */
     protected $policies = [
-        'App\Model' => 'App\Policies\ModelPolicy',
+        'App\Activity' => 'App\Policies\ActivityPolicy',
+        ActivitySchedule::class => ActivitySchedulePolicy::class,
     ];
 
     /**
@@ -27,7 +30,7 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Passport::tokensExpireIn(Carbon::now()->addMinutes(30)); // 30mn
+        Passport::tokensExpireIn(Carbon::now()->addMonths(3)); // 30mn
         Passport::routes();
     }
 }
