@@ -1,4 +1,6 @@
 import { rand } from '../helpers/math'
+import axios from 'axios'
+import auth from './../store/auth'
 
 export default {
     
@@ -23,6 +25,7 @@ export default {
                     if(item.callback !== undefined){
                         item.callback(true);
                     }
+                    console.log('request done');
                     self.queue.shift()
                     self.execute();
                 },
@@ -37,31 +40,26 @@ export default {
       
     },
     
-    request(method, url, data, success, fail){
-    
-        let request = {
+    request(method, url, data){
         
-            success(fn){
-                this.success_fn = fn;
-                return this;
-            },
+        console.log('request ' + url);
+        
+        return new Promise((resolve, reject) => {
             
-            fail(fn){
-                this.fail_fn = fn;
-                return this;
-            }
+            axios({
+                method,
+                url,
+                data,
+    
+                baseURL: '/api/',
         
-        }
-        
-        // ...
-        // ...
-        setTimeout(() => {
-            if(request.success_fn !== undefined){
-                request.success_fn();
-            }
-        }, rand(100, 1000));
-        
-        return request;
+                headers: {
+                    'Authorization': 'Bearer ' + auth.accessToken()
+                },
+            })
+            .then((response) => resolve(response))
+            .catch((error) => reject(error));
+        });
         
     }
 }

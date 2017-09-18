@@ -7,7 +7,7 @@ use League\Fractal\TransformerAbstract;
 
 class ActivityTransformer extends TransformerAbstract
 {
-    protected $availableIncludes = ['organization'];
+    protected $availableIncludes = ['organization', 'schedules'];
 
     /**
      * A Fractal transformer.
@@ -23,6 +23,7 @@ class ActivityTransformer extends TransformerAbstract
             'period'  =>  $activity->period,
             'color'  =>  $activity->color,
             'level'  =>  $activity->level,
+            'place' => $activity->place,
             'teacher'  =>  $activity->teacher,
             'max_participants'  =>  $activity->maxParticipants,
             'created_at'    =>  $activity->created_at->toDateTimeString(),
@@ -33,5 +34,10 @@ class ActivityTransformer extends TransformerAbstract
     public function includeOrganization(Activity $activity)
     {
         return $this->item($activity->organization, new OrganizationTransformer());
+    }
+
+    public function includeSchedules(Activity $activity)
+    {
+        return $this->collection($activity->schedules, new ActivityScheduleTransformer());
     }
 }

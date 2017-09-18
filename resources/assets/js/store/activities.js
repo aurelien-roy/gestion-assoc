@@ -1,5 +1,6 @@
 import { rand, Time } from '../helpers/math'
 import Store from '../helpers/store'
+import Colors from '../helpers/colors'
 import Vue from 'vue'
 
 export default new Store({
@@ -27,8 +28,12 @@ export default new Store({
     
         //Génère une nouvelle activitée
         genActivity() {
+            
+            let vId = this.state.virtualId++;
+            
             return {
                 id: undefined,
+                virtualId: vId,
                 members: [],
                 name: '',
                 level: '',
@@ -70,6 +75,35 @@ export default new Store({
                 
                 this.state.activities[period].push(a);
             }
+        },
+        
+        encodeActivity(activity, period){
+            let a = Object.assign({}, activity);
+            
+            if(period !== undefined) {
+                a.period = period;
+            }
+            
+            a.color = Colors.nameToHex(a.color);
+            
+            if(a.day && a.time_begin && a.time_end)
+                a.dates = [{
+                    day: a.day + 1,
+                    start: a.time_begin ? (a.time_begin.h + ':' + (a.time_begin.m < 10 ? '0' : '') + a.time_begin.m) : null,
+                    end: a.time_end ? (a.time_end.h + ':' + (a.time_end.m < 10 ? '0' : '') + a.time_end.m) : null
+                }];
+            
+            
+            
+            return a;
+        },
+    
+        decodeActivity(activity){
+            let a = Object.assign(this.genActivity(), activity);
+            
+            a.color = Colors.hexToName(a.color);
+        
+            return a;
         }
     
     },
@@ -78,12 +112,13 @@ export default new Store({
     
         CREATE_ACTIVITY: {
             applyLocally(params, store){
+                console.log('create applied locally')
                 params.activity.virtualId = store.state.virtualId++;
                 store.state.activities[params.period].push(params.activity);
             },
     
             makeRequest(request, context, result){
-                request().success(() => {
+                request('POST', 'activity', context.store.encodeActivity(context.params.activity, context.params.period)).then(() => {
                     context.params.activity.id = context.store.state.activities[context.params.period].length;
                     result.isSuccess();
                 });
@@ -97,9 +132,11 @@ export default new Store({
             },
             
             makeRequest(request, context, result){
-                request().success(() => {
+                request('PATCH', 'activity/' + context.params.activity.id, context.store.encodeActivity(context.params.activity)).then(() => {
                     result.isSuccess();
                 });
+                
+                result.isSuccess();
             }
         },
     
@@ -112,7 +149,7 @@ export default new Store({
             },
             
             makeRequest(request, context, result){
-                request().success(() => {
+                request('DELETE', 'activity', {id: context.params.activity.id}).then(() => {
                     result.isSuccess();
                 });
                 
@@ -131,10 +168,16 @@ export default new Store({
                 
                 let self = this;
                 
-                request().success(function() {
+                request('GET', 'activity').then(function(response) {
                     let period = context.params;
                     
                     Vue.set(context.store.state.activities, period, []);
+                    console.log(response);
+                    if(response.data && Array.isArray(response.data.data)){
+                        response.data.data.forEach((a) => {
+                            context.store.state.activities[period].push(context.store.decodeActivity(a));
+                        });
+                    }
                     context.store.generateActivity(period);
                     result.isSuccess();
                     self.loadedPeriods.push(period);

@@ -26,6 +26,10 @@ export default {
 		this.initialize()
 	},
 	
+	accessToken(){
+		return this.state.access_token;
+	},
+	
 	isAuthorized(){
 		return this.state.access_token && this.state.expiration > Date.now();
 	},

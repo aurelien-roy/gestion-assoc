@@ -44,7 +44,7 @@
                         },
 
                         toObject: (s) => s,
-                        toInputString: (s) => s
+                        toInputString: (s) => s === null || s === undefined ? '' : s
                     },
 
                     time: {

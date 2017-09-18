@@ -8,7 +8,11 @@
 
         <div class="pl10 gray-text">
             <div class="dashed-line"></div>
-            <p class="m0 contains-input">tous les <EditableText type="day" :value="activity.day" placeholder="jour" @input="notifyUpdate('day', $event)"></EditableText> de <EditableText placeholder="hh:mm" type="time" :value="activity.time_begin"  @input="notifyUpdate('time_begin', $event)"></EditableText> à <EditableText placeholder="hh:mm" type="time" :value="activity.time_end"  @input="notifyUpdate('time_end', $event)"></EditableText></p>
+            <div class="group">
+                <p class="contains-input">tous les <EditableText type="day" :value="activity.day" placeholder="jour" @input="notifyUpdate('day', $event)"></EditableText> de <EditableText placeholder="hh:mm" type="time" :value="activity.time_begin"  @input="notifyUpdate('time_begin', $event)"></EditableText> à <EditableText placeholder="hh:mm" type="time" :value="activity.time_end"  @input="notifyUpdate('time_end', $event)"></EditableText> et</p>
+                <!-- TODO : Time periods multiples -->
+                <!--<p class="contains-input">tous les <EditableText type="day" :value="activity.day" placeholder="jour" @input="notifyUpdate('day', $event)"></EditableText> de <EditableText placeholder="hh:mm" type="time" :value="activity.time_begin"  @input="notifyUpdate('time_begin', $event)"></EditableText> à <EditableText placeholder="hh:mm" type="time" :value="activity.time_end"  @input="notifyUpdate('time_end', $event)"></EditableText></p>-->
+            </div>
             <div class="dashed-line"></div>
             <p class="m0 contains-input">à <EditableText :value="activity.place" placeholder="lieu" @input="notifyUpdate('place', $event)"></EditableText></p>
             <div class="dashed-line"></div>
@@ -58,6 +62,10 @@
         },
 
         props: ['data'],
+
+        mounted(){
+            console.log(this.activity);
+        }
     }
 
 </script>
