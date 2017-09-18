@@ -8,7 +8,18 @@
 
         <div class="pl10 gray-text">
             <div class="dashed-line"></div>
-            <p class="m0 contains-input">tous les <EditableText type="day" :value="activity.day" placeholder="jour" @input="notifyUpdate('day', $event)"></EditableText> de <EditableText placeholder="hh:mm" type="time" :value="activity.time_begin"  @input="notifyUpdate('time_begin', $event)"></EditableText> à <EditableText placeholder="hh:mm" type="time" :value="activity.time_end"  @input="notifyUpdate('time_end', $event)"></EditableText></p>
+            <p v-for="(date,i) in activity.dates" class="m0 contains-input">
+                tous les
+                <EditableText type="day" :value="date.day" placeholder="jour"
+                              @input="notifyUpdateDate(i, 'day', $event)"></EditableText>
+                de
+                <EditableText placeholder="hh:mm" type="time" :value="date.time_begin"
+                              @input="notifyUpdateDate(i, 'time_begin', $event)"></EditableText>
+                à
+                <EditableText placeholder="hh:mm" type="time" :value="date.time_end"
+                              @input="notifyUpdateDate(i, 'time_end', $event)"></EditableText>
+                <button v-if="buttonAddDate == i" v-on:click="addDate()">Ajouter</button>
+            </p>
             <div class="dashed-line"></div>
             <p class="m0 contains-input">à <EditableText :value="activity.place" placeholder="lieu" @input="notifyUpdate('place', $event)"></EditableText></p>
             <div class="dashed-line"></div>
@@ -48,12 +59,59 @@
                 changes[field] = value;
 
                 this.$emit('update', changes);
+            },
+
+            dateFilled(index){
+                return (this.activity.dates[index].day != undefined &&
+                this.activity.dates[index].time_begin != undefined &&
+                this.activity.dates[index].time_end != undefined);
+            },
+
+            notifyUpdateDate(index, field, value){
+                if (field === 'day')
+                    this.activity.dates[index].day = value;
+                else if (field === 'time_begin')
+                    this.activity.dates[index].time_begin = value;
+                else if (field === 'time_end')
+                    this.activity.dates[index].time_end = value;
+
+                console.log(this.activity);
+
+                if (this.datesFilled) {
+                    let changes = {};
+                    changes['dates'] = this.activity.dates;
+
+                    this.$emit('update', changes);
+                    console.log("modif send\n");
+                }
+            },
+
+            addDate(){ //Gestion du modèle dispercé
+                this.activity.dates.push({day: undefined, time_begin: undefined, time_end: undefined});
             }
         },
         
         computed: {
             activity(){
                 return this.data.makeCopy();
+            },
+
+            datesFilled(){
+                let filled = true;
+                let i = 0;
+                do {
+                    if (!this.dateFilled(i))
+                        filled = false;
+                    i++;
+                } while (filled && this.activity.dates.length > i)
+                return filled;
+            },
+
+            buttonAddDate(){
+                if (this.datesFilled)
+                    return this.activity.dates.length - 1;
+                else
+                    return -1;
             }
         },
 
