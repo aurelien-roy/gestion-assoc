@@ -25,11 +25,6 @@ class ActivityPolicy
         return $user->organizationOwnsActivity($activity);
     }
 
-    public function storeSchedule(User $user, Activity $activity) : bool
-    {
-        return $user->organizationOwnsActivity($activity);
-    }
-
     public function access(User $user, Activity $activity)
     {
         return $user->organizationOwnsActivity($activity);

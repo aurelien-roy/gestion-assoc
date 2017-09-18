@@ -464,5 +464,12 @@ button{
         border: 2px dotted rgba(0,0,0, 0.3);
     }
 
+}
 
+.group > p{
+    margin-bottom: 0.5rem;
+
+    &:last-child{
+        margin-bottom: 0;
+    }
 }

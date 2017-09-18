@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flexible h100 relative">
+    <div class="flex flexible relative">
         <div class="absolute w100 h100">
             <div class="row wrapped push-center h100">
                 <div class="row gutters col col-12 h100">
@@ -130,7 +130,7 @@
                             this.editableActivity = this.activity.makeCopy();
                         }
                     }
-                }else{
+                }else if(!this.creating){
                     this.activity = null;
                     this.editableActivity = null;
                 }

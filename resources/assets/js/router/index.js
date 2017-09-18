@@ -46,7 +46,16 @@ const router = new VueRouter({
         {name: 'login', path: '/login', component: Login, meta: {layout: false}},
         {name: 'not_found', path: '*', component: NotFound},
         {name: 'register', path: '/register', component: Register, meta: {layout: false}},
-    ]
+    ],
+    
+    meta:{
+        nav: [
+            [
+                {title: 'Activitiés', routes: ['activities', 'activity', 'new_activity']},
+                {title: 'Politiques tarifaires', routes: ['pricings']}
+            ]
+        ]
+    }
 });
 
 router.afterEach((to, from) => {
