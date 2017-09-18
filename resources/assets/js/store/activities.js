@@ -38,9 +38,7 @@ export default new Store({
                 name: '',
                 level: '',
                 age: '',
-                day: undefined,
-                time_begin: undefined,
-                time_end: undefined,
+                dates: [{day: undefined, time_begin: undefined, time_end: undefined}],
                 place: '',
                 teacher: '',
                 effectif_max: undefined,
@@ -67,9 +65,11 @@ export default new Store({
                 a.id = this.state.activities[period].length;
                 a.name = act[rand(0, 4)];
                 a.age = nvx[rand(0, 3)];
-                a.day = rand(0, 6);
-                a.time_begin = new Time(rand(9, 16), 0);
-                a.time_end = a.time_begin.clone().addHours(rand(1, 2));
+                a.dates = [{
+                    day: rand(0, 6),
+                    time_begin: new Time(rand(9, 16), 0),
+                    time_end: new Time(rand(17, 23), 0)
+                }];
                 a.teacher = 'Jackie';
                 a.color = clr[rand(0, 6)];
                 
