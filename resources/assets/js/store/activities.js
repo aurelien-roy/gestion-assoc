@@ -38,7 +38,7 @@ export default new Store({
                 name: '',
                 level: '',
                 age: '',
-                dates: [{day: undefined, time_begin: undefined, time_end: undefined}],
+                schedules: [{day: undefined, time_begin: undefined, time_end: undefined}],
                 place: '',
                 teacher: '',
                 effectif_max: undefined,
@@ -65,7 +65,7 @@ export default new Store({
                 a.id = this.state.activities[period].length;
                 a.name = act[rand(0, 4)];
                 a.age = nvx[rand(0, 3)];
-                a.dates = [{
+                a.schedules = [{
                     day: rand(0, 6),
                     time_begin: new Time(rand(9, 16), 0),
                     time_end: new Time(rand(17, 23), 0)
@@ -86,14 +86,11 @@ export default new Store({
             
             a.color = Colors.nameToHex(a.color);
             
-            if(a.day && a.time_begin && a.time_end)
-                a.dates = [{
-                    day: a.day + 1,
-                    start: a.time_begin ? (a.time_begin.h + ':' + (a.time_begin.m < 10 ? '0' : '') + a.time_begin.m) : null,
-                    end: a.time_end ? (a.time_end.h + ':' + (a.time_end.m < 10 ? '0' : '') + a.time_end.m) : null
-                }];
-            
-            
+            a.schedules.forEach(s => {
+                s.day++;
+                s.start = s.time_begin ? (s.time_begin.h + ':' + (s.time_begin.m < 10 ? '0' : '') + s.time_begin.m) : null
+                s.end = s.time_end ? (s.time_end.h + ':' + (s.time_end.m < 10 ? '0' : '') + s.time_end.m) : null
+            });
             
             return a;
         },
