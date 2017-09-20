@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="col col-8 scrollable">
-                        <Activity :data="editableActivity" v-if="editableActivity" @update="updateActivity"></Activity>
+                        <Activity :data="editableActivity" v-if="editableActivity" @update="updateActivity" :quitHandler="quitHandler"></Activity>
                     </div>
                 </div>
             </div>
@@ -64,7 +64,8 @@
                 fetching: false,
                 activity: null,
                 editableActivity: null,
-                creationSignalSent: false
+                creationSignalSent: false,
+                quitHandler: null,
             }
         },
         components: { SideList, Activity },
@@ -134,6 +135,12 @@
                     this.activity = null;
                     this.editableActivity = null;
                 }
+            },
+
+            handleRouteChange(to, from, next){
+                if(from.name === 'activity'){
+                    this.quitHandler
+                }
             }
 
         },
@@ -180,6 +187,14 @@
             actionbar.setActions([]);
             actionbar.showPeriodDropdown(true);
         },
+
+        /*beforeRouteUpdate (to, from, next) {
+            this.handleRouteChange(to, from, next);
+        },
+
+        beforeRouteLeave (to, from, next) {
+            this.handleRouteChange(to, from, next);
+        },*/
 
         props: ['id', 'period']
     }
