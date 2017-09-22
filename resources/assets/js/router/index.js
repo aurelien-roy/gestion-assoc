@@ -8,6 +8,7 @@ import Home from '../views/Home.vue'
 import actionbar from '../store/actionbar'
 import auth from '../store/auth'
 
+import Activity from '../components/Activity.vue'
 import Activities from '../views/Activity/Activities.vue'
 import PricingPolicies from '../views/PricingPolicies.vue'
 
@@ -23,10 +24,17 @@ const router = new VueRouter({
     routes: [
         {name: 'root', path: '/', component: Home},
       
-        // Activities
-        {name: 'activities', path: '/activites', component: Activities },
-        {name: 'activity', path: '/activites/:period(\\d{4})/:id(\\d+)', component: Activities, props: true },
-        {name: 'new_activity', path: '/activites/creer', component: Activities },
+      
+      
+        {
+          path: '/activites', component: Activities,
+          children: [
+              {name: 'activities', path: '', component: null },
+              {name: 'activity', path: ':period(\\d{4})/:id(\\d+)', component: Activity },
+              {name: 'new_activity', path: 'creer', component: Activity }
+          ],
+          
+        },
       
         // Princing policies
         {name: 'pricings', path:'/politiques-tarifaires', component: PricingPolicies},
