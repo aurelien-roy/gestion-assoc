@@ -18,7 +18,8 @@
                     </div>
 
                     <div class="col col-8 scrollable">
-                        <Activity :data="editableActivity" v-if="editableActivity" @update="updateActivity" :quitHandler="quitHandler"></Activity>
+                        <router-view :data="editableActivity" @update="updateActivity" :a="2"></router-view>
+                        <!--<Activity :data="editableActivity" v-if="editableActivity" @update="updateActivity" :quitHandler="quitHandler"></Activity>-->
                     </div>
                 </div>
             </div>
@@ -41,6 +42,8 @@
 
         data(){
             return {
+                activity_id: null,
+                period: null,
                 actionbar,
                 activities_store,
                 time,
@@ -118,7 +121,9 @@
             loadActivityModule(){
                 if(this.creating && (!this.activity || this.activity.id)){
                     this.creationSignalSent = false;
+                    console.log('update');
                     this.activity = activities_store.genActivity();
+                    console.log(this.activity);
                     this.editableActivity = this.activity.makeCopy();
                 }else if(this.id !== undefined && this.period !== undefined){
                     time.selectPeriod(this.period);
@@ -137,16 +142,17 @@
                 }
             },
 
-            handleRouteChange(to, from, next){
+            /*handleRouteChange(to, from, next){
                 if(from.name === 'activity'){
                     this.quitHandler
                 }
-            }
+            }*/
 
         },
         
         computed: {
             activities(){
+                console.log('fetch activities ' + time.state.selectedPeriod);
                 return activities_store.getters.activitiesByPeriod(time.state.selectedPeriod);
             },
 
@@ -163,6 +169,11 @@
             },
 
             '$route'(){
+
+                if(this.$route.params.period) {
+                    time.selectPeriod(this.$route.params.period);
+                }
+
                 this.loadActivityModule();
             },
 
@@ -177,9 +188,12 @@
         },
         
         mounted(){
-            if(!this.period || parseInt(this.period) === time.state.selectedPeriod){
-                this.periodRequested(time.state.selectedPeriod);
+
+            if(this.$route.params.period) {
+                time.selectPeriod(this.$route.params.period);
             }
+
+            this.periodRequested(time.state.selectedPeriod);
 
             this.loadActivityModule();
 
@@ -196,7 +210,7 @@
             this.handleRouteChange(to, from, next);
         },*/
 
-        props: ['id', 'period']
+        /*props: ['id', 'period']*/
     }
 
 </script>
