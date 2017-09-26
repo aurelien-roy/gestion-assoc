@@ -18,6 +18,7 @@ class ActivityController extends Controller
         return fractal()
             ->collection($activities)
             ->transformWith(new ActivityTransformer())
+            ->includeSchedules()
             ->toArray();
     }
 
@@ -52,7 +53,7 @@ class ActivityController extends Controller
         $activity->teacher = $request->get('teacher', $activity->teacher);
         $activity->maxParticipants = $request->get('maxParticipants', $activity->maxParticipants);
 
-        if($request->has('dates')){
+        if ($request->has('schedules')) {
             $activity->schedules()->delete();
 
             foreach($request->get('schedules') as $schedule){

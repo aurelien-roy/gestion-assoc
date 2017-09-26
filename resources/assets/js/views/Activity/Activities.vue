@@ -18,7 +18,7 @@
                     </div>
 
                     <div class="col col-8 scrollable">
-                        <router-view :data="editableActivity" @update="updateActivity" :a="2"></router-view>
+                        <router-view :data="editableActivity" @update="updateActivity"></router-view>
                         <!--<Activity :data="editableActivity" v-if="editableActivity" @update="updateActivity" :quitHandler="quitHandler"></Activity>-->
                     </div>
                 </div>
@@ -36,7 +36,7 @@
 
     import Activity from '../../components/Activity'
     import SideList from '../../components/list/SideList'
-    
+
     export default{
         name: 'Activities',
 
@@ -51,6 +51,7 @@
                 sortBy: 'Nom',
                 selection: [],
                 edit: false,
+                id: undefined,
 
                 sorting: {
                     'Nom': (a, b) => a.name.localeCompare(b.name),
@@ -72,7 +73,7 @@
             }
         },
         components: { SideList, Activity },
-        
+
         methods: {
             createActivity(){
                 this.$router.push({name: 'new_activity'});
@@ -86,6 +87,7 @@
 
             openActivity(activity){
                 this.$router.push({name: 'activity', params: {period: time.state.currentPeriod, id: activity.id}});
+                console.log("activity push :" + activity.id)
             },
 
             periodRequested(period){
@@ -103,10 +105,15 @@
             },
 
             updateActivity(changes){
-                // TODO : N'éxécuter ceci que pour les activités déjà enregistrés
-                activities_store.execute('EDIT_ACTIVITY', {activity: this.activity, changes});
+                // Bonjour je suis un commentaire
+                activities_store.execute('EDIT_ACTIVITY', {
+                    activity: this.activity,
+                    changes,
+                    sendToServer: this.activity.id
+                });
 
                 if(this.creating && !this.creationSignalSent && this.activity.name.length){
+                    console.log("create")
                     let activity = this.activity;
                     let that = this;
                     activities_store.execute('CREATE_ACTIVITY', {activity: this.activity, period: time.state.currentPeriod}, () => {
@@ -121,12 +128,13 @@
             loadActivityModule(){
                 if(this.creating && (!this.activity || this.activity.id)){
                     this.creationSignalSent = false;
-                    console.log('update');
+                    console.log('creating');
                     this.activity = activities_store.genActivity();
                     console.log(this.activity);
                     this.editableActivity = this.activity.makeCopy();
                 }else if(this.id !== undefined && this.period !== undefined){
-                    time.selectPeriod(this.period);
+
+                    //time.selectPeriod(this.period);
                     if(!this.fetching) {
                         this.activity = activities_store.getters.get(parseInt(this.period), parseInt(this.id));
                         if (!this.activity) {
@@ -134,6 +142,7 @@
                         } else {
                             this.selection = [this.activity];
                             this.editableActivity = this.activity.makeCopy();
+                            console.log(this.editableActivity);
                         }
                     }
                 }else if(!this.creating){
@@ -143,13 +152,13 @@
             },
 
             /*handleRouteChange(to, from, next){
-                if(from.name === 'activity'){
-                    this.quitHandler
-                }
-            }*/
+             if(from.name === 'activity'){
+             this.quitHandler
+             }
+             }*/
 
         },
-        
+
         computed: {
             activities(){
                 console.log('fetch activities ' + time.state.selectedPeriod);
@@ -169,10 +178,13 @@
             },
 
             '$route'(){
-
+                console.log(this.$route)
                 if(this.$route.params.period) {
                     time.selectPeriod(this.$route.params.period);
+                    this.period = this.$route.params.period;
                 }
+
+                this.id = this.$route.params.id;
 
                 this.loadActivityModule();
             },
@@ -186,12 +198,15 @@
                 }
             }
         },
-        
+
         mounted(){
 
             if(this.$route.params.period) {
                 time.selectPeriod(this.$route.params.period);
+                this.period = this.$route.params.period;
             }
+
+            this.id = this.$route.params.id;
 
             this.periodRequested(time.state.selectedPeriod);
 
@@ -200,15 +215,17 @@
 
             actionbar.setActions([]);
             actionbar.showPeriodDropdown(true);
+
+
         },
 
         /*beforeRouteUpdate (to, from, next) {
-            this.handleRouteChange(to, from, next);
-        },
+         this.handleRouteChange(to, from, next);
+         },
 
-        beforeRouteLeave (to, from, next) {
-            this.handleRouteChange(to, from, next);
-        },*/
+         beforeRouteLeave (to, from, next) {
+         this.handleRouteChange(to, from, next);
+         },*/
 
         /*props: ['id', 'period']*/
     }
