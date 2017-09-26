@@ -9,7 +9,7 @@
 
             <div class="pl10 gray-text">
                 <div class="dashed-line"></div>
-                <p v-for="(date,i) in activity.schedules" class="m0 contains-input">
+                <p v-for="(date,i) in schedules" class="m0 contains-input">
                     tous les
                     <EditableText type="day" :value="date.day" placeholder="jour"
                                   @input="notifyUpdateDate(i, 'day', $event)"></EditableText>
@@ -20,7 +20,7 @@
                     <EditableText placeholder="hh:mm" type="time" :value="date.time_end"
                                   @input="notifyUpdateDate(i, 'time_end', $event)"></EditableText>
 
-                    <button v-if="i === activity.schedules.length - 1" v-on:click="addDate()">Ajouter</button>
+                    <button v-if="i === schedules.length - 1 && dateFilled(i)" v-on:click="addDate()">Ajouter</button>
                 </p>
                 <div class="dashed-line"></div>
                 <p class="m0 contains-input">à <EditableText :value="activity.place" placeholder="lieu" @input="notifyUpdate('place', $event)"></EditableText></p>
@@ -37,6 +37,7 @@
 
             <p>TODO</p>
 
+
         </div>
 
     </div>
@@ -48,27 +49,39 @@
 
     import EditableText from './EditableText'
     import ColorPicker from './ColorPicker'
-    
+    import Modal from './Modal'
+
     export default {
         data() {
             return {
             }
         },
-        components: { EditableText, ColorPicker },
+        components: {EditableText, ColorPicker, Modal},
 
         methods: {
             notifyUpdate(field, value){
 
                 let changes = {};
                 changes[field] = value;
+                console.log("activity + changes");
+                console.log(this.activity);
+                console.log(changes);
 
                 this.$emit('update', changes);
             },
 
+            notifyUpdateDate(index, field, value){
+                this.schedules[index][field] = value;
+                console.log(this.schedules + "shedules mod");
+                if (this.datesFilled()) {
+                    this.notifyUpdate('schedules', this.schedules);
+                }
+            },
+
             dateFilled(index){
-                return (this.activity.schedules[index].day !== undefined &&
-                this.activity.schedules[index].time_begin !== undefined &&
-                this.activity.schedules[index].time_end !== undefined);
+                return (this.schedules[index].day != null &&
+                this.schedules[index].time_begin != null &&
+                this.schedules[index].time_end != null);
             },
 
             datesFilled(){
@@ -78,33 +91,47 @@
                     if (!this.dateFilled(i))
                         filled = false;
                     i++;
-                } while (filled && this.activity.schedules.length > i)
+                } while (filled && this.schedules.length > i)
                 return filled;
             },
 
-            notifyUpdateDate(index, field, value){
-
-                this.activity.schedules[index][field] = value;
-
-                if (this.datesFilled) {
-
-                    this.notifyUpdate('schedules', this.activity.schedules);
-                }
+            addDate(){
+                this.activity.schedules.push({day: null, time_begin: null, time_end: null});
             },
 
-            addDate(){ //Gestion du modèle dispercé
-                this.activity.schedules.push({});
+            handleRouteChange(to, from, next){
+
+            },
+
+            test2(a){
+                console.log(a);
             }
         },
-        
+
         computed: {
             activity(){
-                return this.data ? this.data.makeCopy() : null;
+                return this.data ? this.data : null;
+            },
+
+            schedules(){
+                if (this.activity.schedules.length === 0)
+                    this.addDate();
+                return this.activity.schedules;
             },
         },
 
         mounted(){
 
+        },
+
+        watch: {},
+
+        beforeRouteUpdate (to, from, next) {
+            this.handleRouteChange(to, from, next);
+        },
+
+        beforeRouteLeave (to, from, next) {
+            this.handleRouteChange(to, from, next);
         },
 
         props: ['data', 'a'],

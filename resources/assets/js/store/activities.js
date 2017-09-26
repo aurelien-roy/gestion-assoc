@@ -38,7 +38,7 @@ export default new Store({
                 name: '',
                 level: '',
                 age: '',
-                schedules: [{day: undefined, time_begin: undefined, time_end: undefined}],
+                schedules: [],
                 place: '',
                 teacher: '',
                 effectif_max: undefined,
@@ -47,6 +47,14 @@ export default new Store({
                 makeCopy() {
                     let copy = {};
                     Object.assign(copy, this);
+                    copy.schedules = [];
+                    this.schedules.forEach(s => {
+                        let s_copy = {};
+                        Object.assign(s_copy, s);
+                        copy.schedules.push(s_copy);
+                    });
+
+
                     return copy;
                 }
             }
@@ -54,7 +62,7 @@ export default new Store({
     
         //Génère des activités de test
         generateActivity(period) {
-            let act = ['Classique', 'Jazz', 'Street', 'Ragga', 'Eveil'];
+            /*let act = ['Classique', 'Jazz', 'Street', 'Ragga', 'Eveil'];
             let nvx = ['', 'Adultes', '10-12 ans', '5-6 ans'];
             let clr = ['red', 'blue', 'yellow', 'green', 'aqua', 'purple', 'orange'];
         
@@ -74,7 +82,7 @@ export default new Store({
                 a.color = clr[rand(0, 6)];
                 
                 this.state.activities[period].push(a);
-            }
+             }*/
         },
         
         encodeActivity(activity, period){
@@ -85,6 +93,8 @@ export default new Store({
             }
             
             a.color = Colors.nameToHex(a.color);
+
+            //a.schedules = a.schedules.filter(s => { return s.day !== null && s.time_begin !== null && s.time_end !== null});
             
             a.schedules.forEach(s => {
                 s.day++;
@@ -99,6 +109,9 @@ export default new Store({
             let a = Object.assign(this.genActivity(), activity);
             
             a.color = Colors.hexToName(a.color);
+
+            if (a.schedules)
+                a.schedules = a.schedules.data;
         
             return a;
         }
@@ -129,11 +142,16 @@ export default new Store({
             },
             
             makeRequest(request, context, result){
-                request('PATCH', 'activity/' + context.params.activity.id, context.store.encodeActivity(context.params.activity)).then(() => {
+                if (context.params.sendToServer) {
+                    console.log("SEND TO SERVEUR");
+                    request('PATCH', 'activity/' + context.params.activity.id, context.store.encodeActivity(context.params.activity)).then(() => {
+                        result.isSuccess();
+                    });
+                } else {
                     result.isSuccess();
-                });
+                }
                 
-                result.isSuccess();
+
             }
         },
     
