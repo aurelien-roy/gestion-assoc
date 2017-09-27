@@ -57,10 +57,20 @@
     export default {
         data() {
             return {
+                hasChanges: false,
                 dialogs: {
                     schedulesUnfilled: {
                         title: "Avertissement",
                         message: "Vous n'avez pas rempli entièrement la date pour l'activitée en cours.",
+                        buttons: [{label: "Finir de la remplir", class: "primary"}, {
+                            label: "Quitter sans sauvegarder",
+                            class: "critical"
+                        }],
+                        visible: true
+                    },
+                    titleUnfilled: {
+                        title: "Avertissement",
+                        message: "Vous n'avez pas donné de nom à votre activitée.",
                         buttons: [{label: "Finir de la remplir", class: "primary"}, {
                             label: "Quitter sans sauvegarder",
                             class: "critical"
@@ -81,6 +91,7 @@
                 changes[field] = value;
 
                 this.$emit('update', changes);
+                this.hasChanges = true;
             },
 
             //Appelé quand un chanp du schedules est modifié
@@ -131,8 +142,11 @@
             handleRouteChange(to, from, next){
                 // Une date n'est pas rempli
                 if (this.datePartFilled(this.schedules.length - 1)) {
-                    console.log("unfilled");
                     this.dialog = "schedulesUnfilled";
+                    this.nextRoute = next;
+                }
+                else if (this.activity.name == "" && this.hasChanges) {
+                    this.dialog = "titleUnfilled";
                     this.nextRoute = next;
                 }
                 else
@@ -141,13 +155,11 @@
 
             // Appelé pour gérer les boites de dialogues
             handleDialog(event){
-                if (this.dialog = "schedulesUnfilled") {
-                    if (event.class === "primary")
-                        this.nextRoute(false);
-                    else if (event.class === "critical")
-                        this.nextRoute();
-                    this.dialog = null;
-                }
+                if (event.class === "primary")
+                    this.nextRoute(false);
+                else if (event.class === "critical")
+                    this.nextRoute();
+                this.dialog = null;
             }
         },
 
@@ -180,6 +192,7 @@
 
         beforeRouteUpdate (to, from, next) {
             this.handleRouteChange(to, from, next);
+            this.hasChanges = false;
         },
 
         beforeRouteLeave (to, from, next) {
