@@ -21,6 +21,7 @@
                                   @input="notifyUpdateDate(i, 'time_end', $event)"></EditableText>
 
                     <button v-if="i === schedules.length - 1 && dateFilled(i)" v-on:click="addDate()">Ajouter</button>
+                    <button v-if="dateFilled(i) || datePartFilled(i)" v-on:click="delDate(i)">Sup</button>
                 </p>
                 <div class="dashed-line"></div>
                 <p class="m0 contains-input">à <EditableText :value="activity.place" placeholder="lieu" @input="notifyUpdate('place', $event)"></EditableText></p>
@@ -37,6 +38,8 @@
 
             <p>TODO</p>
 
+            <Modal v-if="dialog != null" :title="dialogs[dialog].title" :message="dialogs[dialog].message"
+                   :buttons="dialogs[dialog].buttons" :visible="dialogs[dialog].visible" @done="handleDialog"/>
 
         </div>
 
@@ -54,27 +57,39 @@
     export default {
         data() {
             return {
+                dialogs: {
+                    schedulesUnfilled: {
+                        title: "Avertissement",
+                        message: "Vous n'avez pas rempli entièrement la date pour l'activitée en cours.",
+                        buttons: [{label: "Finir de la remplir", class: "primary"}, {
+                            label: "Quitter sans sauvegarder",
+                            class: "critical"
+                        }],
+                        visible: true
+                    }
+                },
+                dialog: null,
+                nextRoute: null,
             }
         },
         components: {EditableText, ColorPicker, Modal},
 
         methods: {
+            //Appelé quand un chanp est modifié
             notifyUpdate(field, value){
-
                 let changes = {};
                 changes[field] = value;
-                console.log("activity + changes");
-                console.log(this.activity);
-                console.log(changes);
 
                 this.$emit('update', changes);
             },
 
+            //Appelé quand un chanp du schedules est modifié
             notifyUpdateDate(index, field, value){
                 this.schedules[index][field] = value;
-                console.log(this.schedules + "shedules mod");
-                if (this.datesFilled()) {
-                    this.notifyUpdate('schedules', this.schedules);
+
+                if (this.dateFilled(index)) {
+                    console.log(this.schedules);
+                    this.notifyUpdate('schedules', this.schedulesFilled);
                 }
             },
 
@@ -84,7 +99,14 @@
                 this.schedules[index].time_end != null);
             },
 
-            datesFilled(){
+            datePartFilled(index){
+                return (!this.dateFilled(index) &&
+                (this.schedules[index].day != null ||
+                this.schedules[index].time_begin != null ||
+                this.schedules[index].time_end != null));
+            },
+
+            /*datesFilled(){
                 let filled = true;
                 let i = 0;
                 do {
@@ -93,18 +115,39 @@
                     i++;
                 } while (filled && this.schedules.length > i)
                 return filled;
-            },
+             },*/
 
             addDate(){
                 this.activity.schedules.push({day: null, time_begin: null, time_end: null});
             },
 
-            handleRouteChange(to, from, next){
-
+            delDate(index){
+                console.log(this.schedules);
+                this.schedules.splice(index, 1);
+                this.notifyUpdate('schedules', this.schedulesFilled);
             },
 
-            test2(a){
-                console.log(a);
+            // Appelé quand on quitte l'activité en cours
+            handleRouteChange(to, from, next){
+                // Une date n'est pas rempli
+                if (this.datePartFilled(this.schedules.length - 1)) {
+                    console.log("unfilled");
+                    this.dialog = "schedulesUnfilled";
+                    this.nextRoute = next;
+                }
+                else
+                    next();
+            },
+
+            // Appelé pour gérer les boites de dialogues
+            handleDialog(event){
+                if (this.dialog = "schedulesUnfilled") {
+                    if (event.class === "primary")
+                        this.nextRoute(false);
+                    else if (event.class === "critical")
+                        this.nextRoute();
+                    this.dialog = null;
+                }
             }
         },
 
@@ -118,6 +161,15 @@
                     this.addDate();
                 return this.activity.schedules;
             },
+
+            //Renvoi les dates du schedules qui sont remplis
+            schedulesFilled(){
+                return this.schedules.filter(d => {
+                    return (d.day != null &&
+                    d.time_begin != null &&
+                    d.time_end != null);
+                });
+            }
         },
 
         mounted(){

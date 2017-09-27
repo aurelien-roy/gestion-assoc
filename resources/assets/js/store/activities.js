@@ -86,21 +86,22 @@ export default new Store({
         },
         
         encodeActivity(activity, period){
-            let a = Object.assign({}, activity);
+            let a = activity
             
             if(period !== undefined) {
                 a.period = period;
             }
-            
-            a.color = Colors.nameToHex(a.color);
+
+            if (a.color)
+                a.color = Colors.nameToHex(a.color);
 
             //a.schedules = a.schedules.filter(s => { return s.day !== null && s.time_begin !== null && s.time_end !== null});
-            
-            a.schedules.forEach(s => {
-                s.day++;
-                s.start = s.time_begin ? (s.time_begin.h + ':' + (s.time_begin.m < 10 ? '0' : '') + s.time_begin.m) : null
-                s.end = s.time_end ? (s.time_end.h + ':' + (s.time_end.m < 10 ? '0' : '') + s.time_end.m) : null
-            });
+            if (a.schedules)
+                a.schedules.forEach(s => {
+                    s.day++;
+                    s.start = s.time_begin ? (s.time_begin.h + ':' + (s.time_begin.m < 10 ? '0' : '') + s.time_begin.m) : null
+                    s.end = s.time_end ? (s.time_end.h + ':' + (s.time_end.m < 10 ? '0' : '') + s.time_end.m) : null
+                });
             
             return a;
         },
@@ -112,6 +113,13 @@ export default new Store({
 
             if (a.schedules)
                 a.schedules = a.schedules.data;
+            a.schedules.forEach(s => {
+                s.day--;
+                s.start = s.start.split(":");
+                s.end = s.end.split(":");
+                s.time_begin = new Time(Number(s.start[0]), Number(s.start[1]));
+                s.time_end = new Time(Number(s.end[0]), Number(s.end[1]));
+            });
         
             return a;
         }
@@ -144,7 +152,7 @@ export default new Store({
             makeRequest(request, context, result){
                 if (context.params.sendToServer) {
                     console.log("SEND TO SERVEUR");
-                    request('PATCH', 'activity/' + context.params.activity.id, context.store.encodeActivity(context.params.activity)).then(() => {
+                    request('PATCH', 'activity/' + context.params.activity.id, context.store.encodeActivity(context.params.changes)).then(() => {
                         result.isSuccess();
                     });
                 } else {
