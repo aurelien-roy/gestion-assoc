@@ -181,6 +181,9 @@
             },
 
             schedules(){
+                console.log('schedules to display')
+                console.log(this.activity.schedules);
+
                 if (this.activity.schedules.length === 0)
                     this.addDate();
                 return this.activity.schedules;

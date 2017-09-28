@@ -25,6 +25,7 @@
                 //Une seule date : affichage plus long
                 if (this.item.schedules.length === 1) {
                     date += days[this.item.schedules[0].day] + " à ";
+                    console.log(this.item.schedules[0]);
                     date += this.item.schedules[0].time_begin.toString();
                 }
                 // Plusieurs dates : affichage court

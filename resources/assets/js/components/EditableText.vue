@@ -282,6 +282,8 @@
         },
         
         beforeMount() {
+            console.log("::: " + this.type);
+            console.log(this.value);
             if(this.value !== null) {
                 this.objectValue = this.value;
                 this.typedValue = this.toInputString(this.value);

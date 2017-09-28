@@ -43,20 +43,7 @@ export default new Store({
                 teacher: '',
                 effectif_max: undefined,
                 effectif_current: undefined,
-                color: 'red',
-                makeCopy() {
-                    let copy = {};
-                    Object.assign(copy, this);
-                    copy.schedules = [];
-                    this.schedules.forEach(s => {
-                        let s_copy = {};
-                        Object.assign(s_copy, s);
-                        copy.schedules.push(s_copy);
-                    });
-
-
-                    return copy;
-                }
+                color: 'red'
             }
         },
     
@@ -123,6 +110,7 @@ export default new Store({
                     
                     delete s.start;
                     delete s.end;
+                    delete s.id;
                 });
             }
             

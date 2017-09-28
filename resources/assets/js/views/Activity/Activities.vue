@@ -135,7 +135,7 @@
                     console.log('creating');
                     this.activity = activities_store.genActivity();
                     console.log(this.activity);
-                    this.editableActivity = this.activity.makeCopy();
+                    this.editableActivity = deepCopy(this.activity);
                 }else if(this.id !== undefined && this.period !== undefined){
 
                     //time.selectPeriod(this.period);
@@ -145,7 +145,7 @@
                             this.$router.push({name: 'activities'})
                         } else {
                             this.selection = [this.activity];
-                            this.editableActivity = this.activity.makeCopy();
+                            this.editableActivity = deepCopy(this.activity);
                             console.log(this.editableActivity);
                         }
                     }
