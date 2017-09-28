@@ -267,6 +267,7 @@
             value(v){
                 let str = this.toInputString(v);
 
+
                 if(str !== this.typedValue){
                     this.objectValue = v;
                     this.typedValue = str;
@@ -275,7 +276,7 @@
         },
         
         beforeMount() {
-            if(this.value) {
+            if(this.value !== null) {
                 this.objectValue = this.value;
                 this.typedValue = this.toInputString(this.value);
             }

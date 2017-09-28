@@ -119,6 +119,9 @@ export default new Store({
                     s.end = s.end.split(":");
                     s.time_begin = new Time(Number(s.start[0]), Number(s.start[1]));
                     s.time_end = new Time(Number(s.end[0]), Number(s.end[1]));
+                    
+                    delete s.start;
+                    delete s.end;
                 });
             }
             
