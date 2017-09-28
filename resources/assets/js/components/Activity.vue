@@ -12,7 +12,7 @@
                 <p v-for="(date,i) in schedules" class="m0 contains-input">
                     tous les
                     <EditableText type="day" :value="date.day" placeholder="jour"
-                                  @input="notifyUpdateDate(i, 'day', $event)"></EditableText>
+                                  @input="notifyUpdateDate(i, 'day', $event)" :ref="'day' + i"></EditableText>
                     de
                     <EditableText placeholder="hh:mm" type="time" :value="date.time_begin"
                                   @input="notifyUpdateDate(i, 'time_begin', $event)"></EditableText>
@@ -130,6 +130,12 @@
 
             addDate(){
                 this.activity.schedules.push({day: null, time_begin: null, time_end: null});
+
+                this.$nextTick(() => {
+                    console.log(this.$refs['day' + (this.schedules.length - 1)])
+                    this.$refs['day' + (this.schedules.length - 1)][0].select();
+                })
+
             },
 
             delDate(index){
