@@ -58,10 +58,11 @@
         data() {
             return {
                 hasChanges: false,
+                nameFilled: false,
                 dialogs: {
                     schedulesUnfilled: {
                         title: "Avertissement",
-                        message: "Vous n'avez pas rempli entièrement la date pour l'activitée en cours.",
+                        message: "Vous n'avez pas rempli entièrement la date pour l'activité en cours.",
                         buttons: [{label: "Finir de la remplir", class: "primary"}, {
                             label: "Quitter sans sauvegarder",
                             class: "critical"
@@ -89,6 +90,10 @@
             notifyUpdate(field, value){
                 let changes = {};
                 changes[field] = value;
+
+                if(field === 'name'){
+                    this.nameFilled = (value.length > 0);
+                }
 
                 this.$emit('update', changes);
                 this.hasChanges = true;
@@ -131,10 +136,11 @@
             addDate(){
                 this.activity.schedules.push({day: null, time_begin: null, time_end: null});
 
-                this.$nextTick(() => {
-                    console.log(this.$refs['day' + (this.schedules.length - 1)])
-                    this.$refs['day' + (this.schedules.length - 1)][0].select();
-                })
+                if(this.activity.schedules.length !== 1){
+                    this.$nextTick(() => {
+                        this.$refs['day' + (this.schedules.length - 1)][0].select();
+                    });
+                }
 
             },
 
@@ -151,7 +157,7 @@
                     this.dialog = "schedulesUnfilled";
                     this.nextRoute = next;
                 }
-                else if (this.activity.name == "" && this.hasChanges) {
+                else if (this.hasChanges && !this.nameFilled) {
                     this.dialog = "titleUnfilled";
                     this.nextRoute = next;
                 }
@@ -194,7 +200,11 @@
 
         },
 
-        watch: {},
+        watch: {
+            activity(a){
+                this.nameFilled = (a.name.length > 0);
+            }
+        },
 
         beforeRouteUpdate (to, from, next) {
             this.handleRouteChange(to, from, next);

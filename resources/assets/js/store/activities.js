@@ -92,7 +92,7 @@ export default new Store({
             }
 
             if (activity.color)
-                activity.color = Colors.nameToHex(a.color);
+                activity.color = Colors.nameToHex(activity.color);
 
             //a.schedules = a.schedules.filter(s => { return s.day !== null && s.time_begin !== null && s.time_end !== null});
             console.log(activity);
