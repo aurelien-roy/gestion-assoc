@@ -144,6 +144,8 @@
                         this.$emit('input', this.toObject(this.typedValue));
                     }
 
+                    console.log(this.$refs);
+
                     this.$refs.field.blur();
 
                     this.edit_mode = false;
