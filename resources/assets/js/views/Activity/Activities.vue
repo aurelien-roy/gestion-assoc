@@ -16,7 +16,7 @@
                         ></SideList>
 
                     </div>
-
+                    {{ actionbar.searchQuery }}
                     <div class="col col-8 scrollable">
                         <router-view :data="editableActivity" @update="updateActivity"></router-view>
                         <!--<Activity :data="editableActivity" v-if="editableActivity" @update="updateActivity" :quitHandler="quitHandler"></Activity>-->
@@ -36,6 +36,7 @@
 
     import Activity from '../../components/Activity'
     import SideList from '../../components/list/SideList'
+    import {days} from "../../helpers/enum";
 
     export default{
         name: 'Activities',
@@ -106,11 +107,14 @@
 
             updateActivity(changes){
                 // Bonjour je suis un commentaire
-                activities_store.execute('EDIT_ACTIVITY', {
-                    activity: this.activity,
-                    changes,
-                    sendToServer: this.activity.id
-                });
+                if (activities_store.execute('EDIT_ACTIVITY', {
+                        activity: this.activity,
+                        changes,
+                        sendToServer: this.activity.id
+                    })) {
+                    console.log("truuuuuuue")
+                    this.editableActivity = activities_store.getters.get(parseInt(this.period), parseInt(this.id));
+                }
 
                 if(this.creating && !this.creationSignalSent && this.activity.name.length){
                     console.log("create")
@@ -162,7 +166,22 @@
         computed: {
             activities(){
                 console.log('fetch activities ' + time.state.selectedPeriod);
-                return activities_store.getters.activitiesByPeriod(time.state.selectedPeriod);
+                let activities = activities_store.getters.activitiesByPeriod(time.state.selectedPeriod);
+
+                if (this.actionbar.searchQuery === '')
+                    return activities;
+                else // Recherche par le nom, le jour, le prof, le lieu, le niveau
+                    return activities.filter(a => {
+                        let s = this.actionbar.searchQuery.toLocaleLowerCase();
+                        //console.log(a.teacher);
+                        return (a.name.toLocaleLowerCase().includes(s)
+                        //|| a.teacher.toLocaleLowerCase().includes(s)
+                        //|| a.level.toLocaleLowerCase().includes(s)
+                        //|| a.level.toLocaleLowerCase().includes(s)
+                        || a.schedules.find(e => {
+                            return days[e.day].toLocaleLowerCase().includes(s);
+                        }))
+                    });
             },
 
             creating(){
@@ -215,19 +234,9 @@
 
             actionbar.setActions([]);
             actionbar.showPeriodDropdown(true);
-
+            actionbar.showSearch("Rechercher une activitée");
 
         },
-
-        /*beforeRouteUpdate (to, from, next) {
-         this.handleRouteChange(to, from, next);
-         },
-
-         beforeRouteLeave (to, from, next) {
-         this.handleRouteChange(to, from, next);
-         },*/
-
-        /*props: ['id', 'period']*/
     }
 
 </script>

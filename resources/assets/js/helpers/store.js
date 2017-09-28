@@ -49,12 +49,14 @@ export default class Store{
         let action = this._actions[actionName];
         
         // 2) On applique les modifications locales
-        
-        action.applyLocally(params, this);
+
+        let ret = action.applyLocally(params, this);
         
         // 3) On crée un objet et on le passe à la queue
         
         networking.addToQueue({makeRequest: (...a) => { action.makeRequest(...a) }, context: {params, store: this}, callback});
+
+        return ret;
     }
     
     fetch(fetcherName, params, callback){
