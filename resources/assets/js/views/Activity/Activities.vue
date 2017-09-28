@@ -88,7 +88,6 @@
 
             openActivity(activity){
                 this.$router.push({name: 'activity', params: {period: time.state.currentPeriod, id: activity.id}});
-                console.log("activity push :" + activity.id)
             },
 
             periodRequested(period){
@@ -112,12 +111,11 @@
                         changes,
                         sendToServer: this.activity.id
                     })) {
-                    console.log("truuuuuuue")
+
                     this.editableActivity = activities_store.getters.get(parseInt(this.period), parseInt(this.id));
                 }
 
                 if(this.creating && !this.creationSignalSent && this.activity.name.length){
-                    console.log("create")
                     let activity = this.activity;
                     let that = this;
                     activities_store.execute('CREATE_ACTIVITY', {activity: this.activity, period: time.state.currentPeriod}, () => {
@@ -132,10 +130,9 @@
             loadActivityModule(){
                 if(this.creating && (!this.activity || this.activity.id)){
                     this.creationSignalSent = false;
-                    console.log('creating');
                     this.activity = activities_store.genActivity();
-                    console.log(this.activity);
                     this.editableActivity = deepCopy(this.activity);
+
                 }else if(this.id !== undefined && this.period !== undefined){
 
                     //time.selectPeriod(this.period);
@@ -146,7 +143,6 @@
                         } else {
                             this.selection = [this.activity];
                             this.editableActivity = deepCopy(this.activity);
-                            console.log(this.editableActivity);
                         }
                     }
                 }else if(!this.creating){
@@ -165,7 +161,6 @@
 
         computed: {
             activities(){
-                console.log('fetch activities ' + time.state.selectedPeriod);
                 let activities = activities_store.getters.activitiesByPeriod(time.state.selectedPeriod);
 
                 if (this.actionbar.searchQuery === '')
@@ -197,7 +192,6 @@
             },
 
             '$route'(){
-                console.log(this.$route)
                 if(this.$route.params.period) {
                     time.selectPeriod(this.$route.params.period);
                     this.period = this.$route.params.period;

@@ -80,9 +80,7 @@ export default new Store({
 
             if (activity.color)
                 activity.color = Colors.nameToHex(activity.color);
-
-            //a.schedules = a.schedules.filter(s => { return s.day !== null && s.time_begin !== null && s.time_end !== null});
-            console.log(activity);
+            
             if (activity.schedules)
                 activity.schedules.forEach(s => {
                     s.day++;
@@ -94,7 +92,6 @@ export default new Store({
         },
     
         decodeActivity(activity){
-            console.log(activity);
             let a = Object.assign(this.genActivity(), activity);
             
             a.color = Colors.hexToName(a.color);
@@ -124,7 +121,6 @@ export default new Store({
     
         CREATE_ACTIVITY: {
             applyLocally(params, store){
-                console.log('create applied locally')
                 params.activity.virtualId = store.state.virtualId++;
                 store.state.activities[params.period].push(params.activity);
             },
@@ -160,7 +156,6 @@ export default new Store({
             
             makeRequest(request, context, result){
                 if (context.params.sendToServer) {
-                    console.log("SEND TO SERVEUR");
                     request('PATCH', 'activity/' + context.params.activity.id, context.store.encodeActivity(deepCopy(context.params.changes))).then(() => {
                         result.isSuccess();
                     });
@@ -204,7 +199,6 @@ export default new Store({
                     let period = context.params;
                     
                     Vue.set(context.store.state.activities, period, []);
-                    console.log(response);
                     if(response.data && Array.isArray(response.data.data)){
                         response.data.data.forEach((a) => {
                             context.store.state.activities[period].push(context.store.decodeActivity(a));

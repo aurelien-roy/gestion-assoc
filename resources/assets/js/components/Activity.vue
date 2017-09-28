@@ -104,7 +104,6 @@
                 this.schedules[index][field] = value;
 
                 if (this.dateFilled(index)) {
-                    console.log(this.schedules);
                     this.notifyUpdate('schedules', this.schedulesFilled);
                 }
             },
@@ -145,7 +144,6 @@
             },
 
             delDate(index){
-                console.log(this.schedules);
                 this.schedules.splice(index, 1);
                 this.notifyUpdate('schedules', this.schedulesFilled);
             },
@@ -181,8 +179,6 @@
             },
 
             schedules(){
-                console.log('schedules to display')
-                console.log(this.activity.schedules);
 
                 if (this.activity.schedules.length === 0)
                     this.addDate();

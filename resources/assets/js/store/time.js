@@ -26,8 +26,6 @@ let time_store = {
             this.state.selectedPeriod = newPeriod;
             this.state.periodChangeCallbacks.forEach(o => o.onPeriodChange());
         }
-        
-        console.log('period selected: ' + newPeriod);
     },
     
     periodName(period){
