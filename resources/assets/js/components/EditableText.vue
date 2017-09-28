@@ -197,6 +197,10 @@
                 this.$nextTick(() => {
                    this.doneEdit();
                 });
+            },
+
+            select(){
+                this.$refs.field.select();
             }
         },
         

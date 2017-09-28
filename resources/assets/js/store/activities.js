@@ -107,6 +107,7 @@ export default new Store({
         },
     
         decodeActivity(activity){
+            console.log(activity);
             let a = Object.assign(this.genActivity(), activity);
             
             a.color = Colors.hexToName(a.color);
@@ -148,7 +149,22 @@ export default new Store({
         EDIT_ACTIVITY: {
             
             applyLocally(params, store){
+                let ret = undefined;
+
+                // Si le schedules à était modifié on trie la dernière ligne
+                if (params.changes["schedules"] && params.changes["schedules"].length >= 2) {
+                    let length = params.changes["schedules"].length;
+                    let newDay = params.changes["schedules"][length - 1].day;
+                    let i = length - 2;
+                    while (i >= 0 && params.changes["schedules"][i].day > newDay) {
+                        i--;
+                    }
+                    params.changes["schedules"].splice(i + 1, 0, params.changes["schedules"].pop());
+                    ret = true;
+                }
+
                 Object.assign(params.activity, deepCopy(params.changes));
+                return ret;
             },
             
             makeRequest(request, context, result){
