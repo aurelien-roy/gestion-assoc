@@ -61,19 +61,19 @@
                 nameFilled: false,
                 dialogs: {
                     schedulesUnfilled: {
-                        title: "Avertissement",
-                        message: "Vous n'avez pas rempli entièrement la date pour l'activité en cours.",
-                        buttons: [{label: "Finir de la remplir", class: "primary"}, {
-                            label: "Quitter sans sauvegarder",
+                        title: "Un créneau n'a pas été rempli entièrement",
+                        message: "Vous devez renseigner le jour, l'heure et début et de fin pour chaque créenau ajouté.",
+                        buttons: [{label: "Continuer à remplir", class: "primary"}, {
+                            label: "Supprimer le créneau",
                             class: "critical"
                         }],
                         visible: true
                     },
                     titleUnfilled: {
-                        title: "Avertissement",
-                        message: "Vous n'avez pas donné de nom à votre activitée.",
-                        buttons: [{label: "Finir de la remplir", class: "primary"}, {
-                            label: "Quitter sans sauvegarder",
+                        title: "Votre activité n'a pas de nom",
+                        message: "Les activités sans nom ne sont pas sauvegardés.",
+                        buttons: [{label: "Continuer à remplir", class: "primary"}, {
+                            label: "Supprimer l'activité",
                             class: "critical"
                         }],
                         visible: true
