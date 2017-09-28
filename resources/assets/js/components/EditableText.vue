@@ -144,8 +144,6 @@
                         this.$emit('input', this.toObject(this.typedValue));
                     }
 
-                    console.log(this.$refs);
-
                     this.$refs.field.blur();
 
                     this.edit_mode = false;
@@ -282,8 +280,6 @@
         },
         
         beforeMount() {
-            console.log("::: " + this.type);
-            console.log(this.value);
             if(this.value !== null) {
                 this.objectValue = this.value;
                 this.typedValue = this.toInputString(this.value);

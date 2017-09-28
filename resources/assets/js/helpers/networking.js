@@ -25,7 +25,7 @@ export default {
                     if(item.callback !== undefined){
                         item.callback(true);
                     }
-                    console.log('request done');
+                    
                     self.queue.shift()
                     self.execute();
                 },
@@ -41,8 +41,6 @@ export default {
     },
     
     request(method, url, data){
-        
-        console.log('request ' + url);
         
         return new Promise((resolve, reject) => {
             
