@@ -177,9 +177,9 @@
             //Renvoi les dates du schedules qui sont remplis
             schedulesFilled(){
                 return this.schedules.filter(d => {
-                    return (d.day != null &&
-                    d.time_begin != null &&
-                    d.time_end != null);
+                    return (d.day !== null &&
+                    d.time_begin !== null &&
+                    d.time_end !== null);
                 });
             }
         },
@@ -199,7 +199,7 @@
             this.handleRouteChange(to, from, next);
         },
 
-        props: ['data', 'a'],
+        props: ['data'],
     }
 
 </script>
