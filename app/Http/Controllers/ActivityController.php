@@ -53,6 +53,8 @@ class ActivityController extends Controller
         $activity->teacher = $request->get('teacher', $activity->teacher);
         $activity->maxParticipants = $request->get('maxParticipants', $activity->maxParticipants);
 
+        $activity->save();
+
         if ($request->has('schedules')) {
             $activity->schedules()->delete();
 
@@ -65,8 +67,6 @@ class ActivityController extends Controller
                 $activitySchedule->save();
             }
         }
-
-        $activity->save();
 
         return fractal()
             ->item($activity)

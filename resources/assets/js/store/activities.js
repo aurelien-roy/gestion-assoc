@@ -126,7 +126,7 @@ export default new Store({
             },
     
             makeRequest(request, context, result){
-                request('POST', 'activity', context.store.encodeActivity(context.params.activity, context.params.period)).then(() => {
+                request('POST', 'activity', context.store.encodeActivity(deepCopy(context.params.activity), context.params.period)).then(() => {
                     context.params.activity.id = context.store.state.activities[context.params.period].length;
                     result.isSuccess();
                 });
