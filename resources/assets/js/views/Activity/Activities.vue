@@ -105,7 +105,6 @@
             },
 
             updateActivity(changes){
-                // Bonjour je suis un commentaire
                 if (activities_store.execute('EDIT_ACTIVITY', {
                         activity: this.activity,
                         changes,
@@ -228,7 +227,7 @@
 
             actionbar.setActions([]);
             actionbar.showPeriodDropdown(true);
-            actionbar.showSearch("Rechercher une activitée");
+            actionbar.showSearch("Rechercher une activité");
 
         },
     }

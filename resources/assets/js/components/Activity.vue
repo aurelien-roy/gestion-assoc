@@ -9,7 +9,7 @@
 
             <div class="pl10 gray-text">
                 <div class="dashed-line"></div>
-                <p v-for="(date,i) in schedules" class="m0 contains-input">
+                <p v-for="(date, i) in schedules" class="m0 contains-input">
                     tous les
                     <EditableText type="day" :value="date.day" placeholder="jour"
                                   @input="notifyUpdateDate(i, 'day', $event)" :ref="'day' + i"></EditableText>
