@@ -15,7 +15,12 @@ class AddOrganizationToUsersTable extends Migration
     {
         if (Schema::hasTable('users') && !Schema::hasColumn('users', 'organization_id')) {
             Schema::table('users', function (Blueprint $table) {
-                $table->integer('organization_id')->unsigned()->after('password');
+
+                $o_id = $table->integer('organization_id')->unsigned()->after('password');
+
+                if(Schema::getConnection()->getDriverName() === 'sqlite'){
+                    $o_id->nullable();
+                }
 
                 $table->foreign('organization_id')->references('id')->on('organizations')->onDelete('cascade');
             });

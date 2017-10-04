@@ -20,13 +20,12 @@ let time_store = {
     
     selectPeriod(newPeriod){
         let oldPeriod = this.state.selectedPeriod;
+        newPeriod = parseInt(newPeriod);
         
         if(newPeriod !== oldPeriod) {
             this.state.selectedPeriod = newPeriod;
-            this.state.periodChangeCallbacks.forEach(o => o.onPeriodChange(newPeriod, oldPeriod));
+            this.state.periodChangeCallbacks.forEach(o => o.onPeriodChange());
         }
-        
-        console.log('period selected: ' + newPeriod);
     },
     
     periodName(period){
@@ -39,5 +38,3 @@ let time_store = {
 }
 
 export default time_store;
-
-time_store.addPeriodChangeCallback(activities);

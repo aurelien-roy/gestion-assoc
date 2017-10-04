@@ -15,6 +15,7 @@ class RegisterTest extends TestCase
     const LAST_NAME = 'Test last name';
     const EMAIL = 'email@test.app';
     const PASSWORD = 'testtest';
+
     /**
      * A basic test example.
      *
@@ -23,10 +24,10 @@ class RegisterTest extends TestCase
     public function testRegister()
     {
         $response = $this->json('POST', '/api/register', [
-            'first_name'    =>  self::FIRST_NAME,
-            'last_name'    =>  self::LAST_NAME,
-            'email'    =>  self::EMAIL,
-            'password'  =>  self::PASSWORD,
+            'first_name' => self::FIRST_NAME,
+            'last_name' => self::LAST_NAME,
+            'email' => self::EMAIL,
+            'password' => self::PASSWORD,
         ]);
 
         $response
@@ -45,10 +46,10 @@ class RegisterTest extends TestCase
     public function testUserAlreadyExist()
     {
         $response = $this->json('POST', '/api/register', [
-            'first_name'    =>  self::FIRST_NAME,
-            'last_name'    =>  self::LAST_NAME,
-            'email'    =>  self::EMAIL,
-            'password'  =>  self::PASSWORD,
+            'first_name' => self::FIRST_NAME,
+            'last_name' => self::LAST_NAME,
+            'email' => self::EMAIL,
+            'password' => self::PASSWORD,
         ]);
 
         $response

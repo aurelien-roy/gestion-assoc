@@ -26,16 +26,20 @@ export default {
 		this.initialize()
 	},
 	
+	accessToken(){
+		return this.state.access_token;
+	},
+	
 	isAuthorized(){
 		return this.state.access_token && this.state.expiration > Date.now();
 	},
 	
 	checkRouteAuthorization(to, from, next){
 		if(this.isAuthorized()){
-			if(to.name === 'login')
+			if(to.name === 'login' || to.name === 'register')
             	next({ name: 'home'})
 		}else{
-			if(to.name !== 'login')
+			if(to.name !== 'login' && to.name !== 'register')
 				next({name: 'login'});
 		}
 		

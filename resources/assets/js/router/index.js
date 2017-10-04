@@ -5,30 +5,70 @@ import Login from '../views/Auth/Login.vue'
 import Register from '../views/Auth/Register.vue'
 import NotFound from '../views/NotFound.vue'
 import Home from '../views/Home.vue'
-import Activities from '../views/Activity/Activities.vue'
-import Activity from '../views/Activity/Activity.vue'
 import actionbar from '../store/actionbar'
 import auth from '../store/auth'
+
+import Activity from '../components/Activity.vue'
+import Activities from '../views/Activity/Activities.vue'
+import PricingPolicies from '../views/PricingPolicies.vue'
+
+import Members from '../views/Member/Members.vue'
+import MemberViewer from '../views/Member/MemberViewer.vue'
 
 Vue.use(VueRouter)
 
 auth.initialize();
 
 const router = new VueRouter({
-	mode: 'history',
-	routes: [
-		{ name: 'root', path: '/', component: Home },
-        { name: 'activities', path: '/activites', component: Activities},
-        { name: 'new_activity', path: '/activites/new', component: Activity},
-        { name: 'activity', path: '/activites/:id(\\d+)', component: Activity, props: true},
-		{ name: 'register', path: '/register', component: Register },
-		{ name: 'login', path: '/login', component: Login, meta: {layout: false} },
-		{ name: 'not_found', path: '*', component: NotFound },
-	]
-})
+    mode: 'history',
+    routes: [
+        {name: 'root', path: '/', component: Home},
+      
+      
+      
+        {
+          path: '/activites', component: Activities,
+          children: [
+              {name: 'activities', path: '', component: null },
+              {name: 'activity', path: ':period(\\d{4})/:id(\\d+)', component: Activity },
+              {name: 'new_activity', path: 'creer', component: Activity }
+          ],
+          
+        },
+      
+        // Princing policies
+        {name: 'pricings', path:'/politiques-tarifaires', component: PricingPolicies},
+      
+        
+        //Members
+        {
+            name: 'members', path: '/membres', component: Members,
+            children: [
+                {name: 'new_member', path: 'member_viewer/new', component: MemberViewer},
+                {name: 'open_member', path: 'member_viewer/:id(\\d+)', component: MemberViewer, props: true}
+            ]
+        },
+    
+    
+        // Auth
+        {name: 'login', path: '/login', component: Login, meta: {layout: false}},
+        {name: 'not_found', path: '*', component: NotFound},
+        {name: 'register', path: '/register', component: Register, meta: {layout: false}},
+    ],
+    
+    meta:{
+        nav: [
+            [
+                {title: 'Activitiés', routes: ['activities', 'activity', 'new_activity']},
+                {title: 'Politiques tarifaires', routes: ['pricings']}
+            ]
+        ]
+    }
+});
 
 router.afterEach((to, from) => {
     actionbar.actions = [];
+    actionbar.showPeriodDropdown(false);
 });
 
 router.beforeEach((to, from, next) => { auth.checkRouteAuthorization(to, from, next) });
