@@ -169,9 +169,8 @@
                         let s = this.actionbar.searchQuery.toLocaleLowerCase();
                         //console.log(a.teacher);
                         return (a.name.toLocaleLowerCase().includes(s)
-                        //|| a.teacher.toLocaleLowerCase().includes(s)
-                        //|| a.level.toLocaleLowerCase().includes(s)
-                        //|| a.level.toLocaleLowerCase().includes(s)
+                        || a.teacher.toLocaleLowerCase().includes(s)
+                        || a.level.toLocaleLowerCase().includes(s)
                         || a.schedules.find(e => {
                             return days[e.day].toLocaleLowerCase().includes(s);
                         }))

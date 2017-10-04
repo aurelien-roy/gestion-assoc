@@ -14,7 +14,7 @@ const { mix } = require('laravel-mix');
 mix
 .copy('node_modules/imperavi-kube/src/_scss/*', 'resources/assets/sass/vendor') // On copie les fichiers Kube CSS dans nos assets
 .sass('resources/assets/sass/app.scss', 'public/css')
-.js('resources/assets/js/app.js', 'public/js');
-
+.js('resources/assets/js/app.js', 'public/js')
+.sourceMaps();
 
 //if(mix.config.inProduction) mix.version(); // Production uniquement car hash non supporté en mode HOT.
