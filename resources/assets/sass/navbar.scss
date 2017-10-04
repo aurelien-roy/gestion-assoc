@@ -144,5 +144,9 @@ header{
 
   .selector{
     width: 150px;
+
+    &.wide{
+      width: 280px;
+    }
   }
 }

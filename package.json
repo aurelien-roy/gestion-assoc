@@ -8,15 +8,15 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
   },
   "devDependencies": {
-    "cross-env": "^5.0.1",
-    "laravel-mix": "^1.4.2"
+    "cross-env": "^5.0.5",
+    "laravel-mix": "^1.4.4"
   },
   "dependencies": {
     "axios": "^0.15.3",
     "faker": "^4.1.0",
     "imperavi-kube": "^6.5.2",
     "sticky-position": "^1.0.1",
-    "vue": "^2.4.2",
+    "vue": "^2.4.4",
     "vue-router": "^2.7.0",
     "vuex": "^2.3.1"
   }

@@ -12,7 +12,7 @@
                     </div>
                 </div>
 
-                <input type="text" class="" v-model="actionbar.searchQuery" :placeholder="actionbar.searchText"
+                <input class="wide selector" type="text" v-model="actionbar.searchQuery" :placeholder="actionbar.searchText"
                        v-if="actionbar.searchVisible"/>
 
                 <select class="selector" v-model="selectedPeriod" v-if="actionbar.periodDropdown">
