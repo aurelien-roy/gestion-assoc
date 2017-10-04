@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Activity;
+use App\ActivitySchedule;
 use App\Http\Requests\StoreActivityRequest;
 use App\Http\Requests\UpdateActivityRequest;
 use App\Transformers\ActivityTransformer;
@@ -17,6 +18,7 @@ class ActivityController extends Controller
         return fractal()
             ->collection($activities)
             ->transformWith(new ActivityTransformer())
+            ->includeSchedules()
             ->toArray();
     }
 
@@ -27,29 +29,19 @@ class ActivityController extends Controller
         return fractal()
             ->item($activity)
             ->transformWith(new ActivityTransformer())
+            ->includeSchedules()
             ->toArray();
     }
 
     public function store(StoreActivityRequest $request)
     {
         $activity = new Activity();
-        $activity->name = $request->name;
-        $activity->period = $request->period;
-        $activity->color = $request->color;
-        $activity->level = $request->level;
-        $activity->teacher = $request->teacher;
-        $activity->maxParticipants = $request->maxParticipants;
         $activity->organization()->associate($request->user()->organization);
 
-        $activity->save();
-
-        return fractal()
-            ->item($activity)
-            ->transformWith(new ActivityTransformer())
-            ->toArray();
+        return $this->update($request, $activity);
     }
 
-    public function update(UpdateActivityRequest $request, Activity $activity)
+    public function update(StoreActivityRequest $request, Activity $activity)
     {
         $this->authorize('update', $activity);
 
@@ -57,13 +49,29 @@ class ActivityController extends Controller
         $activity->period = $request->get('period', $activity->period);
         $activity->color = $request->get('color', $activity->color);
         $activity->level = $request->get('level', $activity->level);
+        $activity->place = $request->get('place', $activity->place);
         $activity->teacher = $request->get('teacher', $activity->teacher);
         $activity->maxParticipants = $request->get('maxParticipants', $activity->maxParticipants);
+
         $activity->save();
+
+        if ($request->has('schedules')) {
+            $activity->schedules()->delete();
+
+            foreach($request->get('schedules') as $schedule){
+                $activitySchedule = new ActivitySchedule();
+                $activitySchedule->day = intval($schedule['day']);
+                $activitySchedule->start = $schedule['start'];
+                $activitySchedule->end = $schedule['end'];
+                $activitySchedule->activity()->associate($activity);
+                $activitySchedule->save();
+            }
+        }
 
         return fractal()
             ->item($activity)
             ->transformWith(new ActivityTransformer())
+            ->includeSchedules()
             ->toArray();
     }
 

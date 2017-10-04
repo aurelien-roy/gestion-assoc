@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Request;
+
 
 class StoreActivityRequest extends FormRequest
 {
@@ -24,12 +26,22 @@ class StoreActivityRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'  =>  'required|string|max:100',
-            'period'    =>  'required|digits:4',
-            'color' =>  'required|string|size:7|regex:/^#[0-9a-f]{6}$/',
-            'level' =>  'required|string|max:150',
-            'teacher'   =>  'required|string|max:100',
-            'maxParticipants'   =>  'required|integer|min:1'
+            'name'  =>  $this->requiredOnPost() . 'string|max:100',
+            'period'    =>  $this->requiredOnPost() . 'digits:4',
+            'color' =>  $this->requiredOnPost() . 'string|size:7|regex:/^#[0-9a-f]{6}$/',
+            'level' =>  'nullable|string|max:100',
+            'place' => 'nullable|string|max:100',
+            'teacher'   =>  'nullable|string|max:100',
+            'maxParticipants'   =>  'integer|min:1',
+            'schedules' => 'array',
+            'schedules.*.day' => 'required|integer|between:1,7',
+            'schedules.*.start' => 'required|date_format:G:i',
+            'schedules.*.end' => 'required|date_format:G:i'
+
         ];
+    }
+
+    public function requiredOnPost(){
+        return Request::method() === 'POST' ? 'required|' : '';
     }
 }

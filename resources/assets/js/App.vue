@@ -1,5 +1,5 @@
 <template>
-    <div class="h100">
+    <div class="full-height-container">
         <Navbar v-show="showLayout"></Navbar>
         <Actionbar v-show="showLayout"></Actionbar>
         <router-view></router-view>

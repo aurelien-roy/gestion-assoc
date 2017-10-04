@@ -19,12 +19,4 @@ Route::group(['prefix'  =>  'activity'], function () {
     Route::post('/', 'ActivityController@store')->middleware('auth:api');
     Route::patch('/{activity}', 'ActivityController@update')->middleware('auth:api');
     Route::delete('/{activity}', 'ActivityController@destroy')->middleware('auth:api');
-
-    Route::group(['prefix'  =>  '{activity}/schedule'], function () {
-        Route::get('/', 'ActivityScheduleController@index')->middleware('auth:api');
-        Route::get('/{activitySchedule}', 'ActivityScheduleController@show')->middleware('auth:api');
-        Route::post('/', 'ActivityScheduleController@store')->middleware('auth:api');
-        Route::patch('/{activitySchedule}', 'ActivityScheduleController@update')->middleware('auth:api');
-        Route::delete('/{activitySchedule}', 'ActivityScheduleController@destroy')->middleware('auth:api');
-    });
 });

@@ -1,104 +1,234 @@
 <template>
+    <div class="flex flexible relative">
+        <div class="absolute w100 h100">
+            <div class="row wrapped push-center h100">
+                <div class="row gutters col col-12 h100">
+                    <div class="col col-4 h100 scrollable left-pane no-selectable">
 
-    <div class="row wrapped push-center">
-        <h1>Activités</h1>
+                        <SideList
+                                :items="activities"
+                                v-model="selection"
 
-        <input placeholder="Rechercher un prof, une activité ou encore un jour" v-model="search">
+                                component="ActivityItem"
+                                :sorting="sorting"
+                                @create="createActivity"
+                                @delete="deleteSelection"
+                        ></SideList>
 
-        <table v-if="loaded">
-            <tr>
-                <th>Activité</th>
-                <th>Jour</th>
-                <th>Encadrant</th>
-                <th>Effectif</th>
-                <th></th>
-            </tr>
-
-            <tr v-for="a in activities" @click="openActivity(a)">
-                <td>{{ a.name + ' (' + a.age + ' / ' + a.level + ')' }}</td>
-                <td>{{ a.day }} de {{ a.time_begin }}h à {{ a.time_end }}h</td>
-                <td>{{ a.teacher }}</td>
-                <td>{{ a.effectif_current }}/{{ a.effectif_max }}</td>
-                <td>
-                    <a @click.prevent="del(a.id)">Sup</a>
-                </td>
-            </tr>
-        </table>
-
-        <p v-else>CHARGEMENT...</p>
-
-        <router-link to="ouvrir_activite"><i class="activities w24"></i>Ouvrir activité</router-link>
-
+                    </div>
+                    {{ actionbar.searchQuery }}
+                    <div class="col col-8 scrollable">
+                        <router-view :data="editableActivity" @update="updateActivity"></router-view>
+                        <!--<Activity :data="editableActivity" v-if="editableActivity" @update="updateActivity" :quitHandler="quitHandler"></Activity>-->
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</template>
-<style>
 
-</style>
+</template>
+<style lang="scss" src="../../../sass/list.scss"></style>
 <script>
 
     import activities_store from '../../store/activities'
     import actionbar from '../../store/actionbar'
     import time from '../../store/time'
-    
+
+    import Activity from '../../components/Activity'
+    import SideList from '../../components/list/SideList'
+    import {days} from "../../helpers/enum";
+
     export default{
         name: 'Activities',
 
         data(){
             return {
+                activity_id: null,
+                period: null,
                 actionbar,
                 activities_store,
                 time,
-                search: ''
+                search: '',
+                sortBy: 'Nom',
+                selection: [],
+                edit: false,
+                id: undefined,
+
+                sorting: {
+                    'Nom': (a, b) => a.name.localeCompare(b.name),
+
+                    'Date': (a, b) => {
+                        if(a.day !== b.day){
+                            return a.day - b.day;
+                        }else{
+                            return a.time_begin - b.time_begin;
+                        }
+                    }
+                },
+
+                fetching: false,
+                activity: null,
+                editableActivity: null,
+                creationSignalSent: false,
+                quitHandler: null,
             }
         },
-        components: {},
-        
-        methods: {
-            del(id){
-                activities_store.delActivity(id);
+        components: { SideList, Activity },
 
+        methods: {
+            createActivity(){
+                this.$router.push({name: 'new_activity'});
+            },
+
+            deleteSelection(){
+                if(this.selection.length) {
+                    activities_store.execute('DELETE_ACTIVITIES', {period: time.state.selectedPeriod, activities: this.selection});
+                }
             },
 
             openActivity(activity){
-                console.log('open');
-                console.log(activity);
-                this.$router.push({name: 'activity', params: {id: activity.id}});
-            }
+                this.$router.push({name: 'activity', params: {period: time.state.currentPeriod, id: activity.id}});
+            },
+
+            periodRequested(period){
+                let that = this;
+
+                let callback = () => {
+                    if(callback === that.fetching){
+                        that.fetching = false;
+                        that.loadActivityModule()
+                    }
+                }
+
+                this.fetching = callback;
+                activities_store.fetch('ACTIVITIES_BY_PERIOD', period, callback);
+            },
+
+            updateActivity(changes){
+                if (activities_store.execute('EDIT_ACTIVITY', {
+                        activity: this.activity,
+                        changes,
+                        sendToServer: this.activity.id
+                    })) {
+
+                    this.editableActivity = activities_store.getters.get(parseInt(this.period), parseInt(this.id));
+                }
+
+                if(this.creating && !this.creationSignalSent && this.activity.name.length){
+                    let activity = this.activity;
+                    let that = this;
+                    activities_store.execute('CREATE_ACTIVITY', {activity: this.activity, period: time.state.currentPeriod}, () => {
+                        if(that.activity === activity){
+                            that.$router.push({name: 'activity', params: {period: time.state.selectedPeriod, id: activity.id}})
+                        }
+                    });
+                    this.creationSignalSent = true;
+                }
+            },
+
+            loadActivityModule(){
+                if(this.creating && (!this.activity || this.activity.id)){
+                    this.creationSignalSent = false;
+                    this.activity = activities_store.genActivity();
+                    this.editableActivity = deepCopy(this.activity);
+
+                }else if(this.id !== undefined && this.period !== undefined){
+
+                    //time.selectPeriod(this.period);
+                    if(!this.fetching) {
+                        this.activity = activities_store.getters.get(parseInt(this.period), parseInt(this.id));
+                        if (!this.activity) {
+                            this.$router.push({name: 'activities'})
+                        } else {
+                            this.selection = [this.activity];
+                            this.editableActivity = deepCopy(this.activity);
+                        }
+                    }
+                }else if(!this.creating){
+                    this.activity = null;
+                    this.editableActivity = null;
+                }
+            },
+
+            /*handleRouteChange(to, from, next){
+             if(from.name === 'activity'){
+             this.quitHandler
+             }
+             }*/
+
         },
-        
+
         computed: {
             activities(){
-                if(this.search === '')
-                    return activities_store.state.activities;
-                else
-                    return activities_store.state.activities.filter(a => {
-                        let s = this.search.toLocaleLowerCase();
-                       return (a.name.toLocaleLowerCase().includes(s)
-                                || a.teacher.toLocaleLowerCase().includes(s))
+                let activities = activities_store.getters.activitiesByPeriod(time.state.selectedPeriod);
+
+                if (this.actionbar.searchQuery === '')
+                    return activities;
+                else // Recherche par le nom, le jour, le prof, le lieu, le niveau
+                    return activities.filter(a => {
+                        let s = this.actionbar.searchQuery.toLocaleLowerCase();
+                        //console.log(a.teacher);
+                        return (a.name.toLocaleLowerCase().includes(s)
+                        || a.teacher.toLocaleLowerCase().includes(s)
+                        || a.level.toLocaleLowerCase().includes(s)
+                        || a.schedules.find(e => {
+                            return days[e.day].toLocaleLowerCase().includes(s);
+                        }))
                     });
             },
 
-            loaded(){
-                return activities_store.state.async.loaded;
+            creating(){
+                return this.$route.name === 'new_activity';
             }
         },
-        
-        watch: {
-            loaded(loaded){
-                if(!loaded){
-                    activities_store.fetch(time.state.selectedPeriod);
+
+        watch:{
+            'time.state.selectedPeriod'(p, op){
+                if(p !== op) {
+                    this.periodRequested(p);
+                }
+            },
+
+            '$route'(){
+                if(this.$route.params.period) {
+                    time.selectPeriod(this.$route.params.period);
+                    this.period = this.$route.params.period;
+                }
+
+                this.id = this.$route.params.id;
+
+                this.loadActivityModule();
+            },
+
+            selection(s){
+                if(s.length === 1) {
+                    this.openActivity(s[0]);
+                }else{
+                    this.activity = null;
+                    this.editableActivity = null;
                 }
             }
         },
-        
+
         mounted(){
-            activities_store.fetch(time.state.selectedPeriod);
+
+            if(this.$route.params.period) {
+                time.selectPeriod(this.$route.params.period);
+                this.period = this.$route.params.period;
+            }
+
+            this.id = this.$route.params.id;
+
+            this.periodRequested(time.state.selectedPeriod);
+
+            this.loadActivityModule();
 
 
-            this.actionbar.setActions([
-              {name: "Créer", routeTo: 'new_activity'}
-            ]);
-        }
+            actionbar.setActions([]);
+            actionbar.showPeriodDropdown(true);
+            actionbar.showSearch("Rechercher une activité");
+
+        },
     }
 
 </script>
