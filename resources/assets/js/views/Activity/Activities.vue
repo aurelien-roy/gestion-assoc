@@ -104,8 +104,14 @@
             },
 
             deleteSelection(){
-                if(this.selection.length) {
-                    activities_store.execute('DELETE_ACTIVITIES', {period: time.state.selectedPeriod, activities: this.selection});
+                if (this.selection.length === 1) {
+
+                    let that = this;
+                    activities_store.execute('DELETE_ACTIVITIES',
+                        {period: time.state.selectedPeriod, activities: this.selection},
+                        () => {
+                            that.$router.push({name: 'activities'});
+                        });
                 }
             },
 

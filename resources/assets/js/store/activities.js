@@ -176,7 +176,7 @@ export default new Store({
             },
             
             makeRequest(request, context, result){
-                request('DELETE', 'activity', {id: context.params.activity.id}).then(() => {
+                request('DELETE', 'activity/' + context.params.activities[0].id).then(() => {
                     result.isSuccess();
                 });
                 
