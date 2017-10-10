@@ -49,6 +49,13 @@ export class Time{
     gt(time){
         return (this.h > time.h ? true : (this.h === time.h ? this.m > time.m : false));
     }
+
+    compare(time) {
+        if (this.h === time.h)
+            return this.h - time.h;
+        else
+            return this.m - time.m;
+    }
     
     clone(){
         return new Time(this.h, this.m);
