@@ -12,6 +12,7 @@
                                 component="ActivityItem"
                                 :sorting="sorting"
                                 @create="createActivity"
+                                @duplicate="duplicateActivity"
                                 @delete="deleteSelection"
                         ></SideList>
 
@@ -58,10 +59,17 @@
                     'Nom': (a, b) => a.name.localeCompare(b.name),
 
                     'Date': (a, b) => {
-                        if(a.day !== b.day){
-                            return a.day - b.day;
+                        if (a.schedules.length === 0 && b.schedules.length === 0)
+                            return 0;
+                        else if (a.schedules.length === 0)
+                            return -1;
+                        else if (b.schedules.length === 0)
+                            return 1;
+
+                        if (a.schedules[0].day !== b.schedules[0].day) {
+                            return a.schedules[0].day - b.schedules[0].day;
                         }else{
-                            return a.time_begin - b.time_begin;
+                            return a.schedules[0].time_begin.compare(b.schedules[0].time_begin);
                         }
                     }
                 },
@@ -80,9 +88,30 @@
                 this.$router.push({name: 'new_activity'});
             },
 
+            duplicateActivity(){
+                if (!this.creating && this.selection.length === 1) {
+                    let copy = deepCopy(this.selection[0]);
+                    copy.name += " (copie)";
+                    let that = this;
+
+                    activities_store.execute('CREATE_ACTIVITY', {
+                        activity: copy,
+                        period: time.state.currentPeriod
+                    }, () => {
+                        that.$router.push({name: 'activity', params: {period: time.state.selectedPeriod, id: copy.id}});
+                    });
+                }
+            },
+
             deleteSelection(){
-                if(this.selection.length) {
-                    activities_store.execute('DELETE_ACTIVITIES', {period: time.state.selectedPeriod, activities: this.selection});
+                if (this.selection.length === 1) {
+
+                    let that = this;
+                    activities_store.execute('DELETE_ACTIVITIES',
+                        {period: time.state.selectedPeriod, activities: this.selection},
+                        () => {
+                            that.$router.push({name: 'activities'});
+                        });
                 }
             },
 
@@ -105,12 +134,12 @@
             },
 
             updateActivity(changes){
+                // Si le store fais des modif ont les propague
                 if (activities_store.execute('EDIT_ACTIVITY', {
                         activity: this.activity,
                         changes,
                         sendToServer: this.activity.id
                     })) {
-
                     this.editableActivity = activities_store.getters.get(parseInt(this.period), parseInt(this.id));
                 }
 
@@ -150,12 +179,6 @@
                 }
             },
 
-            /*handleRouteChange(to, from, next){
-             if(from.name === 'activity'){
-             this.quitHandler
-             }
-             }*/
-
         },
 
         computed: {
@@ -167,7 +190,7 @@
                 else // Recherche par le nom, le jour, le prof, le lieu, le niveau
                     return activities.filter(a => {
                         let s = this.actionbar.searchQuery.toLocaleLowerCase();
-                        //console.log(a.teacher);
+
                         return (a.name.toLocaleLowerCase().includes(s)
                         || a.teacher.toLocaleLowerCase().includes(s)
                         || a.level.toLocaleLowerCase().includes(s)
