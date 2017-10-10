@@ -152,6 +152,10 @@ i{
         background-image: url($icons_path + 'delete.svg');
     }
 
+    &.delete-inline{
+        background-image: url($icons_path + 'delete-inline.svg');
+    }
+
     &.sort-by{
         background-image: url($icons_path + 'sort_by.png');
     }
@@ -471,5 +475,22 @@ button{
 
     &:last-child{
         margin-bottom: 0;
+    }
+}
+
+.btn-link{
+    font-weight:bold;
+    color: $primary_color;
+}
+
+.btn-icon{
+
+
+    i{
+        @include icon(20px);
+    }
+
+    &.right{
+        float: right;
     }
 }

@@ -20,9 +20,12 @@
                     <EditableText placeholder="hh:mm" type="time" :value="date.time_end"
                                   @input="notifyUpdateDate(i, 'time_end', $event)"></EditableText>
 
-                    <button v-if="i === schedules.length - 1 && dateFilled(i)" v-on:click="addDate()">Ajouter</button>
-                    <button v-if="dateFilled(i) || datePartFilled(i)" v-on:click="delDate(i)">Sup</button>
+
+                    <a href="#" v-if="dateFilled(i) || datePartFilled(i)"  @click.prevent="delDate(i)" class="btn-icon right" title="Supprimer le créneau"><i class="icon delete-inline"></i></a>
+                    <!--&nbsp;&nbsp;
+                    <a class="btn-link" v-if="i != 0 && (dateFilled(i) || datePartFilled(i))" @click.prevent="delDate(i)" href="#">Supprimer</a>-->
                 </p>
+                <p class="m0 contains-input" v-if="schedulesFilled.length === schedules.length"><a class="btn-link" @click.prevent="addDate()" href="#">Ajouter un créneau</a></p>
                 <div class="dashed-line"></div>
                 <p class="m0 contains-input">à <EditableText :value="activity.place" placeholder="lieu" @input="notifyUpdate('place', $event)"></EditableText></p>
                 <div class="dashed-line"></div>
@@ -101,10 +104,14 @@
 
             //Appelé quand un chanp du schedules est modifié
             notifyUpdateDate(index, field, value){
-                this.schedules[index][field] = value;
+                if(value !== null) {
+                    this.schedules[index][field] = value;
 
-                if (this.dateFilled(index)) {
-                    this.notifyUpdate('schedules', this.schedulesFilled);
+                    if (this.dateFilled(index)) {
+                        this.notifyUpdate('schedules', this.schedulesFilled);
+                    }
+                }else if(value !== this.schedules[index][field]){
+                    this.delDate(index);
                 }
             },
 
@@ -145,7 +152,12 @@
 
             delDate(index){
                 this.schedules.splice(index, 1);
+
+                if(!this.schedules.length){
+                    addDate();
+                }
                 this.notifyUpdate('schedules', this.schedulesFilled);
+
             },
 
             // Appelé quand on quitte l'activité en cours
