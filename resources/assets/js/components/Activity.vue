@@ -9,7 +9,7 @@
 
             <div class="pl10 gray-text">
                 <div class="dashed-line"></div>
-                <p v-for="(date, i) in schedules" class="m0 contains-input">
+                <p v-for="(date, i) in schedules" :key="i" class="m0 contains-input">
                     tous les
                     <EditableText type="day" :value="date.day" placeholder="jour"
                                   @input="notifyUpdateDate(i, 'day', $event)" :ref="'day' + i"></EditableText>
@@ -116,48 +116,31 @@
             },
 
             dateFilled(index){
-                return (this.schedules[index].day != null &&
-                this.schedules[index].time_begin != null &&
-                this.schedules[index].time_end != null);
+                return (this.schedules[index].day !== null &&
+                this.schedules[index].time_begin !== null &&
+                this.schedules[index].time_end !== null);
             },
 
             datePartFilled(index){
                 return (!this.dateFilled(index) &&
-                (this.schedules[index].day != null ||
-                this.schedules[index].time_begin != null ||
-                this.schedules[index].time_end != null));
+                (this.schedules[index].day !== null ||
+                this.schedules[index].time_begin !== null ||
+                this.schedules[index].time_end !== null));
             },
-
-            /*datesFilled(){
-                let filled = true;
-                let i = 0;
-                do {
-                    if (!this.dateFilled(i))
-                        filled = false;
-                    i++;
-                } while (filled && this.schedules.length > i)
-                return filled;
-             },*/
 
             addDate(){
                 this.activity.schedules.push({day: null, time_begin: null, time_end: null});
 
-                if(this.activity.schedules.length !== 1){
+                if (this.schedules.length !== 1) {
                     this.$nextTick(() => {
                         this.$refs['day' + (this.schedules.length - 1)][0].select();
                     });
                 }
-
             },
 
             delDate(index){
                 this.schedules.splice(index, 1);
-
-                if(!this.schedules.length){
-                    addDate();
-                }
                 this.notifyUpdate('schedules', this.schedulesFilled);
-
             },
 
             // Appelé quand on quitte l'activité en cours

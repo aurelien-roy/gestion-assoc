@@ -9,11 +9,12 @@ export default new Store({
         activities: {},
         virtualId: 0
     },
-    
-    getters: {
+
+    /*getters: {
         //Obtient une activité grâce à l'identifiant
         get: (store, period, id) => {
-            if(!store.state.activities[period]) return null;
+     if(!store.state.activities[period])
+     return null;
             return store.state.activities[period].find(a => a.id === id);
         },
     
@@ -21,8 +22,8 @@ export default new Store({
             let activities = store.state.activities[period]
             return activities !== undefined ? activities : [];
         },
-        
-    },
+
+     },*/
     
     methods: {
     

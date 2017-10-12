@@ -24,7 +24,7 @@
                 typedValue: '',
                 objectValue: null,
                 enter_edit_complete: true,
-                suggests: false,
+                d_suggests: false,
 
                 fn: {
                     isValidSuggestion : null,
@@ -216,6 +216,20 @@
 
             empty(){
                 return this.typedValue.length === 0;
+            },
+
+            suggests: {
+
+                get: function () {
+                    let temp = this.d_suggests;
+                    /*console.log(this.type);
+                     if (this.type === "time")
+                     temp.splice(0, 1);*/
+                    return temp;
+                },
+                set: function (v) {
+                    this.d_suggests = v;
+                }
             },
 
             displayedSuggestions(){
