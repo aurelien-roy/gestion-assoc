@@ -6,24 +6,24 @@ import Vue from 'vue'
 export default new Store({
     
     state: {
-        activities: {},
+        data: {},
         virtualId: 0
     },
 
-    /*getters: {
+    getters: {
         //Obtient une activité grâce à l'identifiant
-        get: (store, period, id) => {
-     if(!store.state.activities[period])
-     return null;
-            return store.state.activities[period].find(a => a.id === id);
-        },
-    
-        activitiesByPeriod: (store, period) => {
-            let activities = store.state.activities[period]
-            return activities !== undefined ? activities : [];
+        get: (store, id, period = -1) => {
+            if (!store.state.data[period])
+                return null;
+            return store.state.data[period].find(a => a.id === id);
         },
 
-     },*/
+        byPeriod: (store, period) => {
+            let data = store.state.data[period]
+            return data !== undefined ? data : [];
+        },
+
+    },
     
     methods: {
     
