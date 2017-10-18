@@ -12,7 +12,7 @@ export default new Store({
 
     getters: {
         //Obtient une activité grâce à l'identifiant
-        get: (store, id, period = -1) => {
+        get: (store, id, period = "no_period") => {
             if (!store.state.data[period])
                 return null;
             return store.state.data[period].find(a => a.id === id);
@@ -28,7 +28,7 @@ export default new Store({
     methods: {
     
         //Génère une nouvelle activitée
-        genActivity() {
+        genNewStruct() {
             
             let vId = this.state.virtualId++;
             
@@ -72,8 +72,8 @@ export default new Store({
                 this.state.activities[period].push(a);
              }*/
         },
-        
-        encodeActivity(activity, period){
+
+        encode(activity, period){
             
             if(period !== undefined) {
                 activity.period = period;
@@ -91,9 +91,9 @@ export default new Store({
             
             return activity;
         },
-    
-        decodeActivity(activity){
-            let a = Object.assign(this.genActivity(), activity);
+
+        decode(activity){
+            let a = Object.assign(this.genNewStruct(), activity);
             
             a.color = Colors.hexToName(a.color);
 
@@ -111,8 +111,7 @@ export default new Store({
                     delete s.id;
                 });
             }
-            
-        
+
             return a;
         }
     
@@ -123,12 +122,12 @@ export default new Store({
         CREATE_ACTIVITY: {
             applyLocally(params, store){
                 params.activity.virtualId = store.state.virtualId++;
-                store.state.activities[params.period].push(params.activity);
+                store.state.data[params.period].push(params.activity);
             },
     
             makeRequest(request, context, result){
-                request('POST', 'activity', context.store.encodeActivity(deepCopy(context.params.activity), context.params.period)).then(() => {
-                    context.params.activity.id = context.store.state.activities[context.params.period].length;
+                request('POST', 'activity', context.store.encode(deepCopy(context.params.activity), context.params.period)).then(() => {
+                    context.params.activity.id = context.store.state.data[context.params.period].length;
                     result.isSuccess();
                 });
             }
@@ -157,7 +156,7 @@ export default new Store({
             
             makeRequest(request, context, result){
                 if (context.params.sendToServer) {
-                    request('PATCH', 'activity/' + context.params.activity.id, context.store.encodeActivity(deepCopy(context.params.changes))).then(() => {
+                    request('PATCH', 'activity/' + context.params.activity.id, context.store.encode(deepCopy(context.params.changes))).then(() => {
                         result.isSuccess();
                     });
                 } else {
@@ -171,7 +170,7 @@ export default new Store({
         DELETE_ACTIVITIES: {
             
             applyLocally(params, store){
-                store.state.activities[params.period] = store.state.activities[params.period].filter(a => {
+                store.state.data[params.period] = store.state.data[params.period].filter(a => {
                     return params.activities.indexOf(a) === -1;
                 });
             },
@@ -188,7 +187,7 @@ export default new Store({
     },
     
     fetchers:{
-        ACTIVITIES_BY_PERIOD: {
+        BY_PERIOD: {
             
             loadedPeriods: [],
             
@@ -198,11 +197,11 @@ export default new Store({
                 
                 request('GET', 'activity').then(function(response) {
                     let period = context.params;
-                    
-                    Vue.set(context.store.state.activities, period, []);
+
+                    Vue.set(context.store.state.data, period, []);
                     if(response.data && Array.isArray(response.data.data)){
                         response.data.data.forEach((a) => {
-                            context.store.state.activities[period].push(context.store.decodeActivity(a));
+                            context.store.state.data[period].push(context.store.decode(a));
                         });
                     }
                     context.store.generateActivity(period);

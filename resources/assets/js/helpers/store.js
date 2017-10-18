@@ -13,7 +13,7 @@ export default class Store{
         const computed = {};
         let that = this;
 
-        /*if(__store.getters) {
+        if (__store.getters) {
             
             for (let getter in __store.getters){
                 if(__store.getters.hasOwnProperty(getter)){
@@ -24,7 +24,7 @@ export default class Store{
                     })
                 }
             }
-         }*/
+        }
         
         if(__store.methods){
             for(let method in __store.methods){
@@ -80,20 +80,4 @@ export default class Store{
         return this._vm._data.$$state
     }
 
-    getters: {
-        //Obtient une activité grâce à l'identifiant
-        get (store, period, id) => {
-        if(!store.state.activities[period])
-        return null;
-        return store.state.activities[period].find(a => a.id === id);
-    }
-,
-
-    activitiesByPeriod: (store, period) => {
-        let activities = store.state.activities[period]
-        return activities !== undefined ? activities: [];
-    }
-,
-
-}
 }

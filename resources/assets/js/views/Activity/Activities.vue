@@ -130,7 +130,7 @@
                 }
 
                 this.fetching = callback;
-                activities_store.fetch('ACTIVITIES_BY_PERIOD', period, callback);
+                activities_store.fetch('BY_PERIOD', period, callback);
             },
 
             updateActivity(changes){
@@ -140,7 +140,7 @@
                         changes,
                         sendToServer: this.activity.id
                     })) {
-                    this.editableActivity = activities_store.getters.get(parseInt(this.period), parseInt(this.id));
+                    this.editableActivity = activities_store.getters.get(parseInt(this.id), parseInt(this.period));
                 }
 
                 if(this.creating && !this.creationSignalSent && this.activity.name.length){
@@ -158,14 +158,14 @@
             loadActivityModule(){
                 if(this.creating && (!this.activity || this.activity.id)){
                     this.creationSignalSent = false;
-                    this.activity = activities_store.genActivity();
+                    this.activity = activities_store.genNewStruct();
                     this.editableActivity = deepCopy(this.activity);
 
                 }else if(this.id !== undefined && this.period !== undefined){
 
                     //time.selectPeriod(this.period);
                     if(!this.fetching) {
-                        this.activity = activities_store.getters.get(parseInt(this.period), parseInt(this.id));
+                        this.activity = activities_store.getters.get(parseInt(this.id), parseInt(this.period));
                         if (!this.activity) {
                             this.$router.push({name: 'activities'})
                         } else {
@@ -183,7 +183,7 @@
 
         computed: {
             activities(){
-                let activities = activities_store.getters.activitiesByPeriod(time.state.selectedPeriod);
+                let activities = activities_store.getters.byPeriod(time.state.selectedPeriod);
 
                 if (this.actionbar.searchQuery === '')
                     return activities;
