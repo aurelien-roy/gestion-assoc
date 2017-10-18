@@ -1,14 +1,36 @@
-import networking from './networking';
+import networking from './../networking';
 import Vue from 'vue'
 
 export default class Store{
     
-    constructor(__store){
-        const state = typeof(__store.state) === 'object' ? __store.state : {};
+    constructor(__store, __fragments){
         
-        this._actions = typeof(__store.actions) === 'object' ? __store.actions : {};
-        this._fetchers = typeof(__store.fetchers) === 'object' ? __store.fetchers : {};
+        __store.state = typeof(__store.state) === 'object' ? __store.state : {};
+        __store.actions = typeof(__store.actions) === 'object' ? __store.actions : {};
+        __store.fetchers = typeof(__store.fetchers) === 'object' ? __store.fetchers : {};
+        __store.methods = typeof(__store.methods) === 'object' ? __store.methods : {};
+        __store.getters = typeof(__store.getters) === 'object' ? __store.getters : {};
+    
+        if(__fragments) {
+            __fragments.forEach(f => {
+                Object.assign(__store.state, f.state);
+                Object.assign(__store.actions, f.actions);
+                Object.assign(__store.fetchers, f.fetchers);
+                Object.assign(__store.methods, f.methods);
+                Object.assign(__store.getters, f.getters);
+            });
+        }
+        
+        console.log(__store);
+        
+        const state = __store.state;
+        
+        this._actions = __store.actions;
+        this._fetchers = __store.fetchers;
         this.getters = {};
+    
+        
+        
         
         const computed = {};
         let that = this;

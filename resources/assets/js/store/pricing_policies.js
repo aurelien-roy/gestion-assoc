@@ -1,5 +1,5 @@
 import { rand, Time } from '../helpers/math'
-import Store from '../helpers/store'
+import Store from '../helpers/store/store'
 import Vue from 'vue'
 
 export default new Store({

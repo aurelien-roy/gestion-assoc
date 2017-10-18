@@ -1,5 +1,5 @@
 import activities from './activities'
-import Store from "../helpers/store";
+import Store from "../helpers/store/store";
 
 export default new Store({
 
