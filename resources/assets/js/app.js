@@ -5,7 +5,6 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
-
 // Import des composants courants
 
 import Dialog from './components/Dialog.vue'

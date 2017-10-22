@@ -94,7 +94,7 @@
                     copy.name += " (copie)";
                     let that = this;
 
-                    activities_store.execute('CREATE_ACTIVITY', {
+                    activities_store.execute('CREATE', {
                         activity: copy,
                         period: time.state.currentPeriod
                     }, () => {
@@ -107,7 +107,7 @@
                 if (this.selection.length === 1) {
 
                     let that = this;
-                    activities_store.execute('DELETE_ACTIVITIES',
+                    activities_store.execute('DELETE',
                         {period: time.state.selectedPeriod, activities: this.selection},
                         () => {
                             that.$router.push({name: 'activities'});
@@ -134,19 +134,14 @@
             },
 
             updateActivity(changes){
-                // Si le store fais des modif ont les propague
-                if (activities_store.execute('EDIT_ACTIVITY', {
-                        activity: this.activity,
-                        changes,
-                        sendToServer: this.activity.id
-                    })) {
-                    this.editableActivity = activities_store.getters.get(parseInt(this.id), parseInt(this.period));
-                }
+
+                activities_store.execute('EDIT', {activity: this.activity, changes, sendToServer: this.activity.id});
+                this.editableActivity = deepCopy(this.activity); // Le tri des schedules peut modifier l'activity
 
                 if(this.creating && !this.creationSignalSent && this.activity.name.length){
                     let activity = this.activity;
                     let that = this;
-                    activities_store.execute('CREATE_ACTIVITY', {activity: this.activity, period: time.state.currentPeriod}, () => {
+                    activities_store.execute('CREATE', {activity: this.activity, period: time.state.currentPeriod}, () => {
                         if(that.activity === activity){
                             that.$router.push({name: 'activity', params: {period: time.state.selectedPeriod, id: activity.id}})
                         }

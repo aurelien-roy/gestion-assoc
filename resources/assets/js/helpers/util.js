@@ -1,3 +1,4 @@
+console.log('EE');
 window.deepCopy = function(o){
     
     if(o === null){
@@ -17,3 +18,5 @@ window.deepCopy = function(o){
     
     return output;
 }
+
+export function deepCopy(o){ return window.deepCopy(o) };

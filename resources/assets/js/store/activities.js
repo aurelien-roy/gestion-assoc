@@ -94,76 +94,21 @@ export default new Store({
             }
 
             return a;
+        },
+        
+        normalize(activity){
+            activity.schedules.sort((a, b) => {
+                if(a.day !== b.day){
+                    return a.day - b.day;
+                }else{
+                    return a.time_begin.compare(b.time_begin);
+                }
+            });
         }
     
     },
     
     actions:{
-    
-        CREATE_ACTIVITY: {
-            applyLocally(params, store){
-                params.activity.virtualId = store.state.virtualId++;
-                store.state.data[params.period].push(params.activity);
-            },
-    
-            makeRequest(request, context, result){
-                request('POST', 'activity', context.store.encode(deepCopy(context.params.activity), context.params.period)).then(() => {
-                    context.params.activity.id = context.store.state.data[context.params.period].length;
-                    result.isSuccess();
-                });
-            }
-        },
-        
-        EDIT_ACTIVITY: {
-            
-            applyLocally(params, store){
-                let ret = undefined;
-
-                // Si le schedules à était modifié on trie la dernière ligne
-                if (params.changes["schedules"] && params.changes["schedules"].length >= 2) {
-                    let length = params.changes["schedules"].length;
-                    let newDay = params.changes["schedules"][length - 1].day;
-                    let i = length - 2;
-                    while (i >= 0 && params.changes["schedules"][i].day > newDay) {
-                        i--;
-                    }
-                    params.changes["schedules"].splice(i + 1, 0, params.changes["schedules"].pop());
-                    ret = true;
-                }
-
-                Object.assign(params.activity, deepCopy(params.changes));
-                return ret;
-            },
-            
-            makeRequest(request, context, result){
-                if (context.params.sendToServer) {
-                    request('PATCH', 'activity/' + context.params.activity.id, context.store.encode(deepCopy(context.params.changes))).then(() => {
-                        result.isSuccess();
-                    });
-                } else {
-                    result.isSuccess();
-                }
-                
-
-            }
-        },
-    
-        DELETE_ACTIVITIES: {
-            
-            applyLocally(params, store){
-                store.state.data[params.period] = store.state.data[params.period].filter(a => {
-                    return params.activities.indexOf(a) === -1;
-                });
-            },
-            
-            makeRequest(request, context, result){
-                request('DELETE', 'activity/' + context.params.activities[0].id).then(() => {
-                    result.isSuccess();
-                });
-                
-            }
-            
-        },
         
     },
     
@@ -198,4 +143,4 @@ export default new Store({
         }
     }
     
-}, [resource_fragment]);
+}, [resource_fragment('activity', 'activities')]);
