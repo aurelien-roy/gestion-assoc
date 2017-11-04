@@ -3,7 +3,7 @@
         <div class="absolute w100 h100">
             <div class="row wrapped push-center h100">
                 <div class="row gutters col col-12 h100">
-                    <div class="col col-4 h100 scrollable left-pane no-selectable">
+                    <div class="col col-4 h100 left-pane no-selectable">
 
                         <SideList
                                 :items="activities"
@@ -11,13 +11,13 @@
 
                                 component="ActivityItem"
                                 :sorting="sorting"
+                                :match="match"
                                 @create="createActivity"
                                 @duplicate="duplicateActivity"
                                 @delete="deleteSelection"
                         ></SideList>
 
                     </div>
-                    {{ actionbar.searchQuery }}
                     <div class="col col-8 scrollable">
                         <router-view :data="editableActivity" @update="updateActivity"></router-view>
                         <!--<Activity :data="editableActivity" v-if="editableActivity" @update="updateActivity" :quitHandler="quitHandler"></Activity>-->
@@ -49,7 +49,6 @@
                 actionbar,
                 activities_store,
                 time,
-                search: '',
                 sortBy: 'Nom',
                 selection: [],
                 edit: false,
@@ -72,6 +71,15 @@
                             return a.schedules[0].time_begin.compare(b.schedules[0].time_begin);
                         }
                     }
+                },
+
+                match: (activity, s) => {
+                    return (activity.name.toLocaleLowerCase().includes(s)
+                      || activity.teacher.toLocaleLowerCase().includes(s)
+                      || activity.level.toLocaleLowerCase().includes(s)
+                      || activity.schedules.find(e => {
+                          return days[e.day].toLocaleLowerCase().includes(s);
+                      }))
                 },
 
                 fetching: false,
@@ -178,21 +186,7 @@
 
         computed: {
             activities(){
-                let activities = activities_store.getters.byPeriod(time.state.selectedPeriod);
-
-                if (this.actionbar.searchQuery === '')
-                    return activities;
-                else // Recherche par le nom, le jour, le prof, le lieu, le niveau
-                    return activities.filter(a => {
-                        let s = this.actionbar.searchQuery.toLocaleLowerCase();
-
-                        return (a.name.toLocaleLowerCase().includes(s)
-                        || a.teacher.toLocaleLowerCase().includes(s)
-                        || a.level.toLocaleLowerCase().includes(s)
-                        || a.schedules.find(e => {
-                            return days[e.day].toLocaleLowerCase().includes(s);
-                        }))
-                    });
+                return activities_store.getters.byPeriod(time.state.selectedPeriod);
             },
 
             creating(){
@@ -244,7 +238,6 @@
 
             actionbar.setActions([]);
             actionbar.showPeriodDropdown(true);
-            actionbar.showSearch("Rechercher une activité");
 
         },
     }

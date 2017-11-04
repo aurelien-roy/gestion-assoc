@@ -16,7 +16,7 @@ export default class Store{
                     for (let func in fragment[property]) {
                         if (fragment[property].hasOwnProperty(func) && !__store[property].hasOwnProperty(func)) {
                             if(property === 'state'){
-                                __store[property][func] = deepCopy(fragment[property][func]);
+                                __store[property][func] = typeof(fragment[property][func]) === 'object' ? deepCopy(fragment[property][func]) : fragment[property][func];
                             }else{
                                 __store[property][func] = fragment[property][func];
                             }

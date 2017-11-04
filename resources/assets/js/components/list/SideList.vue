@@ -1,15 +1,14 @@
 <template>
-    <div @keyup.down="selectNext($event)" @keyup.up="selectPrev($event)" tabindex="0">
+    <div @keyup.down="selectNext($event)" @keyup.up="selectPrev($event)" tabindex="0" class="h100 full-height-container">
         <ListHeadChoice
                 :choices="sorts"
-                v-model="sortBy"
-                class="sticky"
+                v-model="options"
                 @create="replayEvent('create', $event)"
                 @duplicate="replayEvent('duplicate', $event)"
                 @delete="replayEvent('delete', $event)"
         ></ListHeadChoice>
 
-        <transition-group tag="ul" name="flip-list" class="list">
+        <transition-group tag="ul" name="flip-list" class="list scrollable flexible">
             <component :is="component" v-for="i in orderedItems" :item="i" @click.native="selectItem(i, $event)" :class="[{dark: isSelected(i)}]" :key="i.virtualId"></component>
         </transition-group>
 
@@ -26,7 +25,10 @@
         data() {
             return {
                 selection: [],
-                sortBy: 'Nom',
+                options: {
+                    sortBy: 'Nom',
+                    search: ''
+                }
             }
         },
         components: { ListHeadChoice },
@@ -105,6 +107,10 @@
                 if(items === null || items === undefined){
                     items = [];
                 }
+
+                if(this.options.search !== ''){
+                    items = items.filter(f => this.match(f, this.options.search));
+                }
                 /*if(this.search !== ''){
                     let s = this.search.toLocaleLowerCase();
                     items = items.filter(a =>
@@ -112,7 +118,7 @@
                     );
                 }*/
 
-                items.sort(this.sorting[this.sortBy]);
+                items.sort(this.sorting[this.options.sortBy]);
 
                 return items;
             },
@@ -150,6 +156,10 @@
 
             sorting: {
                 type: Object
+            },
+
+            match: {
+                type: Function
             }
         }
     }

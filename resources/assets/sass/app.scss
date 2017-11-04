@@ -92,7 +92,7 @@ a:hover{
 }
 
 .auto{
-    @include flex-item-auto;
+    flex: 1;
 }
 
 .m0{
@@ -160,6 +160,10 @@ i{
         background-image: url($icons_path + 'sort_by.png');
     }
 
+    &.search{
+        background-image: url($icons_path + 'search.svg');
+    }
+
 }
 
 @mixin icon($size: 24px, $margin: ''){
@@ -205,6 +209,10 @@ tr:hover {
     }
 }
 
+.h100{
+    height: 100% !important;
+}
+
 .left-pane{
     background: #FBFBFB;
     box-sizing: content-box;
@@ -221,9 +229,9 @@ tr:hover {
 }
 
 .full-height-container{
-    height: 100vh;
     display: flex;
     flex-direction: column;
+    height: 100vh;
 }
 
 .flexible{
@@ -481,6 +489,10 @@ button{
 .btn-link{
     font-weight:bold;
     color: $primary_color;
+
+    &:hover{
+        color: $primary_lighter;
+    }
 }
 
 .btn-icon{
@@ -492,5 +504,22 @@ button{
 
     &.right{
         float: right;
+    }
+}
+
+.search{
+
+    position: relative;
+
+    i{
+        position: absolute;
+        top: 9px;
+        left: 5px;
+    }
+
+    input{
+        padding-left: 30px;
+        color: black;
+        font-size: 0.9rem;
     }
 }

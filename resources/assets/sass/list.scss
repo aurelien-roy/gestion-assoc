@@ -58,8 +58,27 @@ ul.list{
   z-index: 10;
 
   display: flex;
+  align-items: center;
 
-  background: rgba(234, 234, 234, 0.95);
+  background-color: #EAEAEA;
+
+
+  font-size: 0.8rem;
+
+  select, input{
+    font-size: 0.8rem;
+  }
+
+  &.secondary, &.secondary select{
+    background-color: #F5F5F5;
+    color: #6A6A6A;
+  }
+
+  strong{
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 0 12px;
+
+  }
 
   margin-bottom: 6px;
 
@@ -114,55 +133,35 @@ ul.list{
 
   }
 
-  .list-header-label{
-    position: relative;
-    height: 100%;
-    width: 20px;
-    margin-left: 5px;
-    margin-right: 5px;
+  input{
+    background-color: #F3F2F2;
+    color: black;
+    border: 2px solid #EAEAEA;
+  }
 
-    font-weight: 700;
-    text-transform: uppercase;
+  select{
+    height: 26px;
+    width: 90px;
+    padding: 0 3px;
+    border: none;
 
-    p{
-      font-size: 0.475rem;
-      line-height: 0.475rem;
-      position: absolute;
-      margin: 0;
-      bottom: 4px;
-      color: #C1C1C1;
-      width: 100%;
-      text-align: center;
-    }
-
-    i{
-      position: relative;
-      left: calc(50% - 10px);
-      top: -3px;
+    &:focus{
+      outline: none !important;
+      box-shadow: none !important;
     }
   }
 
 
+  .btn-links{
+    display: flex;
+    flex-grow: 1;
+    justify-content: space-around;
 
-  .separator{
-    border-left: 3px solid #e0e0e0;
-  }
-
-  .types{
-    text-align: right;
-    padding-right: 10px;
-    font-family: 'Lato', sans-serif;
-    font-weight: 300;
-    font-size: 0.9rem;
-
-    a{
-      margin-left: 15px;
-
-      &.selected{
-        font-weight: 700;
-      }
+    .btn-link{
+      justify-items: center;
     }
   }
+
 
 }
 
