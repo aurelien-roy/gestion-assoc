@@ -1,5 +1,6 @@
 import activities from './activities'
 import Store from "../helpers/store/store";
+import { rand } from '../helpers/math';
 
 export default new Store({
 
@@ -18,9 +19,8 @@ export default new Store({
             return store.state.members[period].find(a => a.id === id);
         },
 
-        membersByPeriod: (store, period) => {
-            let members = store.state.members[period]
-            return members !== undefined ? members : [];
+        all: (store) => {
+            return store.state.members;
         },
 
     },
@@ -49,28 +49,16 @@ export default new Store({
         },
 
         genLocalTestMembers(){
-            let act = ['Classique', 'Jazz', 'Street', 'Ragga', 'Eveil'];
-            let nvx = ['', 'Adultes', '10-12 ans', '5-6 ans'];
-            let clr = ['red', 'blue', 'yellow', 'green', 'aqua', 'purple', 'orange'];
+            let firstnames = ['Dominique', 'Martin', 'Jerome', 'Camille', 'Mickael', 'Christelle', 'Paul', 'Brice', 'Pauline', 'Emma', 'Zoé', 'Ambre', 'Anne-Marie'];
+            let lastnames = ['Duche', 'Da Costa', 'Coutouis', 'Bichon', 'El Paso', 'Matin', 'Chane', 'Roi', 'Vilaine'];
 
             for (let i = 0; i < 10; i++) {
 
-                let begin = rand(9, 16);
-                let end = begin + rand(1, 3);
-
-                this.state.activities.push({
-                    id: this.state.activities.length,
-                    members: [],
-                    name: act[rand(0, 4)],
-                    level: nvx[rand(0, 3)],
-                    age: nvx[rand(0, 3)],
-                    day: rand(0, 6),
-                    time_begin: begin,
-                    time_end: end,
-                    teacher: 'Jackie',
-                    effectif_max: 30,
-                    effectif_current: 10,
-                    color: clr[rand(0, 6)]
+                this.state.members.push({
+                    id: this.state.members.length,
+                    virtualId: this.state.members.length,
+                    firstname: firstnames[rand(0, 12)],
+                    lastname: lastnames[rand(0, 8)]
                 });
             }
         },
@@ -147,7 +135,7 @@ export default new Store({
 
             makeRequest(request, context, result){
 
-                let self = this;
+                /*let self = this;
 
                 request('GET', 'activity').then(function (response) {
                     let period = context.params;
@@ -162,16 +150,16 @@ export default new Store({
                     result.isSuccess();
                     self.loadedPeriods.push(period);
 
-                });
+                });*/
             },
 
             isLoaded(params){
-                return this.loadedPeriods.indexOf(params) !== -1;
+                //return this.loadedPeriods.indexOf(params) !== -1;
             }
         }
     },
 
-    saveNewMember (member){
+    /*saveNewMember (member){
 
         this.state.loading = true;
         // Requete AJAX
@@ -220,8 +208,8 @@ export default new Store({
 
     getMember(id){
         return this.state.members.find(m => {
-            return id == m.id;
+            return id === m.id;
         })
-    }
+    }*/
 
 });

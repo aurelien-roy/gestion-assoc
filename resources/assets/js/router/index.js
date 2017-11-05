@@ -42,10 +42,11 @@ const router = new VueRouter({
         
         //Members
         {
-            name: 'members', path: '/membres', component: Members,
+            path: '/membres', component: Members,
             children: [
-                {name: 'new_member', path: 'member_viewer/new', component: MemberViewer},
-                {name: 'open_member', path: 'member_viewer/:id(\\d+)', component: MemberViewer, props: true}
+                {name: 'members', path: '', component: null },
+                {name: 'member', path: ':id(\\d+)', component: MemberViewer },
+                {name: 'new_member', path: 'creer', component: MemberViewer }
             ]
         },
     

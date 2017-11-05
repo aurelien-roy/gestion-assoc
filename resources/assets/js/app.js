@@ -17,9 +17,11 @@ Vue.component('Modal', Modal);
 // Import des composants pour les listes
 
 import ActivityItem from './components/list/items/ActivityItem.vue'
+import MemberItem from './components/list/items/MemberItem.vue'
 import PricingPolicyItem from './components/list/items/PricingPolicyItem.vue'
 
 Vue.component('ActivityItem', ActivityItem);
+Vue.component('MemberItem', MemberItem);
 Vue.component('PricingPolicyItem', PricingPolicyItem);
 
 

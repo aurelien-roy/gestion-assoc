@@ -1,37 +1,34 @@
 <template>
-    <div>
-        <div class="row">
-            <h1>Gestion des membres</h1>
-        </div>
+    <div class="flex flexible relative">
+        <div class="absolute w100 h100">
+            <div class="row wrapped push-center h100">
+                <div class="row gutters col col-12 h100">
+                    <div class="col col-4 h100 left-pane no-selectable">
 
-        <div class="row">
+                        <SideList
+                                :items="members"
+                                v-model="selection"
+                                :sorting="sorting"
 
-            <div class="col-5">
-                <input placeholder="Rechercher un membre" v-model="search">
+                                component="MemberItem"
+                        ></SideList>
 
-                <ul>
-                    <li v-for="m in members" @click="openMember(m)">
-                        {{ m.firstname + ' ' + m.lastname + ' (' + m.birthdate.year + ')' }}
-                    </li>
-                </ul>
-
+                    </div>
+                    <div class="col col-8 scrollable">
+                        <router-view :data="editableMember" @update="updateMember"></router-view>
+                    </div>
+                </div>
             </div>
-
-            <div class="col-7">
-                <router-view></router-view>
-            </div>
-
         </div>
     </div>
 </template>
-<style>
-
-</style>
+<style lang="scss" src="../../../sass/list.scss"></style>
 <script>
 
     import members_store from '../../store/members'
     import actionbar from '../../store/actionbar'
     import time from '../../store/time'
+    import SideList from '../../components/list/SideList'
 
     export default{
         name: 'Members',
@@ -40,37 +37,64 @@
             return {
                 actionbar,
                 members_store,
-                search: ''
+                selection: null,
+                member: null,
+                editableMember: null,
+
+                sorting: {
+                    'Nom': (a, b) => {
+                        let s = a.lastname.localeCompare(b.lastname);
+                        if(!s) s = a.firstname.localeCompare(b.firstname);
+                        return s;
+                    },
+
+                    'Prénom': (a, b) => {
+                        let s = a.firstname.localeCompare(b.firstname);
+                        if(!s) s = a.lastname.localeCompare(b.lastname);
+                        return s;
+                    }
+                },
+
+                match: (member, s) => {
+                    s = s.toLocaleLowerCase();
+                    return (member.firstname.toLocaleLowerCase().includes(s)
+                      || member.lastname.toLocaleLowerCase().includes(s)
+                      || member.birthdate.year.includes(s))
+                }
             }
         },
-        components: {},
+        components: { SideList },
 
         methods: {
             openMember(member){
-                this.$router.push({name: 'open_member', params: {id: member.id}});
+                this.$router.push({name: 'member', params: {id: member.id}});
+            },
+
+            updateMember(member){
+                console.log("TODO - updateMember")
             }
         },
 
         computed: {
             members(){
-                if (this.search === '')
-                    return members_store.state.members;
-                else
-                    return members_store.state.members.filter(m => {
-                        let s = this.search.toLocaleLowerCase();
-                        return (m.firstname.toLocaleLowerCase().includes(s)
-                        || m.lastname.toLocaleLowerCase().includes(s)
-                        || m.birthdate.year.includes(s))
-                    });
+                return members_store.state.members;
             },
         },
 
-        watch: {},
+        watch: {
+            selection(s){
+                if(s.length === 1) {
+                    this.openMember(s[0]);
+                }else{
+                    this.member = null;
+                    this.editableMember = null;
+                }
+            }
+        },
 
         mounted(){
-            this.actionbar.setActions([
-                {name: "Créer", routeTo: 'new_member'}
-            ]);
+            if(members_store.getters.all().length === 0)
+                members_store.genLocalTestMembers();
         }
     }
 

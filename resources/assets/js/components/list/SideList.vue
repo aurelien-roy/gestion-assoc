@@ -118,7 +118,9 @@
                     );
                 }*/
 
-                items.sort(this.sorting[this.options.sortBy]);
+                if(this.sorting) {
+                    items.sort(this.sorting[this.options.sortBy]);
+                }
 
                 return items;
             },

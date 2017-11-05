@@ -20,7 +20,6 @@
                     </div>
                     <div class="col col-8 scrollable">
                         <router-view :data="editableActivity" @update="updateActivity"></router-view>
-                        <!--<Activity :data="editableActivity" v-if="editableActivity" @update="updateActivity" :quitHandler="quitHandler"></Activity>-->
                     </div>
                 </div>
             </div>
