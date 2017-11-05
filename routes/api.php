@@ -20,3 +20,4 @@ Route::group(['prefix'  =>  'activity'], function () {
     Route::patch('/{activity}', 'ActivityController@update')->middleware('auth:api');
     Route::delete('/{activity}', 'ActivityController@destroy')->middleware('auth:api');
 });
+

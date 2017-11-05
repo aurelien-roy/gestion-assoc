@@ -4,46 +4,24 @@ import { rand } from '../helpers/math';
 
 export default new Store({
 
-    //activities,
-
-    state: {
-        members: [],
-        virtualId: 0
-    },
-
-    getters: {
-
-        get: (store, period, id) => {
-            if (!store.state.members[period])
-                return null;
-            return store.state.members[period].find(a => a.id === id);
-        },
-
-        all: (store) => {
-            return store.state.members;
-        },
-
-    },
-
     methods: {
 
         //Génère un nouveau membre
-        genMember(){
+        genNewStruct(){
+            let vId = this.state.virtualId++;
+
             return {
                 id: undefined,
                 firstname: '',
                 lastname: '',
-                birthdate: {day: null, month: null, year: null},
-                sex: '',
-                picture: null, //Not use
-                address1: '',
-                address2: '',
-                postcode: '',
+                birthdate: null, // YYYY-MM-DD
+                sex: '', // char M ou F
+                picture: '',
+                address: '', // string multiline
+                postcode: '', // string numérique (pas de int)
                 city: '',
                 email: '',
-                phone: '',
-                mobile: '',
-                medical_certif: '', //Not use
+                phones: '', // string avec plusieurs numéros de téls. pas d'espace. séparé par point virgule
                 notes: ''
             }
         },
@@ -63,11 +41,11 @@ export default new Store({
             }
         },
 
-        encodeMember(member, period){
+        encode(member, period){
 
         },
 
-        decodeMember(member){
+        decode(member){
 
         },
 
@@ -75,56 +53,6 @@ export default new Store({
 
     actions: {
 
-        CREATE_MEMBER: {
-            applyLocally(params, store){
-                params.member.virtualId = store.state.virtualId++;
-                store.state.members[params.period].push(params.member);
-            },
-
-            makeRequest(request, context, result){
-                /*request('POST', 'member', context.store.encodeMember(deepCopy(context.params.member), context.params.period)).then(() => {
-                 context.params.member.id = context.store.state.members[context.params.period].length;
-                 result.isSuccess();
-                 });*/
-                result.isSuccess();
-            }
-        },
-
-        EDIT_MEMBER: {
-
-            applyLocally(params, store){
-                Object.assign(params.member, deepCopy(params.changes));
-            },
-
-            makeRequest(request, context, result){
-                /*if (context.params.sendToServer) {
-                 request('PATCH', 'activity/' + context.params.activity.id, context.store.encodeActivity(deepCopy(context.params.changes))).then(() => {
-                 result.isSuccess();
-                 });
-                 } else {
-                 result.isSuccess();
-                 }*/
-                result.isSuccess();
-            }
-
-        },
-
-        DELETE_MEMBERS: {
-
-            applyLocally(params, store){
-                store.state.members[params.period] = store.state.members[params.period].filter(a => {
-                    return params.members.indexOf(a) === -1;
-                });
-            },
-
-            makeRequest(request, context, result){
-                /*request('DELETE', 'activity/' + context.params.activities[0].id).then(() => {
-                 result.isSuccess();
-                 });*/
-                result.isSuccess();
-            }
-
-        },
 
     },
 
