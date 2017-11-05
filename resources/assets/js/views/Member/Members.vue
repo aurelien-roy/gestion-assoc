@@ -77,7 +77,7 @@
 
         computed: {
             members(){
-                return members_store.state.members;
+                return members_store.getters.all();
             },
         },
 
@@ -93,8 +93,6 @@
         },
 
         mounted(){
-            console.log(members_store);
-            console.log(members_store.getters.all());
 
             if(members_store.getters.all().length === 0)
                 members_store.genLocalTestMembers();
