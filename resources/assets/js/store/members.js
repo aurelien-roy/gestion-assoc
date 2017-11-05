@@ -1,5 +1,6 @@
 import activities from './activities'
 import Store from "../helpers/store/store";
+import resource_fragment from '../helpers/store/resource_fragment'
 import { rand } from '../helpers/math';
 
 export default new Store({
@@ -140,4 +141,4 @@ export default new Store({
         })
     }*/
 
-});
+}, [resource_fragment('member', 'members')]);
