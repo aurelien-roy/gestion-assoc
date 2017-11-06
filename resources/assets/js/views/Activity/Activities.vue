@@ -99,6 +99,7 @@
                 if (!this.creating && this.selection.length === 1) {
                     let copy = deepCopy(this.selection[0]);
                     copy.name += " (copie)";
+                    copy.id = null;
                     let that = this;
 
                     activities_store.execute('CREATE', {

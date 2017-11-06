@@ -1,5 +1,6 @@
 import activities from './activities'
 import Store from "../helpers/store/store";
+import resource_fragment from '../helpers/store/resource_fragment'
 import { rand } from '../helpers/math';
 
 export default new Store({
@@ -32,12 +33,13 @@ export default new Store({
 
             for (let i = 0; i < 10; i++) {
 
-                this.state.members.push({
-                    id: this.state.members.length,
-                    virtualId: this.state.members.length,
+                this.state.data.push({
+                    id: this.state.data.length,
+                    virtualId: this.state.data.length,
                     firstname: firstnames[rand(0, 12)],
                     lastname: lastnames[rand(0, 8)]
                 });
+                
             }
         },
 
@@ -140,4 +142,4 @@ export default new Store({
         })
     }*/
 
-});
+}, [resource_fragment('member', 'members')]);

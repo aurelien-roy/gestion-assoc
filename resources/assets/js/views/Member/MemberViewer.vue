@@ -78,7 +78,6 @@
                         {name: 'Annuler', callback: this.cancel}
                     ]);
 
-                    this.member = members_store.genMember();
                 }
             },
 
