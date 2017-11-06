@@ -5,7 +5,7 @@
                 v-model="options"
                 @create="replayEvent('create', $event)"
                 @duplicate="replayEvent('duplicate', $event)"
-                @delete="replayEvent('delete', $event)"
+                @delete="del($event)"
         ></ListHeadChoice>
 
         <transition-group tag="ul" name="flip-list" class="list scrollable flexible">
@@ -35,9 +35,9 @@
         
         methods: {
 
-            selectItem(item, e){
+            selectItem(item, e = null){
 
-                if(!e.metaKey) {
+                if (e == null || !e.metaKey) {
                     this.selection.length = 0;
                     this.selection.push(item);
                 }else{
@@ -96,10 +96,16 @@
                 }
 
                 this.$emit(eventName, event);
-            }
+            },
 
+            del(event){
+                let oldSelect = this.selection.slice();
+                this.selectNext(event);
+                this.$emit('delete', oldSelect);
+            }
         },
-        
+
+
         computed: {
             orderedItems(){
                 let items = this.items;

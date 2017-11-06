@@ -42,8 +42,8 @@ export default function(resource_name, plurial_resource_name) {
                 },
             
                 makeRequest(request, context, result) {
-                    request('POST', resource_name, context.store.encode(deepCopy(context.params[resource_name]), context.params.period)).then(() => {
-                        context.params[resource_name].id = context.store.state.data[context.params.period].length;
+                    request('POST', resource_name, context.store.encode(deepCopy(context.params[resource_name]), context.params.period)).then((r) => {
+                        context.params[resource_name].id = r.data.data.id;
                         result.isSuccess();
                     });
                 }

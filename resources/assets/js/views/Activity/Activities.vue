@@ -110,14 +110,14 @@
                 }
             },
 
-            deleteSelection(){
-                if (this.selection.length === 1) {
+            deleteSelection(oldSelect){
+                console.log(oldSelect);
+                if (oldSelect.length === 1) {
 
                     let that = this;
                     activities_store.execute('DELETE',
-                        {period: time.state.selectedPeriod, activities: this.selection},
+                        {period: time.state.selectedPeriod, activities: oldSelect},
                         () => {
-                            that.$router.push({name: 'activities'});
                         });
                 }
             },
