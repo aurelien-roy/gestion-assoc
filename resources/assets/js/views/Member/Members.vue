@@ -30,6 +30,7 @@
     import time from '../../store/time'
     import SideList from '../../components/list/SideList'
 
+
     export default{
         name: 'Members',
 
@@ -60,7 +61,11 @@
                     return (member.firstname.toLocaleLowerCase().includes(s)
                       || member.lastname.toLocaleLowerCase().includes(s)
                       || member.birthdate.year.includes(s))
-                }
+                },
+
+                creationSignalSent: false,
+                fetching: false,
+                id: null,
             }
         },
         components: { SideList },
@@ -72,7 +77,30 @@
 
             updateMember(member){
                 console.log("TODO - updateMember")
-            }
+            },
+
+            loadMemberModule(){
+                if(this.creating && (!this.member || this.member.id)){
+                    this.creationSignalSent = false;
+                    this.member = members_store.genNewStruct();
+                    this.editableMember = deepCopy(this.activity);
+
+                }else if(this.id !== undefined){
+
+                    if(!this.fetching) {
+                        this.member = members_store.getters.get(parseInt(this.id));
+                        if (!this.member) {
+                            this.$router.push({name: 'members'})
+                        } else {
+                            this.selection = [this.member];
+                            this.editableActivity = deepCopy(this.member);
+                        }
+                    }
+                }else if(!this.creating){
+                    this.member = null;
+                    this.editableMember = null;
+                }
+            },
         },
 
         computed: {
@@ -89,10 +117,18 @@
                     this.member = null;
                     this.editableMember = null;
                 }
+            },
+
+            '$route'(){
+                this.id = this.$route.params.id;
+                this.loadMemberModule();
             }
         },
 
         mounted(){
+
+            this.id = this.$route.params.id;
+            this.loadMemberModule();
 
             if(members_store.getters.all().length === 0)
                 members_store.genLocalTestMembers();

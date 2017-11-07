@@ -13,7 +13,7 @@ import Activities from '../views/Activity/Activities.vue'
 import PricingPolicies from '../views/PricingPolicies.vue'
 
 import Members from '../views/Member/Members.vue'
-import MemberViewer from '../views/Member/MemberViewer.vue'
+import Member from '../components/Member.vue'
 
 Vue.use(VueRouter)
 
@@ -45,8 +45,8 @@ const router = new VueRouter({
             path: '/membres', component: Members,
             children: [
                 {name: 'members', path: '', component: null },
-                {name: 'member', path: ':id(\\d+)', component: MemberViewer },
-                {name: 'new_member', path: 'creer', component: MemberViewer }
+                {name: 'member', path: ':id(\\d+)', component: Member },
+                {name: 'new_member', path: 'creer', component: Member }
             ]
         },
     

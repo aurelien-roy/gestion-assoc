@@ -8,6 +8,10 @@ export default function(resource_name, plurial_resource_name) {
     
         getters: {
             
+            get: (store, id) => {
+                return store.state.data.find(e => e.id === id);
+            },
+            
             all: (store) => {
                 return store.state.data;
             }
