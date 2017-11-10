@@ -6,7 +6,7 @@
                     <div class="col col-4 h100 left-pane no-selectable">
 
                         <SideList
-                                :items="members"
+                                :items="elements"
                                 v-model="selection"
                                 :sorting="sorting"
 
@@ -15,7 +15,7 @@
 
                     </div>
                     <div class="col col-8 scrollable">
-                        <router-view :data="editableMember" @update="updateMember"></router-view>
+                        <router-view :data="editableElement" @update="updateElement"></router-view>
                     </div>
                 </div>
             </div>
@@ -25,7 +25,8 @@
 <style lang="scss" src="../../../sass/list.scss"></style>
 <script>
 
-    import members_store from '../../store/members'
+    import resource_mixin from '../../helpers/resource_mixin'
+    import elements_store from '../../store/members'
     import actionbar from '../../store/actionbar'
     import time from '../../store/time'
     import SideList from '../../components/list/SideList'
@@ -33,15 +34,14 @@
 
     export default{
         name: 'Members',
+        mixins: [resource_mixin],
+
+        components: {SideList},
 
         data(){
             return {
-                actionbar,
-                members_store,
-                selection: null,
-                member: null,
-                editableMember: null,
-
+                elements_store,
+                sortBy: 'Nom',
                 sorting: {
                     'Nom': (a, b) => {
                         let s = a.lastname.localeCompare(b.lastname);
@@ -67,79 +67,6 @@
                 fetching: false,
                 id: null,
             }
-        },
-        components: { SideList },
-
-        methods: {
-            openMember(member){
-                console.log(typeof(member.id));
-                console.log(this.$router);
-                this.$router.push({name: 'member', params: {id: member.id}});
-                console.log(this.$router);
-            },
-
-            updateMember(member){
-                console.log("TODO - updateMember")
-            },
-
-            loadMemberModule(){
-                if(this.creating && (!this.member || this.member.id)){
-                    this.creationSignalSent = false;
-                    this.member = members_store.genNewStruct();
-                    this.editableMember = deepCopy(this.member);
-
-                }else if(this.id !== undefined){
-
-                    if(!this.fetching) {
-
-                        console.log('store:');
-                        this.member = members_store.getters.get(parseInt(this.id));
-                        console.log(this.member);
-                        if (!this.member) {
-                            this.$router.push({name: 'members'})
-                        } else {
-                            this.selection = [this.member];
-                            this.editableMember = deepCopy(this.member);
-                        }
-                    }
-                }else if(!this.creating){
-                    this.member = null;
-                    this.editableMember = null;
-                }
-            },
-        },
-
-        computed: {
-            members(){
-                return members_store.getters.all();
-            },
-        },
-
-        watch: {
-            selection(s){
-                if(s.length === 1) {
-                    this.openMember(s[0]);
-                }else{
-                    this.member = null;
-                    this.editableMember = null;
-                }
-            },
-
-            '$route'(){
-                this.id = this.$route.params.id;
-                this.loadMemberModule();
-            }
-        },
-
-        mounted(){
-
-            if(members_store.getters.all().length === 0)
-                members_store.genLocalTestMembers();
-
-            this.id = this.$route.params.id;
-            this.loadMemberModule();
-
-
         }
     }
 
