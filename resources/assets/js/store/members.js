@@ -1,6 +1,6 @@
-import activities from './activities'
 import Store from "../helpers/store/store";
 import resource_fragment from '../helpers/store/resource_fragment'
+import Vue from 'vue'
 import { rand } from '../helpers/math';
 
 export default new Store({
@@ -13,6 +13,7 @@ export default new Store({
 
             return {
                 id: undefined,
+                virtualId: vId,
                 firstname: '',
                 lastname: '',
                 birthdate: null, // YYYY-MM-DD
@@ -33,9 +34,9 @@ export default new Store({
 
             for (let i = 0; i < 10; i++) {
 
-                this.state.data.push({
-                    id: this.state.data.length,
-                    virtualId: this.state.data.length,
+                this.state.data['no_period'].push({
+                    id: this.state.data['no_period'].length,
+                    virtualId: this.state.data['no_period'].length,
                     firstname: firstnames[rand(0, 12)],
                     lastname: lastnames[rand(0, 8)]
                 });
@@ -59,11 +60,14 @@ export default new Store({
     },
 
     fetchers: {
-        MEMBERS_BY_PERIOD: {
+        BY_PERIOD: {
 
             loadedPeriods: [],
 
             makeRequest(request, context, result){
+                Vue.set(context.store.state.data, 'no_period', []);
+                context.store.genLocalTestMembers();
+                result.isSuccess();
 
                 /*let self = this;
 
@@ -85,6 +89,7 @@ export default new Store({
 
             isLoaded(params){
                 //return this.loadedPeriods.indexOf(params) !== -1;
+                return false;
             }
         }
     },

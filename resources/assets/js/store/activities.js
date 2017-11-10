@@ -7,7 +7,6 @@ import Vue from 'vue'
 export default new Store({
     
     state: {
-        data: {}
     },
     
     methods: {

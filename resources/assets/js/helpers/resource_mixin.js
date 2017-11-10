@@ -20,7 +20,7 @@ export default {
 
     methods: {
         createElement(){
-            this.$router.push({name: 'new_' + this.elements_store.state.resource_name[0]});
+            this.$router.push({name: 'new_' + this.resource_name});
         },
 
         duplicateElement(){
@@ -33,11 +33,11 @@ export default {
                 let that = this;
                 this.elements_store.execute('CREATE', {
                     element: copy,
-                    period: time.state.selectedPeriod
+                    period: this.period
                 }, () => {
                     that.$router.push({
-                        name: this.elements_store.state.resource_name[0],
-                        params: {period: time.state.selectedPeriod, id: copy.id}
+                        name: this.resource_name,
+                        params: {period: this.period, id: copy.id}
                     });
                 });
             }
@@ -47,14 +47,14 @@ export default {
             if (elements.length === 1) {
                 let that = this;
                 this.elements_store.execute('DELETE',
-                    {period: time.state.selectedPeriod, elements: elements}, () => {
+                    {period: this.period, elements: elements}, () => {
                     });
             }
         },
 
         openElement(element){
             this.$router.push({
-                name: this.elements_store.state.resource_name[0],
+                name: this.resource_name,
                 params: {period: time.state.currentPeriod, id: element.id}
             });
         },
@@ -70,23 +70,23 @@ export default {
             }
 
             this.fetching = callback;
-            this.elements_store.fetch('BY_PERIOD', this.time.state.selectedPeriod, callback);
+            this.elements_store.fetch('BY_PERIOD', this.period, callback);
         },
 
         updateElement(changes){
 
-            this.elements_store.execute('EDIT', {element: this.element, changes, sendToServer: this.element.id});
-            this.editableElement = deepCopy(this.element); // Le tri des schedules peut modifier l'activity
+            this.elements_store.execute('EDIT', {element: this.element, changes, sendToServer: (this.element.id)});
+            this.editableElement = deepCopy(this.element); // Au cas où le store à fais des modification
 
-            //Sauvegarde réelle de l'élément
+            //Création de l'élément si les conditions sont valides
             if (this.creating && !this.creationSignalSent && this.element.name.length) {
                 let elem = this.element;
                 let that = this;
-                this.elements_store.execute('CREATE', {element: this.element, period: time.state.currentPeriod}, () => {
+                this.elements_store.execute('CREATE', {element: this.element, period: this.period}, () => {
                     if (that.element === elem) {
                         that.$router.push({
-                            name: this.elements_store.state.resource_name[0],
-                            params: {period: time.state.selectedPeriod, id: elem.id}
+                            name: this.resource_name,
+                            params: {period: this.period, id: elem.id}
                         })
                     }
                 });
@@ -100,12 +100,12 @@ export default {
                 this.element = this.elements_store.genNewStruct();
                 this.editableElement = deepCopy(this.element);
 
-            } else if (this.$route.params.id !== undefined && this.time.state.selectedPeriod !== undefined && !this.fetching) {
+            } else if (this.route_id !== undefined /*&& this.time.state.selectedPeriod !== undefined*/ && !this.fetching) {
+                this.element = this.elements_store.getters.getElement(parseInt(this.route_id), this.period);
 
-                this.element = this.elements_store.getters.get(parseInt(this.$route.params.id), this.time.state.selectedPeriod);
-                if (!this.element) {
-                    this.$router.push({name: this.elements_store.state.resource_name[1]})
-                } else {
+                if (!this.element)
+                    this.$router.push({name: this.resources_name});
+                else {
                     this.selection = [this.element];
                     this.editableElement = deepCopy(this.element);
                 }
@@ -120,26 +120,47 @@ export default {
 
     computed: {
         elements(){
-            return this.elements_store.getters.byPeriod(this.time.state.selectedPeriod);
+            return this.elements_store.getters.getElements(this.period);
         },
 
         creating(){
-            return this.$route.name === 'new_' + this.elements_store.state.resource_name[0];
+            return this.$route.name === 'new_' + this.resource_name;
+        },
+
+        period(){
+            if (this.$options.name === 'Activities')
+                return this.time.state.currentPeriod;
+            else (this.$options.name === 'Members')
+            return 'no_period';
+        },
+
+        resource_name() {
+            return this.elements_store.state.resource_name[0];
+        },
+
+        resources_name() {
+            return this.elements_store.state.resource_name[1];
+        },
+
+        route_id() {
+            return this.$route.params.id;
         }
     },
 
     watch: {
-        'time.state.selectedPeriod'(p, op){
+        'this.period'(p, op){
             if (p !== op) {
                 this.periodRequested(p);
             }
         },
 
-        '$route'(){
+        '$route.params.period'(){
             if (this.$route.params.period) {
                 this.time.selectPeriod(this.$route.params.period);
             }
+        },
 
+        '$route'(){
             this.loadModule();
         },
 
@@ -158,7 +179,7 @@ export default {
         if (this.$route.params.period)
             this.time.selectPeriod(this.$route.params.period);
 
-        this.periodRequested(this.time.state.selectedPeriod);
+        this.periodRequested(this.period);
         this.loadModule();
 
         this.actionbar.setActions([]);

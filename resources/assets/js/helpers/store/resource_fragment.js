@@ -2,20 +2,20 @@ export default function(resource_name, plurial_resource_name) {
     return {
     
         state: {
-            data: [],
+            data: {},
             virtualId: 0,
             resource_name: [resource_name, plurial_resource_name]
         },
     
         getters: {
 
-            get: (store, id, period) => {
+            getElement: (store, id, period) => {
                 if (!store.state.data[period])
                     return null;
                 return store.state.data[period].find(a => a.id === id);
             },
 
-            byPeriod: (store, period) => {
+            getElements: (store, period) => {
                 let data = store.state.data[period];
                 return data !== undefined ? data : [];
             },

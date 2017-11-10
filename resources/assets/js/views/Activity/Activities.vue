@@ -41,7 +41,7 @@
         name: 'Activities',
         mixins: [resource_mixin],
 
-        components: {SideList, Activity},
+        components: {SideList},
 
         data(){
             return {
