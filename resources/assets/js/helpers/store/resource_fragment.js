@@ -3,18 +3,22 @@ export default function(resource_name, plurial_resource_name) {
     
         state: {
             data: [],
-            virtualId: 0
+            virtualId: 0,
+            resource_name: [resource_name, plurial_resource_name]
         },
     
         getters: {
-            
-            get: (store, id) => {
-                return store.state.data.find(e => e.id === id);
+
+            get: (store, id, period) => {
+                if (!store.state.data[period])
+                    return null;
+                return store.state.data[period].find(a => a.id === id);
             },
-            
-            all: (store) => {
-                return store.state.data;
-            }
+
+            byPeriod: (store, period) => {
+                let data = store.state.data[period];
+                return data !== undefined ? data : [];
+            },
         },
     
         methods: {
@@ -35,13 +39,13 @@ export default function(resource_name, plurial_resource_name) {
         
             CREATE: {
                 applyLocally(params, store) {
-                    params[resource_name].virtualId = store.state.virtualId++;
-                    store.state.data[params.period].push(params[resource_name]);
+                    params['element'].virtualId = store.state.virtualId++;
+                    store.state.data[params.period].push(params['element']);
                 },
             
                 makeRequest(request, context, result) {
-                    request('POST', resource_name, context.store.encode(deepCopy(context.params[resource_name]), context.params.period)).then((r) => {
-                        context.params[resource_name].id = r.data.data.id;
+                    request('POST', resource_name, context.store.encode(deepCopy(context.params['element']), context.params.period)).then((r) => {
+                        context.params['element'].id = r.data.data.id;
                         result.isSuccess();
                     });
                 }
@@ -50,13 +54,13 @@ export default function(resource_name, plurial_resource_name) {
             EDIT: {
         
                 applyLocally(params, store){
-                    Object.assign(params[resource_name], deepCopy(params.changes));
-                    store.normalize(params[resource_name]);
+                    Object.assign(params['element'], deepCopy(params.changes));
+                    store.normalize(params['element']);
                 },
         
                 makeRequest(request, context, result){
                     if (context.params.sendToServer) {
-                        request('PATCH', resource_name + '/' + context.params[resource_name].id, context.store.encode(deepCopy(context.params.changes))).then(() => {
+                        request('PATCH', resource_name + '/' + context.params['element'].id, context.store.encode(deepCopy(context.params.changes))).then(() => {
                             result.isSuccess();
                         });
                     } else {
@@ -70,13 +74,13 @@ export default function(resource_name, plurial_resource_name) {
         
                 applyLocally(params, store){
                     store.state.data[params.period] = store.state.data[params.period].filter(a => {
-                        return params[plurial_resource_name].indexOf(a) === -1;
+                        return params['elements'].indexOf(a) === -1;
                     });
                 },
         
                 makeRequest(request, context, result){
                     // TODO : Multi-DELETE
-                    request('DELETE', resource_name + '/' + context.params[plurial_resource_name][0].id).then(() => {
+                    request('DELETE', resource_name + '/' + context.params['elements'][0].id).then(() => {
                         result.isSuccess();
                     });
             

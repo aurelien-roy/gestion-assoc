@@ -23,9 +23,7 @@ const router = new VueRouter({
     mode: 'history',
     routes: [
         {name: 'root', path: '/', component: Home},
-      
-      
-      
+
         {
           path: '/activites', component: Activities,
           children: [
