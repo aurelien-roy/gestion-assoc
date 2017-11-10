@@ -2,9 +2,40 @@
     <div>
         <div v-if="member">
             <div class="headset relative">
-                <h1 class="m0">
-                    <EditableText :value="member.firstname" placeholder="Prénom" class="like-h1 width-auto no-background" @input="notifyUpdate('firstname', $event)"></EditableText><EditableText :value="member.lastname" placeholder="Nom" class="like-h1 thinner width-auto no-background" @input="notifyUpdate('lastname', $event)"></EditableText>
+                <h1 class="">
+                    <EditableText :value="member.firstname" placeholder="Prénom" class="like-h1 width-auto no-background m0" @input="notifyUpdate('firstname', $event)"></EditableText><EditableText :value="member.lastname" placeholder="Nom" class="like-h1 thinner width-auto no-background m0" @input="notifyUpdate('lastname', $event)"></EditableText>
                 </h1>
+                <div class="pl10 gray-text large">
+                    <p class="thin m0">né(e) le <EditableText value="test" placeholder="test"></EditableText> (X ans)</p>
+                    <p class="thin m0">inscrit(e) depuis le <EditableText value="test" placeholder="test"></EditableText></p>
+                </div>
+
+                <div class="row pl10 gutters">
+
+                    <div class="col col-6">
+                        <h3>Contact</h3>
+                        <div class="dashed-line"></div>
+                        <p>...</p>
+                    </div>
+                    <div class="col col-6">
+                        <h3>Adresse postale</h3>
+                        <div class="dashed-line"></div>
+                        <p>...</p>
+                    </div>
+                    <div class="col col-6">
+                        <h3>Notes</h3>
+                        <div class="dashed-line"></div>
+                        <p>...</p>
+                    </div>
+                    <div class="col col-6">
+                        <h3>Parents</h3>
+                        <div class="dashed-line"></div>
+                        <p>...</p>
+
+                    </div>
+
+                </div>
+
             </div>
 
         </div>

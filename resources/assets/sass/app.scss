@@ -81,7 +81,20 @@ h2{
     margin-bottom: 0;
 }
 
+h3{
+    font-weight: 900;
+    font-size: 1.125rem;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
 
+.thin, .thin input{
+    font-weight: lighter !important;
+}
+
+.large, .large input{
+    font-size: 1.2rem !important;
+}
 
 a:hover{
     color: inherit;
