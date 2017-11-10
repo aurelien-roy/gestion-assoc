@@ -2,10 +2,9 @@
     <div>
         <div v-if="member">
             <div class="headset relative">
-                {{ member.firstname }} {{ member.lastname }}
-                <!--<div><EditableText :value="activity.name" :title="true" placeholder="Cliquer pour nommer l'activité" class="like-h1" @input="notifyUpdate('name', $event)"></EditableText></div>
-                <div><EditableText :value="activity.level" class="subtitle" placeholder="Ajouter le niveau" @input="notifyUpdate('level', $event)"></EditableText></div>
-                <ColorPicker class="right" :value="activity.color" @input="notifyUpdate('color', $event)"></ColorPicker>-->
+                <h1 class="m0">
+                    <EditableText :value="member.firstname" placeholder="Prénom" class="like-h1 width-auto no-background" @input="notifyUpdate('firstname', $event)"></EditableText><EditableText :value="member.lastname" placeholder="Nom" class="like-h1 thinner width-auto no-background" @input="notifyUpdate('lastname', $event)"></EditableText>
+                </h1>
             </div>
 
         </div>
@@ -165,11 +164,13 @@
         },
 
         beforeRouteUpdate (to, from, next) {
+            next();
             /*this.handleRouteChange(to, from, next);
             this.hasChanges = false;*/
         },
 
         beforeRouteLeave (to, from, next) {
+            next();
             /*this.handleRouteChange(to, from, next);*/
         },
 

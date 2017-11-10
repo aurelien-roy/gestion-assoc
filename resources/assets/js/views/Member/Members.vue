@@ -72,7 +72,10 @@
 
         methods: {
             openMember(member){
+                console.log(typeof(member.id));
+                console.log(this.$router);
                 this.$router.push({name: 'member', params: {id: member.id}});
+                console.log(this.$router);
             },
 
             updateMember(member){
@@ -83,17 +86,20 @@
                 if(this.creating && (!this.member || this.member.id)){
                     this.creationSignalSent = false;
                     this.member = members_store.genNewStruct();
-                    this.editableMember = deepCopy(this.activity);
+                    this.editableMember = deepCopy(this.member);
 
                 }else if(this.id !== undefined){
 
                     if(!this.fetching) {
+
+                        console.log('store:');
                         this.member = members_store.getters.get(parseInt(this.id));
+                        console.log(this.member);
                         if (!this.member) {
                             this.$router.push({name: 'members'})
                         } else {
                             this.selection = [this.member];
-                            this.editableActivity = deepCopy(this.member);
+                            this.editableMember = deepCopy(this.member);
                         }
                     }
                 }else if(!this.creating){
@@ -127,11 +133,13 @@
 
         mounted(){
 
+            if(members_store.getters.all().length === 0)
+                members_store.genLocalTestMembers();
+
             this.id = this.$route.params.id;
             this.loadMemberModule();
 
-            if(members_store.getters.all().length === 0)
-                members_store.genLocalTestMembers();
+
         }
     }
 

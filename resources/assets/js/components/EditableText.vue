@@ -312,6 +312,11 @@
                 default: false
             },
 
+            nobackground: {
+              type: Boolean,
+              default: false
+            },
+
             value: {},
 
             placeholder: {

@@ -39,7 +39,6 @@ const router = new VueRouter({
         // Princing policies
         {name: 'pricings', path:'/politiques-tarifaires', component: PricingPolicies},
       
-        
         //Members
         {
             path: '/membres', component: Members,
@@ -61,6 +60,7 @@ const router = new VueRouter({
         nav: [
             [
                 {title: 'Activitiés', routes: ['activities', 'activity', 'new_activity']},
+                {title: 'Membres', routes: ['members', 'member', 'new_member']},
                 {title: 'Politiques tarifaires', routes: ['pricings']}
             ]
         ]

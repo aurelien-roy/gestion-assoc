@@ -35,6 +35,7 @@ export default {
 	},
 	
 	checkRouteAuthorization(to, from, next){
+		
 		if(this.isAuthorized()){
 			if(to.name === 'login' || to.name === 'register')
             	next({ name: 'home'})

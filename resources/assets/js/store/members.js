@@ -4,7 +4,11 @@ import resource_fragment from '../helpers/store/resource_fragment'
 import { rand } from '../helpers/math';
 
 export default new Store({
-
+    
+    state: {
+    
+    },
+    
     methods: {
 
         //Génère un nouveau membre
