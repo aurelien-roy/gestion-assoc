@@ -37,6 +37,10 @@ $colors: (
 
   .#{$key}-text{
     color: $value;
+
+    &.darker{
+      color: darken($value, 10%) !important;
+    }
   }
 
 }

@@ -7,7 +7,7 @@
                 <ColorPicker class="right" :value="activity.color" @input="notifyUpdate('color', $event)"></ColorPicker>
             </div>
 
-            <div class="pl10 gray-text">
+            <div class="pl10 gray-text darker">
                 <div class="dashed-line"></div>
                 <p v-for="(date, i) in schedules" :key="i" class="m0 contains-input">
                     tous les

@@ -22,10 +22,111 @@ $sm: 636px;
 
 @import "dialog.scss";
 
+@import "table.scss";
+
 /* ICONS */
 
 $icons_path: '../icons/';
 $adaptiveMenuBreakpoint: 948px;
+
+i{
+
+
+    display: inline-block;
+    speak: none;
+    background-size: 100%;
+
+    &.dashboard{
+        background-image: url($icons_path + 'dashboard.png');
+    }
+
+    &.activities{
+        background-image: url($icons_path + 'activities.png');
+    }
+
+    &.members{
+        background-image: url($icons_path + 'members.png');
+    }
+
+    &.payments{
+        background-image: url($icons_path + 'payments.png');
+    }
+
+    &.settings{
+        background-image: url($icons_path + 'settings.png');
+    }
+
+    &.create{
+        background-image: url($icons_path + 'create.png');
+    }
+
+    &.duplicate{
+        background-image: url($icons_path + 'duplicate.png');
+    }
+
+    &.delete{
+        background-image: url($icons_path + 'delete.svg');
+    }
+
+    &.delete-inline{
+        background-image: url($icons_path + 'delete-inline.svg');
+    }
+
+    &.sort-by{
+        background-image: url($icons_path + 'sort_by.png');
+    }
+
+    &.search{
+        background-image: url($icons_path + 'search.svg');
+    }
+
+    &.family{
+        background-image: url($icons_path + 'family.png');
+    }
+
+    &.home{
+        background-image: url($icons_path + 'home.png');
+    }
+
+    &.phone{
+        background-image: url($icons_path + 'phone.png');
+    }
+
+    &.note{
+        background-image: url($icons_path + 'note.png');
+    }
+
+}
+
+@mixin icon($size: 24px, $margin: ''){
+    width: $size;
+    height: $size;
+    vertical-align: -($size/4);
+
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-x: 50%;
+
+    @if $margin == left
+    {
+        margin-left: $size/2;
+    }
+    @else if $margin == right
+    {
+        margin-right: $size/2;
+    }
+}
+
+@mixin icon-verical-offset($offset: 0){
+    position: relative;
+    top: -$offset;
+}
+
+
+
+
+
+
 
 html{
     height: 100%;
@@ -86,6 +187,10 @@ h3{
     font-size: 1.125rem;
     margin-top: 20px;
     margin-bottom: 0;
+
+    i{
+        @include icon(1.125rem);
+    }
 }
 
 .thin, .thin input{
@@ -139,82 +244,6 @@ a{
 }
 
 
-i{
-
-
-    display: inline-block;
-    speak: none;
-    background-size: 100%;
-
-    &.dashboard{
-        background-image: url($icons_path + 'dashboard.png');
-    }
-
-    &.activities{
-        background-image: url($icons_path + 'activities.png');
-    }
-
-    &.members{
-        background-image: url($icons_path + 'members.png');
-    }
-
-    &.payments{
-        background-image: url($icons_path + 'payments.png');
-    }
-
-    &.settings{
-        background-image: url($icons_path + 'settings.png');
-    }
-
-    &.create{
-        background-image: url($icons_path + 'create.png');
-    }
-
-    &.duplicate{
-        background-image: url($icons_path + 'duplicate.png');
-    }
-
-    &.delete{
-        background-image: url($icons_path + 'delete.svg');
-    }
-
-    &.delete-inline{
-        background-image: url($icons_path + 'delete-inline.svg');
-    }
-
-    &.sort-by{
-        background-image: url($icons_path + 'sort_by.png');
-    }
-
-    &.search{
-        background-image: url($icons_path + 'search.svg');
-    }
-
-}
-
-@mixin icon($size: 24px, $margin: ''){
-    width: $size;
-    height: $size;
-    vertical-align: -($size/4);
-
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position-x: 50%;
-
-    @if $margin == left
-    {
-        margin-left: $size/2;
-    }
-    @else if $margin == right
-    {
-        margin-right: $size/2;
-    }
-}
-
-@mixin icon-verical-offset($offset: 0){
-    position: relative;
-    top: -$offset;
-}
 
 
 tr:hover {
@@ -400,6 +429,11 @@ tr:hover {
     }
 }
 
+.p10{
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
 .pl10{
     padding-left: 10px;
 }
@@ -411,11 +445,15 @@ tr:hover {
     margin-bottom: 8px;
     margin-top: 8px;
     background: url($icons_path + 'dash.png') no-repeat;
-}
 
+    &.thinner{
+        margin: 2px 0;
+    }
+}
+/*
 .gray-text{
     color: #4B4B4B !important;
-}
+}*/
 
 .suggestions{
     max-height: 225px;

@@ -10,28 +10,100 @@
                     <p class="thin m0">inscrit(e) depuis le <EditableText value="test" placeholder="test"></EditableText></p>
                 </div>
 
-                <div class="row pl10 gutters">
+                <div class="row data-table gray-text darker">
 
-                    <div class="col col-6">
-                        <h3>Contact</h3>
-                        <div class="dashed-line"></div>
-                        <p>...</p>
-                    </div>
-                    <div class="col col-6">
-                        <h3>Adresse postale</h3>
-                        <div class="dashed-line"></div>
-                        <p>...</p>
-                    </div>
-                    <div class="col col-6">
-                        <h3>Notes</h3>
-                        <div class="dashed-line"></div>
-                        <p>...</p>
-                    </div>
-                    <div class="col col-6">
-                        <h3>Parents</h3>
-                        <div class="dashed-line"></div>
-                        <p>...</p>
+                    <div class="col col-6 p10">
+                        <h3 class="row">
+                            <div class="col col-3"><i class="icon phone"></i></div>
+                            <div class="col col-9">Contact</div>
+                        </h3>
+                        <div class="dashed-line thinner"></div>
 
+                        <div class="data row">
+                            <p class="col col-3">tél</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+
+                        <div class="data row">
+                            <p class="col col-3">tél</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+
+                        <div class="data row">
+                            <p class="col col-3">mail</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+                    </div>
+
+                    <div class="col col-6 p10">
+                        <h3 class="row">
+                            <div class="col col-3"><i class="icon home"></i></div>
+                            <div class="col col-9">Adresse postale</div>
+                        </h3>
+                        <div class="dashed-line thinner"></div>
+
+                        <div class="data row">
+                            <p class="col col-3">tél</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+
+                        <div class="data row">
+                            <p class="col col-3">tél</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+
+                        <div class="data row">
+                            <p class="col col-3">mail</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+                    </div>
+
+
+                    <div class="col col-6 p10">
+                        <h3 class="row">
+                            <div class="col col-3"><i class="icon note"></i></div>
+                            <div class="col col-9">Notes</div>
+                        </h3>
+                        <div class="dashed-line thinner"></div>
+
+                        <div class="data row">
+                            <p class="col col-3">tél</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+
+                        <div class="data row">
+                            <p class="col col-3">tél</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+
+                        <div class="data row">
+                            <p class="col col-3">mail</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+                    </div>
+
+
+                    <div class="col col-6 p10">
+                        <h3 class="row">
+                            <div class="col col-3"><i class="icon family"></i></div>
+                            <div class="col col-9">Parents</div>
+                        </h3>
+                        <div class="dashed-line thinner"></div>
+
+                        <div class="data row">
+                            <p class="col col-3">tél</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+
+                        <div class="data row">
+                            <p class="col col-3">tél</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
+
+                        <div class="data row">
+                            <p class="col col-3">mail</p>
+                            <p class="col col-9">XX XX XX XX XX</p>
+                        </div>
                     </div>
 
                 </div>

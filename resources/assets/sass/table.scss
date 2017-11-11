@@ -1,0 +1,14 @@
+.data-table{
+  .data.row{
+
+    margin: 5px 0;
+
+    p {
+      margin: 0;
+    }
+
+    & > p:first-child {
+      font-weight: lighter;
+    }
+  }
+}
