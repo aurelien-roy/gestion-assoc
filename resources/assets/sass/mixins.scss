@@ -1,0 +1,23 @@
+@mixin icon($size: 24px, $margin: ''){
+  width: $size;
+  height: $size;
+  vertical-align: -($size/4);
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-x: 50%;
+
+  @if $margin == left
+  {
+    margin-left: $size/2;
+  }
+  @else if $margin == right
+  {
+    margin-right: $size/2;
+  }
+}
+
+@mixin icon-verical-offset($offset: 0){
+  position: relative;
+  top: -$offset;
+}

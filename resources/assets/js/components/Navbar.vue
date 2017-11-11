@@ -20,7 +20,6 @@
         </header>
     </div>
 </template>
-<style lang="scss" src="../../sass/navbar.scss"></style>
 <script>
 
 

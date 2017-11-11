@@ -22,7 +22,7 @@
         </div>
     </div>
 </template>
-<style lang="scss" src="../../../sass/list.scss"></style>
+
 <script>
 
     import resource_mixin from '../../helpers/resource_mixin'
