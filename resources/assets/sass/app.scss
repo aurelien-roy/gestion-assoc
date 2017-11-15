@@ -307,6 +307,10 @@ tr:hover {
     width: auto;
 }
 
+input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+}
+
 .editable{
 
     display: inline-block;
@@ -387,6 +391,15 @@ tr:hover {
     .placeholder{
         opacity: 0.4;
     }
+}
+
+input[autocomplete="off"]::-webkit-contacts-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
+    height: 0;
+    width: 0;
+    margin: 0;
 }
 
 .subtitle, .subtitle input{

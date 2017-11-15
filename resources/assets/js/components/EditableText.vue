@@ -153,7 +153,8 @@
             resize(){
                 this.$nextTick(() => {
                     let ref = this.title ? this.$refs.h1 : this.$refs.p;
-                    this.$refs.field.style.width = (ref.offsetWidth + 2) + 'px';
+                    this.$refs.field.style.width = (ref.offsetWidth) + 'px';
+                    this.$refs.field.style.height = (ref.offsetHeight) + 'px';
                 });
             },
 
