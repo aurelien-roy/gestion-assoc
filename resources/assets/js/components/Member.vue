@@ -2,13 +2,31 @@
     <div>
         <div v-if="member">
             <div class="headset relative">
-                <h1 class="">
-                    <EditableText :value="member.firstname" placeholder="Prénom" class="like-h1 width-auto no-background m0" @input="notifyUpdate('firstname', $event)"></EditableText><EditableText :value="member.lastname" placeholder="Nom" class="like-h1 thinner width-auto no-background m0" @input="notifyUpdate('lastname', $event)"></EditableText>
-                </h1>
-                <div class="pl10 gray-text large">
-                    <p class="thin m0">né(e) le <EditableText value="test" placeholder="test"></EditableText> (X ans)</p>
-                    <p class="thin m0">inscrit(e) depuis le <EditableText value="test" placeholder="test"></EditableText></p>
+
+                <div class="row">
+                    <div class="auto">
+                        <h1>
+                            <EditableText :value="member.firstname" placeholder="Prénom" class="like-h1 width-auto no-background m0" @input="notifyUpdate('firstname', $event)"></EditableText><EditableText :value="member.lastname" placeholder="Nom" class="like-h1 thinner width-auto no-background m0" @input="notifyUpdate('lastname', $event)"></EditableText>
+                        </h1>
+
+                        <div class="pl10">
+                            <!--<div class="tag green-pane colorful white-text m0">Actif en 2017/2018</div>-->
+                            <div class="tag red-pane colorful white-text m0">Inactif depuis 2015/2016</div>
+                        </div>
+
+                        <div class="pl10 pt10 gray-text large">
+                            <p class="thin m0">né(e) le <EditableText value="test" placeholder="test"></EditableText> (X ans)</p>
+                            <p class="thin m0">inscrit(e) depuis le <EditableText value="test" placeholder="test"></EditableText></p>
+                        </div>
+                    </div>
+
+                    <div class="aside">
+                        <div class="photo">
+                            <img src="https://placeholdit.co//i/280x280?&text=Photo">
+                        </div>
+                    </div>
                 </div>
+
 
                 <div class="row data-table gray-text darker">
 

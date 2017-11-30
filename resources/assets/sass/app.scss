@@ -409,11 +409,26 @@ input[autocomplete="off"]::-webkit-contacts-auto-fill-button {
 
 .headset{
     margin-bottom: 15px;
+    margin-top: 10px;
+
+    h1{
+        margin-top: 0;
+    }
 
     .right{
         position: absolute !important;
         right: 0px;
         top: 50%;
+    }
+
+    .aside{
+        width: 140px;
+        margin-left: 5px;
+
+        .photo{
+            max-width: 140px;
+            max-height: 140px;
+        }
     }
 }
 
@@ -424,6 +439,10 @@ input[autocomplete="off"]::-webkit-contacts-auto-fill-button {
 
 .pl10{
     padding-left: 10px;
+}
+
+.pt10{
+    padding-top: 10px;
 }
 
 
@@ -574,6 +593,16 @@ button{
         color: black;
         font-size: 0.9rem;
     }
+}
+
+.tag{
+    font-weight: bolder;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    line-height: 0.9rem;
+    display: inline-block;
+    padding: 0.3rem 1rem;
+    border-radius: 1rem;
 }
 
 @import "navbar.scss";

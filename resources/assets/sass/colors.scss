@@ -35,6 +35,23 @@ $colors: (
     }
   }
 
+  .#{$key}-pane{
+    background-color: lighten(saturate($value, 100%), 30%) !important;
+
+    &.bordered{
+      border-color: $value !important;
+    }
+
+    &.colorful{
+      background-color: lighten(saturate($value, 20%), 10%) !important;
+    }
+
+    &.dark{
+      color: white;
+      background-color: $value !important;
+    }
+  }
+
   .#{$key}-text{
     color: $value;
 
