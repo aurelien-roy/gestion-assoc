@@ -219,7 +219,14 @@ a{
 }
 
 
-
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+input[type="number"] {
+    -moz-appearance: textfield;
+}
 
 tr:hover {
   background-color: #eeeeee;
@@ -443,6 +450,10 @@ input[autocomplete="off"]::-webkit-contacts-auto-fill-button {
 
 .pt10{
     padding-top: 10px;
+}
+
+.pr10{
+    padding-right: 10px;
 }
 
 

@@ -9,7 +9,7 @@
                                 :items="elements"
                                 v-model="selection"
                                 :sorting="sorting"
-
+                                :match="match"
                                 component="MemberItem"
                         ></SideList>
 
@@ -59,8 +59,8 @@
                 match: (member, s) => {
                     s = s.toLocaleLowerCase();
                     return (member.firstname.toLocaleLowerCase().includes(s)
-                      || member.lastname.toLocaleLowerCase().includes(s)
-                      || member.birthdate.year.includes(s))
+                      || member.lastname.toLocaleLowerCase().includes(s))
+                      /*|| member.birthdate.year.includes(s))*/
                 },
 
                 creationSignalSent: false,

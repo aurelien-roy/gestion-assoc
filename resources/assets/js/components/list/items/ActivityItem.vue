@@ -1,5 +1,5 @@
 <template>
-    <li :class="[item.color + '-sheet']" class="bordered" :key="item.id" >
+    <li :class="[item.color + '-sheet']" class="bordered invert" :key="item.id" >
         <p><span class="title">{{ item.name }}</span><span class="second">{{ item.level }}</span></p>
         <p class="details">{{ date }} ◦ {{ item.teacher }}</p>
     </li>

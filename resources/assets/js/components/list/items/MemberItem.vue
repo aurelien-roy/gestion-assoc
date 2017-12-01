@@ -1,9 +1,9 @@
 <template>
-    <li class="gray-sheet bordered" :key="item.id" >
-        <p><span class="title">{{ item.firstname }} {{ item.lastname }}</span></p>
+    <li class="red-sheet bordered invert small" :key="item.id" >
+        <p class="single title">{{ item.firstname }} {{ item.lastname }}</p>
     </li>
 </template>
-<style>
+<style scoped>
 
 </style>
 <script>
