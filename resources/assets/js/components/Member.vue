@@ -15,8 +15,13 @@
                         </div>
 
                         <div class="pl10 pt10 gray-text large">
-                            <p class="thin m0">né(e) le <EditableText value="test" placeholder="test"></EditableText> (X ans)</p>
-                            <p class="thin m0">inscrit(e) depuis le <EditableText value="test" placeholder="test"></EditableText></p>
+                            <p class="thin m0">Né(e) le</p>
+                            <DateSelector v-model="member.birthdate"
+                                          @input="notifU('birthdate', $event)"></DateSelector>
+                            <span>{{age}}</span>
+
+                            <p class="thin m0">Inscrit(e) depuis le</p>
+                            <DateSelector v-model="member.subdate" @input="notifU('subdate', $event)"></DateSelector>
                         </div>
                     </div>
 
@@ -39,12 +44,12 @@
 
                         <div class="data row">
                             <p class="col col-3">tél</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
+                            <PhoneSelector v-model="member.phone1" @input="notifU('phone1', $event)"></PhoneSelector>
                         </div>
 
                         <div class="data row">
                             <p class="col col-3">tél</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
+                            <PhoneSelector v-model="member.phone2" @input="notifU('phone2', $event)"></PhoneSelector>
                         </div>
 
                         <div class="data row">
@@ -61,18 +66,25 @@
                         <div class="dashed-line thinner"></div>
 
                         <div class="data row">
-                            <p class="col col-3">tél</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
+                            <p class="col col-3">Adr 1</p>
+                            <EditableText :value="member.address1" placeholder="Adresse"
+                                          @input="notifU('address1', $event)"></EditableText>
                         </div>
 
                         <div class="data row">
-                            <p class="col col-3">tél</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
+                            <p class="col col-3">Adr 2</p>
+                            <EditableText :value="member.address2" placeholder="Suite adresse"
+                                          @input="notifU('address2', $event)"></EditableText>
                         </div>
 
                         <div class="data row">
-                            <p class="col col-3">mail</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
+                            <p class="col col-3">Cp</p>
+                            <EditableText :value="member.postcode" type="number" :maxlength="5" placeholder="xxxxx"
+                                          @input="notifU('postcode', $event)"></EditableText>
+
+                            <p class="col col-3">Ville</p>
+                            <EditableText :value="member.city" placeholder="Ville"
+                                          @input="notifU('city', $event)"></EditableText>
                         </div>
                     </div>
 
@@ -85,18 +97,15 @@
                         <div class="dashed-line thinner"></div>
 
                         <div class="data row">
-                            <p class="col col-3">tél</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
+                            <p class="col col-3">notes</p>
+                            <EditableText :value="member.notes" placeholder="Notes sur l'adhérent(e)"
+                                          @input="notifU('notes', $event)"></EditableText>
                         </div>
 
                         <div class="data row">
-                            <p class="col col-3">tél</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
-                        </div>
-
-                        <div class="data row">
-                            <p class="col col-3">mail</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
+                            <p class="col col-3">médic.</p>
+                            <EditableText :value="member.medic" placeholder="Contres-indications"
+                                          @input="notifU('medic', $event)"></EditableText>
                         </div>
                     </div>
 
@@ -109,27 +118,20 @@
                         <div class="dashed-line thinner"></div>
 
                         <div class="data row">
-                            <p class="col col-3">tél</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
+                            <p class="col col-3">parent 1</p>
+                            <EditableText :value="member.parent1" placeholder="Prénom Nom"
+                                          @input="notifU('parent1', $event)"></EditableText>
                         </div>
 
                         <div class="data row">
-                            <p class="col col-3">tél</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
-                        </div>
-
-                        <div class="data row">
-                            <p class="col col-3">mail</p>
-                            <p class="col col-9">XX XX XX XX XX</p>
+                            <p class="col col-3">parent 2</p>
+                            <EditableText :value="member.parent2" placeholder="Prénom Nom"
+                                          @input="notifU('parent2', $event)"></EditableText>
                         </div>
                     </div>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 </template>
 <style>
@@ -138,161 +140,59 @@
 <script>
 
     import EditableText from './EditableText'
-    import ColorPicker from './ColorPicker'
     import Modal from './Modal'
+    import DateSelector from './DateSelector'
+    import PhoneSelector from './PhoneSelector'
 
     export default {
         data() {
-            return {
-                /*hasChanges: false,
-                nameFilled: false,
-                dialogs: {
-                    schedulesUnfilled: {
-                        title: "Un créneau n'a pas été rempli entièrement",
-                        message: "Vous devez renseigner le jour, l'heure et début et de fin pour chaque créenau ajouté.",
-                        buttons: [{label: "Continuer à remplir", class: "primary"}, {
-                            label: "Supprimer le créneau",
-                            class: "critical"
-                        }],
-                        visible: true
-                    },
-                    titleUnfilled: {
-                        title: "Votre activité n'a pas de nom",
-                        message: "Les activités sans nom ne sont pas sauvegardés.",
-                        buttons: [{label: "Continuer à remplir", class: "primary"}, {
-                            label: "Supprimer l'activité",
-                            class: "critical"
-                        }],
-                        visible: true
-                    }
-                },
-                dialog: null,
-                nextRoute: null,*/
-            }
+            return {}
         },
-        components: {EditableText, ColorPicker, Modal},
+        components: {EditableText, Modal, DateSelector, PhoneSelector},
 
         methods: {
             //Appelé quand un chanp est modifié
-            /*notifyUpdate(field, value){
+            notifyUpdate(field, value){
                 let changes = {};
                 changes[field] = value;
 
-                if(field === 'name'){
-                    this.nameFilled = (value.length > 0);
-                }
-
                 this.$emit('update', changes);
-                this.hasChanges = true;
             },
 
-            //Appelé quand un chanp du schedules est modifié
-            notifyUpdateDate(index, field, value){
-                if(value !== null) {
-                    this.schedules[index][field] = value;
-
-                    if (this.dateFilled(index)) {
-                        this.notifyUpdate('schedules', this.schedulesFilled);
-                    }
-                }else if(value !== this.schedules[index][field]){
-                    this.delDate(index);
-                }
-            },
-
-            dateFilled(index){
-                return (this.schedules[index].day !== null &&
-                  this.schedules[index].time_begin !== null &&
-                  this.schedules[index].time_end !== null);
-            },
-
-            datePartFilled(index){
-                return (!this.dateFilled(index) &&
-                  (this.schedules[index].day !== null ||
-                    this.schedules[index].time_begin !== null ||
-                    this.schedules[index].time_end !== null));
-            },
-
-            addDate(){
-                this.activity.schedules.push({day: null, time_begin: null, time_end: null});
-
-                if (this.schedules.length !== 1) {
-                    this.$nextTick(() => {
-                        this.$refs['day' + (this.schedules.length - 1)][0].select();
-                    });
-                }
-            },
-
-            delDate(index){
-                this.schedules.splice(index, 1);
-                this.notifyUpdate('schedules', this.schedulesFilled);
-            },
-
-            // Appelé quand on quitte l'activité en cours
-            handleRouteChange(to, from, next){
-                // Une date n'est pas rempli
-                if (this.datePartFilled(this.schedules.length - 1)) {
-                    this.dialog = "schedulesUnfilled";
-                    this.nextRoute = next;
-                }
-                else if (this.hasChanges && !this.nameFilled) {
-                    this.dialog = "titleUnfilled";
-                    this.nextRoute = next;
-                }
-                else
-                    next();
-            },
-
-            // Appelé pour gérer les boites de dialogues
-            handleDialog(event){
-                if (event.class === "primary")
-                    this.nextRoute(false);
-                else if (event.class === "critical")
-                    this.nextRoute();
-                this.dialog = null;
-            }*/
+            notifU(field, value){
+                console.log("Update : " + field + " : " + value)
+                this.notifyUpdate(field, value)
+            }
         },
 
         computed: {
             member(){
                 return this.data ? this.data : null;
             },
-            /*
-            schedules(){
 
-                if (this.activity.schedules.length === 0)
-                    this.addDate();
-                return this.activity.schedules;
-            },
+            age(){
+                if (!this.member.birthdate)
+                    return '';
 
-            //Renvoi les dates du schedules qui sont remplis
-            schedulesFilled(){
-                return this.schedules.filter(d => {
-                    return (d.day !== null &&
-                      d.time_begin !== null &&
-                      d.time_end !== null);
-                });
-            }*/
+                let now = new Date()
+                let years = (now.getFullYear() - this.member.birthdate.getFullYear());
+
+                if (now.getMonth() < this.member.birthdate.getMonth() ||
+                    now.getMonth() == this.member.birthdate.getMonth() && now.getDate() < this.member.birthdate.getDate()) {
+                    years--;
+                }
+                return "(" + years + " ans)";
+            }
         },
 
-        mounted(){
-
-        },
-
-        watch: {
-            /*activity(a){
-                this.nameFilled = (a.name.length > 0);
-            }*/
-        },
+        watch: {},
 
         beforeRouteUpdate (to, from, next) {
             next();
-            /*this.handleRouteChange(to, from, next);
-            this.hasChanges = false;*/
         },
 
         beforeRouteLeave (to, from, next) {
             next();
-            /*this.handleRouteChange(to, from, next);*/
         },
 
         props: ['data'],

@@ -13,7 +13,7 @@ export default new Store({
     
         //Génère une nouvelle activitée
         genNewStruct() {
-            console.log(this);
+            //console.log(this);
             let vId = this.state.virtualId;
             this.state.virtualId++;
             

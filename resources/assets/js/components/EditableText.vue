@@ -2,7 +2,12 @@
     <div ref="wrapper" class="relative editable">
         <h1 ref="h1" v-if="title" :class="{ ghost: edit_mode, placeholder: empty, error: isError }" @click="enterEdit($event)" v-html="htmlTypedValue"></h1>
         <p ref="p" v-else :class="{ ghost: edit_mode, placeholder: empty, error: isError }" @click="enterEdit($event)" v-html="htmlTypedValue"></p>
-        <input autocomplete="off" ref="field" type="text" :class="{ghost: !edit_mode, error: isError}" v-model="typedValue" @keyup.enter="doneEdit" @input="resize" @blur.prevent="focusOut" @focus="enterEdit($event)" :placeholder="placeholder" />
+        <input v-if="type === 'number'" autocomplete="off" ref="field" type="text"
+               :class="{ghost: !edit_mode, error: isError}" v-model="typedValue" @keyup.enter="doneEdit" @input="resize"
+               @blur.prevent="focusOut" @focus="enterEdit($event)" :placeholder="placeholder" :maxlength="maxlength"/>
+        <input v-else autocomplete="off" ref="field" type="text" :class="{ghost: !edit_mode, error: isError}"
+               v-model="typedValue" @keyup.enter="doneEdit" @input="resize" @blur.prevent="focusOut"
+               @focus="enterEdit($event)" :placeholder="placeholder"/>
         <ul class="suggestions absolute" v-if="edit_mode && suggests">
             <li v-for="s in displayedSuggestions" @mousedown.prevent="acceptSuggestion(s, $event)">{{ s }}</li>
         </ul>
@@ -45,6 +50,10 @@
 
                         toObject: (s) => s,
                         toInputString: (s) => s === null || s === undefined ? '' : s
+                    },
+
+                    number: {
+                        isValidSuggestion: (s, typed) => s.startsWith(typed)
                     },
 
                     time: {
@@ -136,7 +145,7 @@
                     if (this.typedValue !== this.value) {
 
                         if (this.typedValue.length) {
-                            if(this.suggests && this.matchingSuggestions.indexOf(this.typedValue) === -1) {
+                            if (this.suggests && this.matchingSuggestions.indexOf(this.typedValue) === -1) {
                                 this.typedValue = this.completeInput(this.typedValue, this.matchingSuggestions);
                             }
                         }
@@ -279,18 +288,23 @@
 
             toInputString(){
                 return this.types[this.type].hasOwnProperty('toInputString') ? this.types[this.type].toInputString : this.types['default'].toInputString
-            }
+            },
         },
         
         watch: {
             value(v){
+                //console.log(v)
                 let str = this.toInputString(v);
-
 
                 if(str !== this.typedValue){
                     this.objectValue = v;
                     this.typedValue = str;
                 }
+            },
+
+            typedValue(v){
+                if (this.type === 'number' && !this.suggests && v.length === this.maxlength)
+                    this.acceptSuggestion(v)
             }
         },
         
@@ -331,6 +345,10 @@
             type: {
                 type: String,
                 default: 'default'
+            },
+
+            maxlength: {
+                type: Number
             }
         }
     }

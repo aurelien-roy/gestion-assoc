@@ -130,8 +130,8 @@ export default {
         period(){
             if (this.$options.name === 'Activities')
                 return this.time.state.currentPeriod;
-            else (this.$options.name === 'Members')
-            return 'no_period';
+            else if (this.$options.name === 'Members')
+                return 'no_period';
         },
 
         resource_name() {

@@ -18,17 +18,25 @@ export default new Store({
             return {
                 id: undefined,
                 virtualId: vId,
+
                 firstname: '',
                 lastname: '',
                 birthdate: null, // YYYY-MM-DD
+                subdate: null, // YYYY-MM-DD
                 sex: '', // char M ou F
                 picture: '',
-                address: '', // string multiline
-                postcode: '', // string numérique (pas de int)
-                city: '',
                 email: '',
-                phones: '', // string avec plusieurs numéros de téls. pas d'espace. séparé par point virgule
-                notes: ''
+                phone1: '', // string avec plusieurs numéros de téls. pas d'espace. séparé par point virgule
+                phone2: '',
+                notes: '',
+                medic: '',
+                parent1: '',
+                parent2: '',
+
+                address1: '',
+                address2: '',
+                postcode: '', // string numérique (pas de int)
+                city: ''
             }
         },
 
@@ -42,7 +50,8 @@ export default new Store({
                     id: this.state.data['no_period'].length,
                     virtualId: this.state.data['no_period'].length,
                     firstname: firstnames[rand(0, 12)],
-                    lastname: lastnames[rand(0, 8)]
+                    lastname: lastnames[rand(0, 8)],
+                    subdate: new Date()
                 });
                 
             }

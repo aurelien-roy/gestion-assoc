@@ -1,4 +1,3 @@
-console.log('EE');
 window.deepCopy = function(o){
     
     if(o === null){
@@ -7,6 +6,9 @@ window.deepCopy = function(o){
     
     if(typeof o.clone === 'function'){
         return o.clone();
+    }
+    if (o instanceof Date) {
+        return new Date(o.valueOf());
     }
     
     let output, v, key;

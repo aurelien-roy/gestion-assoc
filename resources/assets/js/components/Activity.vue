@@ -58,6 +58,8 @@
     import Modal from './Modal'
 
     export default {
+        components: {EditableText, ColorPicker, Modal},
+
         data() {
             return {
                 hasChanges: false,
@@ -86,7 +88,6 @@
                 nextRoute: null,
             }
         },
-        components: {EditableText, ColorPicker, Modal},
 
         methods: {
             //Appelé quand un chanp est modifié
@@ -188,10 +189,6 @@
                     d.time_end !== null);
                 });
             }
-        },
-
-        mounted(){
-
         },
 
         watch: {

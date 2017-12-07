@@ -8,9 +8,13 @@
                         <SideList
                                 :items="elements"
                                 v-model="selection"
+
+                                component="MemberItem"
                                 :sorting="sorting"
                                 :match="match"
-                                component="MemberItem"
+                                @create="createElement"
+                                @duplicate="duplicateElement"
+                                @delete="deleteElements"
                         ></SideList>
 
                     </div>
